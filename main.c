@@ -6,6 +6,7 @@
 
 //importer libft
 
+//va chercher valeur d'une variable d'env (bien penser a ajouter =)
 char	*find_value(char **env, const char *str)
 {
 	int		i;
@@ -19,7 +20,7 @@ char	*find_value(char **env, const char *str)
 		j = 0;
 		while(env[i][j] == str[j])
 		{
-			if (j == len - 1)
+			if (j == (int)len - 1)
 				return(&env[i][len]);
 			j++;
 		}
@@ -32,6 +33,9 @@ int		main(int argc, char **argv, char **env)
 	char	*buff[101];
 	char	*path;
 
+	(void)argc;
+	(void)argv;
+	(void)env;
 	path = malloc(100);
 	//trouve le chemin courant pour le prompt:
 	getcwd(path, PATH_MAX);
