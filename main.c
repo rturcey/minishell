@@ -35,10 +35,6 @@ int		main(int argc, char **argv, char **env)
 	path = malloc(100);
 	//trouve le chemin courant pour le prompt:
 	getcwd(path, PATH_MAX);
-	//remplace le path de home/user par ~:
-	int		len = (int)strlen(find_value(env, "HOME="));
-	strcpy(&path[1], &path[len]);
-	path[0] = '~';
 	write(1, path, strlen(path));
 	write(1, " $> ", 4);
 	free(path);
