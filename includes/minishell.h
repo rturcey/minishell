@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/28 12:06:19 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/28 15:23:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@
 #include "libft.h"
 
 char	*find_value(char **env, const char *str);
+int		general_parser(char *input);
 
 #endif

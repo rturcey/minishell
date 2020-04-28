@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/28 11:56:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/28 18:28:43 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*find_value(char **env, const char *str)
 
 int		main(int argc, char **argv, char **env)
 {
-	char	*buff[101];
+	char	*line;
 	char	*path;
 
 	(void)argc;
@@ -47,11 +47,16 @@ int		main(int argc, char **argv, char **env)
 	path = malloc(100);
 	//trouve le chemin courant pour le prompt:
 	getcwd(path, PATH_MAX);
-	write(1, path, ft_strlen(path));
-	write(1, " $> ", 4);
+	
+	while (1)
+	{
+		write(1, path, ft_strlen(path));
+		write(1, " $> ", 4);
+		get_next_line(0, &line);
+		general_parser(line);
+		free(line);
+	}
 	free(path);
-	//boucler gnl (read juste pour le test):
-	read(0, buff, 100);
 	return (0);
 }
 

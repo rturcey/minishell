@@ -1,4 +1,4 @@
-SRCS		= ./sources/main.c
+SRCS		= ./sources/main.c ./sources/general_parser.c
 
 INC_DIR		= ./includes/
 
