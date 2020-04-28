@@ -46,3 +46,5 @@ int		main(int argc, char **argv, char **env)
 	read(0, buff, 100);
 	return (0);
 }
+
+test
