@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/19 12:46:34 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/04/28 11:38:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ char				*ft_gnl_strjoin(char *s1, char *s2);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strdup(const char *s1);
 char				*ft_strndup(const char *s1, int len);
+void				*ft_realloc(void *origin, size_t size);
 
 #endif

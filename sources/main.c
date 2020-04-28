@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/28 11:28:51 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/28 11:56:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		main(int argc, char **argv, char **env)
 	path = malloc(100);
 	//trouve le chemin courant pour le prompt:
 	getcwd(path, PATH_MAX);
-	write(1, path, strlen(path));
+	write(1, path, ft_strlen(path));
 	write(1, " $> ", 4);
 	free(path);
 	//boucler gnl (read juste pour le test):
