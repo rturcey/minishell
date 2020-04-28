@@ -9,6 +9,20 @@ int 	is_space(char a)
 	return (0);
 }
 
+/*Check if character is a workable quote 
+(ie: not a quote used as a character, preceded
+by '\')*/
+int 	is_quote(char *input, int i)
+{
+	if (input[i] == '\'' || input[i] == '\"')
+	{
+		if ((i > 0) && (input[i - 1] == '\\'))
+			return (0);
+		return (1);
+	}
+	return (0);
+}
+
 /* Find end of a quoted argument ('' or "")
 if no other quote is found, return 0 and handle
 it by making an empty string
@@ -23,7 +37,7 @@ int 	pass_quote(char *str, int start)
 	i = start + 1;
 	while (str[i])
 	{
-		if (str[i] == str[start])
+		if (is_quote(str, i))
 			return (i + 1);
 		i++;
 	}
@@ -41,13 +55,13 @@ int 	find_string_end(char *src, int start)
 {
 	int end;
 
-	if (src[start] == '\"' || src[start] == '\'')
+	if (is_quote(src, start) == 1)
 		end = pass_quote(src, start);
 	else
 	{
 		end = start;
-		while (src[end] && src[end] != '\'' 
-			&& src[end] != '\"' && is_space(src[end]) == 0)
+		while (src[end] && is_quote(src, end) == 0
+		 && is_space(src[end]) == 0)
 			end++;
 	}
 	return (end);
@@ -179,9 +193,11 @@ int		general_parser(char *input)
 		while (split_input[++i] != NULL)
 			ft_printf("split_input[%d] [%s]\n", i, split_input[i]);
 		
-		/*send split input to other functions from there to 
+		/* send split input to other functions from there to 
 		check for commands, exe, env...*/
 
+		/* BE CAREFUL WITH '\'' and '\"', should be treated like
+		one character but NOT like a quote */
 		free_array(split_input, -1);
 	}
 	return (0);
