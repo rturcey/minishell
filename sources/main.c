@@ -3,60 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/28 18:28:43 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/04/29 12:26:48 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//importer libft
-
-//va chercher valeur d'une variable d'env (bien penser a ajouter =)
-char	*find_value(char **env, const char *str)
+static void	prompt(t_env *env)
 {
-	int		i;
-	int		j;
-	size_t	len;
+	char	*path;
+	char	*user;
+	char	*host;
+	int		fd;
 
-	i = -1;
-	len = strlen(str);
-	while(env[++i])
-	{
-		j = 0;
-		while(env[i][j] == str[j])
-		{
-			if (j == (int)len - 1)
-				return(&env[i][len]);
-			j++;
-		}
-	}
-	return (NULL);
+	if (!(path = malloc(PATH_MAX)))
+		return ;
+	fd = open("/etc/hostname", O_RDONLY);
+	get_next_line(fd, &host);
+	getcwd(path, PATH_MAX);
+	user = find_env_value("USER", env);
+	ft_printf("%s%s@%s%s:%s%s%s$ ", GREEN, user, host, END, CYAN, path, END);
+	free(host);
+	free(path);
+	close(fd);
 }
 
-int		main(int argc, char **argv, char **env)
+int			main(int argc, char **argv, char **env)
 {
 	char	*line;
-	char	*path;
+	t_env	*lstenv;
 
 	(void)argc;
 	(void)argv;
-	(void)env;
-	path = malloc(100);
-	//trouve le chemin courant pour le prompt:
-	getcwd(path, PATH_MAX);
-	
+	if (!(lstenv = init_env(env)))
+	{
+		ft_putstr_fd("couldn't clone the environment", 2);
+		return(-1);
+	}
 	while (1)
 	{
-		write(1, path, ft_strlen(path));
-		write(1, " $> ", 4);
+		prompt(lstenv);
 		get_next_line(0, &line);
-		general_parser(line);
+		//test print env + test leaks
+		if (ft_strncmp(line, "env", 4) == 0)
+			print_env(lstenv);
+		else if (ft_strncmp(line, "exit", 5) == 0)
+		{
+			free(line);
+			break;
+		}
+		else
+			general_parser(line);
 		free(line);
 	}
-	free(path);
+	env_clear(lstenv);
 	return (0);
 }
-

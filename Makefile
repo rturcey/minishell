@@ -1,11 +1,12 @@
-SRCS		= ./sources/main.c ./sources/general_parser.c
+SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
+				./sources/env_utils2.c
 
 INC_DIR		= ./includes/
 
 OBJS		= ${SRCS:.c=.o}
 
 CC			= clang
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 NAME		= minishell
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 12:43:01 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/14 12:34:02 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/04/29 10:44:10 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,6 @@ char	*ft_strchr(const char *s, int c)
 	if (needle == '\0' && haystack[i] == '\0')
 		return ((char *)&s[i]);
 	return (NULL);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	int		len;
-	char	*cpy;
-	int		i;
-
-	len = 0;
-	while (s1[len])
-		len++;
-	if (!(cpy = malloc(sizeof(char) * len + 1)))
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		cpy[i] = s1[i];
-		i++;
-	}
-	cpy[i] = '\0';
-	return (cpy);
 }
 
 char	*ft_strndup(const char *s1, int len)
