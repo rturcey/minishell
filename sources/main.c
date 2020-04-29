@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 12:26:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/29 12:43:14 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	prompt(t_env *env)
 	get_next_line(fd, &host);
 	getcwd(path, PATH_MAX);
 	user = find_env_value("USER", env);
-	ft_printf("%s%s@%s%s:%s%s%s$ ", GREEN, user, host, END, CYAN, path, END);
+	ft_printf("%s%s@%s%s:%s%s%s$ ", GREEN, user, host, END, BLUE, path, END);
 	free(host);
 	free(path);
 	close(fd);

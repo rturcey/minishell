@@ -22,6 +22,9 @@ ${NAME}:	${OBJS}
 			make -C ./libft
 			${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT}
 
+leaks :		${NAME}
+			valgrind --tool=memcheck --leak-check=summary --leak-resolution=high --show-reachable=yes ./${NAME}
+
 clean :
 			rm -f ${OBJS}
 
