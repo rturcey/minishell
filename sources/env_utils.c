@@ -6,13 +6,17 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 11:48:13 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/29 16:12:48 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env	*env_new(void)
+/*
+** lstnew for t_env
+*/
+
+t_env			*env_new(void)
 {
 	t_env	*new;
 

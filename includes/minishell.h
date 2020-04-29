@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 12:41:58 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/29 16:41:51 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ int					general_parser(char *input);
 t_env				*init_env(char **env);
 void				*env_clear(t_env *env);
 void				print_env(t_env *env);
+t_env				*env_new(void);
 char				*find_env_value(char *key, t_env *env);
+t_env				*find_env_entry(char *key, t_env *env);
+t_env				*env_cpy(t_env *elt);
+int					export_var(t_env *elt, t_env *env);
 
 #endif
