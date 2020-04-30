@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/30 09:22:24 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/30 10:10:03 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <fcntl.h>
 # include "libft.h"
 
-# define GREEN "\033[1m\033[32m"
-# define BLUE "\033[1m\033[34m"
+# define YELLOW "\033[1;93m"
+# define CYAN "\033[1;96m"
 # define END  "\033[0m"
 
 typedef struct		s_env
@@ -44,5 +44,6 @@ t_env				*find_env_entry(char *key, t_env *env);
 t_env				*env_cpy(t_env *elt);
 int					export_var(t_env *elt, t_env *env);
 void				del_var(t_env *var);
+void				del_from_key(t_env **begin, char *key);
 
 #endif

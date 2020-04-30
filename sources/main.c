@@ -6,11 +6,34 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 16:33:27 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/30 10:09:58 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	remove_home_path(char **path, char *home)
+{
+	size_t	i;
+	size_t	j;
+	char	*tmp;
+
+	if (!home)
+		return ;
+	i = ft_strlen(home);
+	if (ft_strncmp(*path, home, i) != 0)
+		return ;
+	if (!(tmp = malloc(ft_strlen(*path) - i + 2)))
+		return ;
+	tmp[0] = '~';
+	i--;
+	j = 0;
+	while (++i <= ft_strlen(*path))
+		tmp[++j] = (*path)[i];
+	tmp[j] = '\0';
+	free(*path);
+	*path = tmp;
+}
 
 static void	prompt(t_env *env)
 {
@@ -25,7 +48,9 @@ static void	prompt(t_env *env)
 	get_next_line(fd, &host);
 	getcwd(path, PATH_MAX);
 	user = find_env_value("USER", env);
-	ft_printf("%s%s@%s%s:%s%s%s$ ", GREEN, user, host, END, BLUE, path, END);
+	remove_home_path(&path, find_env_value("HOME", env));
+	ft_printf("%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, CYAN, path, \
+	END, YELLOW, END);
 	free(host);
 	free(path);
 	close(fd);
@@ -42,7 +67,7 @@ int			main(int argc, char **argv, char **env)
 	if (!(lstenv = init_env(env)))
 	{
 		ft_putstr_fd("couldn't clone the environment", 2);
-		return(-1);
+		return (-1);
 	}
 	test = env_new();
 	test->key = ft_strdup("TEST_VAR");

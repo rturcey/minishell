@@ -1,5 +1,5 @@
 SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
-				./sources/env_utils2.c
+				./sources/env_utils2.c ./sources/export.c
 
 INC_DIR		= ./includes/
 
