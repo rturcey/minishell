@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 16:41:51 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/30 09:22:24 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ char				*find_env_value(char *key, t_env *env);
 t_env				*find_env_entry(char *key, t_env *env);
 t_env				*env_cpy(t_env *elt);
 int					export_var(t_env *elt, t_env *env);
+void				del_var(t_env *var);
 
 #endif

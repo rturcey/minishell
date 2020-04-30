@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:02:11 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 16:46:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/04/30 09:27:59 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,49 @@ int				export_var(t_env *elt, t_env *env)
 	bis->value = NULL;
 	bis->value = ft_strdup(elt->value);
 	return (0);
+}
+
+/*
+** free a t_env var and its data
+*/
+
+void			del_var(t_env *var)
+{
+	free(var->key);
+	free(var->value);
+	free(var);
+	var = NULL;
+}
+
+/*
+** free a t_env var and its data,
+** link previous elt to next elt
+*/
+
+void			del_from_key(t_env **begin, char *key)
+{
+	t_env	*tmp;
+	t_env	*env;
+
+	tmp = *begin;
+	env = *begin;
+	if (ft_strncmp(key, env->key) == 0)
+	{
+		tmp = (*begin)->next;
+		del_var(*begin);
+		(*begin) = tmp;
+		return ;
+	}
+	while (env)
+	{
+		if (ft_strncmp(key, env->key) == 0)
+		{
+			tmp->next = env->next;
+			del_var(env);
+			env = tmp;
+			return;
+		}
+		tmp = env;
+		env = env->next;
+	}
 }
