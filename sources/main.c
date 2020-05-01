@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/30 10:09:58 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/01 03:16:13 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int			main(int argc, char **argv, char **env)
 		else if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		else if (ft_strncmp(line, "export TEST=", 12) == 0)
 		{

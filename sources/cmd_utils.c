@@ -1,0 +1,86 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
+/*   Updated: 2020/05/01 03:02:53 by esoulard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/*
+**Cmd array init and strncmp with sample from input
+**return appropriate index (corresponding to cmd function)
+*/
+
+int		is_cmd(char *sample)//stock_redir
+{
+	char	*cmds[8];
+	int		j;
+
+	cmds[0] = "echo";
+	cmds[1] = "cd";
+	cmds[2] = "pwd";
+	cmds[3] = "export";
+	cmds[4] = "unset";
+	cmds[5] = "env";
+	cmds[6] = "exit";
+	cmds[7] = NULL;
+	j = -1;
+	while (cmds[++j] != NULL)
+	{
+		if ((ft_strlen(cmds[j]) == ft_strlen(sample)) &&
+			ft_strncmp(cmds[j], sample, ft_strlen(sample)) == 0)
+			return (j);
+	}
+	return (-1);
+}
+
+/*
+**DUMMY PARSING FUNCTIONS
+*/
+
+int		parse_echo(t_obj *obj, char *input, int *i, char *sample)
+{
+	(void)obj;
+	(void)input;
+	(void)i;
+	(void)sample;
+	ft_printf("in echo\n");
+	return (0);
+}
+
+int		parse_cd(t_obj *obj, char *input, int *i, char *sample)
+{
+	(void)obj;
+	(void)input;
+	(void)i;
+	(void)sample;
+	ft_printf("in cd\n");
+	return (0);
+}
+
+/*
+**Cmds parsing functions array, and sends us to
+**function corresponding to the matching index
+**we got from strncmp
+*/
+
+int		parse_cmds(t_obj *obj, char *input, int *i, char *sample)
+{
+	t_parse_cmd parse_cmd[7];
+
+	parse_cmd[0] = parse_echo;
+	parse_cmd[1] = parse_cd;
+	parse_cmd[2] = parse_pwd;
+	parse_cmd[3] = parse_export;
+	parse_cmd[4] = parse_unset;
+	parse_cmd[5] = parse_env;
+	parse_cmd[6] = parse_exit;
+	parse_cmd[obj->type](obj, input, i, sample);
+	return (0);
+}
