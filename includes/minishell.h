@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/01 12:53:00 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:54:00 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_obj				*obj_new(void);
 t_redir				*redir_new(void);
 t_obj				*init_obj(char *sample, int type, t_redir *redir);
 void				*free_obj(t_obj *obj);
+void				*free_redir(t_redir *redir);
 int					is_cmd(char *sample);
 int					parse_cmds(t_obj *obj, char *input, int *i);
 int					parse_echo(t_obj *obj, char *input, int *i);

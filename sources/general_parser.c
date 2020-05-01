@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 00:09:24 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 12:59:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:56:09 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		is_separator(char *str, int i)
 **Making a clean string, unnecessary quotes removed
 */
 
-char		*sample_str(char *input, int *i, char *sample)
+char	*sample_str(char *input, int *i, char *sample)
 {
 	int end;
 	int j;
@@ -48,12 +48,9 @@ char		*sample_str(char *input, int *i, char *sample)
 	{
 		while (is_quote(sample, j) == 1)
 		{
-			k = j;
-			while (sample[k] && sample[k + 1])
-			{
+			k = j - 1;
+			while (sample[++k] && sample[k + 1])
 				sample[k] = sample[k + 1];
-				k++;
-			}
 			while (sample[k])
 				sample[k++] = '\0';
 		}
@@ -84,15 +81,15 @@ int		general_parser(char *input)
 		return (-1);
 	i = 0;
 	i = pass_spaces(input, i);
-	obj = NULL;
-	sample = NULL;
-	redir = redir_new();
 	while (input[i])
 	{
+		obj = NULL;
+		sample = NULL;
+		redir = redir_new();
 		if ((sample = sample_str(input, &i, sample)) == NULL)
 			return (-1);
 		//FIRST CHECK IF SAMPLE IS A REDIRECTION.
-		//if it is and it is valid, is_redir should save it 
+		//if it is and it is valid, is_redir should save it
 		//in char *stock_redir, and should update sample
 		//with the next sample, and advance i
 		//if (is_redir(sample, input, &i, &redir) == 1)
@@ -109,8 +106,10 @@ int		general_parser(char *input)
 			parse_cmds(obj, input, &i);
 		}
 		i = pass_spaces(input, i);
+		free(sample);
+		free_redir(redir);
+		if (obj)
+			free_obj(obj);
 	}
-	free(sample);
-	free_obj(obj);
 	return (0);
 }

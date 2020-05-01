@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 12:46:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:54:05 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_obj		*init_obj(char *sample, int type, t_redir *redir)
 		return (NULL);
 	new->type = type;
 	new->redir = redir;
-	free(sample);
+	//free(sample);
 	return (new);
 }
 
