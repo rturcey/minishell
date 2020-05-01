@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 00:09:24 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 03:06:56 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/01 12:59:19 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char		*sample_str(char *input, int *i, char *sample)
 	j = -1;
 	while (sample[++j])
 	{
-		if (is_quote(sample, j) == 1)
+		while (is_quote(sample, j) == 1)
 		{
 			k = j;
 			while (sample[k] && sample[k + 1])
@@ -78,7 +78,7 @@ int		general_parser(char *input)
 	int		i;
 	t_obj	*obj;
 	int		j;
-	//char *stock_redir;
+	t_redir	*redir;
 
 	if (lonely_quote(input) == 1)
 		return (-1);
@@ -86,6 +86,7 @@ int		general_parser(char *input)
 	i = pass_spaces(input, i);
 	obj = NULL;
 	sample = NULL;
+	redir = redir_new();
 	while (input[i])
 	{
 		if ((sample = sample_str(input, &i, sample)) == NULL)
@@ -94,18 +95,18 @@ int		general_parser(char *input)
 		//if it is and it is valid, is_redir should save it 
 		//in char *stock_redir, and should update sample
 		//with the next sample, and advance i
-		//if (is_redir(sample, input, &i, &stock_redir) == 1)
+		//if (is_redir(sample, input, &i, &redir) == 1)
 			//{
-				//if (stock_redir == NULL)
+				//if (redir == NULL) >>in is_redir, free redir if malloc screws somewhere!!
 					//return (-1);
 			//}
 		ft_printf("string sampled [%s]\n", sample);
 		if ((j = is_cmd(sample)) != -1)
 		{
-			obj = init_obj(sample, j);//should take stock redir as param as well
+			obj = init_obj(sample, j, redir);//should take stock redir as param as well
 			if (obj == NULL)
 				return (-1);
-			parse_cmds(obj, input, &i, sample);
+			parse_cmds(obj, input, &i);
 		}
 		i = pass_spaces(input, i);
 	}

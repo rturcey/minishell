@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 03:02:53 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/01 12:54:32 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,20 @@ int		is_cmd(char *sample)//stock_redir
 **DUMMY PARSING FUNCTIONS
 */
 
-int		parse_echo(t_obj *obj, char *input, int *i, char *sample)
+int		parse_echo(t_obj *obj, char *input, int *i)
 {
 	(void)obj;
 	(void)input;
 	(void)i;
-	(void)sample;
 	ft_printf("in echo\n");
 	return (0);
 }
 
-int		parse_cd(t_obj *obj, char *input, int *i, char *sample)
+int		parse_cd(t_obj *obj, char *input, int *i)
 {
 	(void)obj;
 	(void)input;
 	(void)i;
-	(void)sample;
 	ft_printf("in cd\n");
 	return (0);
 }
@@ -70,7 +68,7 @@ int		parse_cd(t_obj *obj, char *input, int *i, char *sample)
 **we got from strncmp
 */
 
-int		parse_cmds(t_obj *obj, char *input, int *i, char *sample)
+int		parse_cmds(t_obj *obj, char *input, int *i)
 {
 	t_parse_cmd parse_cmd[7];
 
@@ -81,6 +79,6 @@ int		parse_cmds(t_obj *obj, char *input, int *i, char *sample)
 	parse_cmd[4] = parse_unset;
 	parse_cmd[5] = parse_env;
 	parse_cmd[6] = parse_exit;
-	parse_cmd[obj->type](obj, input, i, sample);
+	parse_cmd[obj->type](obj, input, i);
 	return (0);
 }

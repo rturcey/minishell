@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 02:58:44 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/01 12:46:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,7 @@ t_obj		*obj_new(void)
 		return (NULL);
 	}
 	new->args_count = 0;
-	if (!(new->redir = redir_new()))
-	{
-		free(new);
-		return (NULL);
-	}
+	new->redir = NULL;
 	new->result = NULL;
 	new->ret = 0;
 	new->next = NULL;
@@ -80,7 +76,7 @@ t_obj		*obj_new(void)
 **initialize an object, need to add potential redir (see below)
 */
 
-t_obj		*init_obj(char *sample, int type)//stock redir
+t_obj		*init_obj(char *sample, int type, t_redir *redir)
 {
 	t_obj *new;
 
@@ -89,6 +85,7 @@ t_obj		*init_obj(char *sample, int type)//stock redir
 	if (!(new->obj = ft_strdup(sample)))
 		return (NULL);
 	new->type = type;
+	new->redir = redir;
 	free(sample);
 	return (new);
 }
