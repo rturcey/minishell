@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/04/29 16:12:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/02 18:28:38 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ void			*env_clear(t_env *env)
 	return (NULL);
 }
 
-void			print_env(t_env *env)
+void			print_env(t_env *env, int fd)
 {
 	t_env	*tmp;
 
 	tmp = env;
 	while (tmp)
 	{
-		ft_printf("%s=%s\n", tmp->key, tmp->value);
+		dprintf(fd, "%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 }

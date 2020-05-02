@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 00:09:24 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 15:56:09 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:32:53 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*sample_str(char *input, int *i, char *sample)
 **the appropriate function
 */
 
-int		general_parser(char *input)
+int		general_parser(char *input, t_env *env)
 {
 	char	*sample;
 	int		i;
@@ -86,24 +86,16 @@ int		general_parser(char *input)
 		obj = NULL;
 		sample = NULL;
 		redir = redir_new();
+		find_redir(redir, input, &i);
 		if ((sample = sample_str(input, &i, sample)) == NULL)
 			return (-1);
-		//FIRST CHECK IF SAMPLE IS A REDIRECTION.
-		//if it is and it is valid, is_redir should save it
-		//in char *stock_redir, and should update sample
-		//with the next sample, and advance i
-		//if (is_redir(sample, input, &i, &redir) == 1)
-			//{
-				//if (redir == NULL) >>in is_redir, free redir if malloc screws somewhere!!
-					//return (-1);
-			//}
 		ft_printf("string sampled [%s]\n", sample);
 		if ((j = is_cmd(sample)) != -1)
 		{
-			obj = init_obj(sample, j, redir);//should take stock redir as param as well
+			obj = init_obj(sample, j, redir);
 			if (obj == NULL)
 				return (-1);
-			parse_cmds(obj, input, &i);
+			parse_cmds(obj, input, &i, env);
 		}
 		i = pass_spaces(input, i);
 		free(sample);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 15:54:08 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:35:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ int		is_cmd(char *sample)//stock_redir
 **DUMMY PARSING FUNCTIONS
 */
 
-int		parse_echo(t_obj *obj, char *input, int *i)
+int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 {
+	(void)env;
 	(void)obj;
 	(void)input;
 	(void)i;
@@ -53,8 +54,9 @@ int		parse_echo(t_obj *obj, char *input, int *i)
 	return (0);
 }
 
-int		parse_cd(t_obj *obj, char *input, int *i)
+int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 {
+	(void)env;
 	(void)obj;
 	(void)input;
 	(void)i;
@@ -68,7 +70,7 @@ int		parse_cd(t_obj *obj, char *input, int *i)
 **we got from strncmp
 */
 
-int		parse_cmds(t_obj *obj, char *input, int *i)
+int		parse_cmds(t_obj *obj, char *input, int *i, t_env *env)
 {
 	t_parse_cmd parse_cmd[7];
 
@@ -79,6 +81,6 @@ int		parse_cmds(t_obj *obj, char *input, int *i)
 	parse_cmd[4] = parse_unset;
 	parse_cmd[5] = parse_env;
 	parse_cmd[6] = parse_exit;
-	parse_cmd[obj->type](obj, input, i);
+	parse_cmd[obj->type](obj, input, i, env);
 	return (0);
 }

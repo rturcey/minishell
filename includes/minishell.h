@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/01 15:54:00 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:35:54 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ typedef struct		s_obj
 	struct s_obj	*next;
 }					t_obj;
 
-typedef int			(*t_parse_cmd)(t_obj *, char *, int *);
+typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 
-int					general_parser(char *input);
+int					general_parser(char *input, t_env *env);
 t_env				*init_env(char **env);
 void				*env_clear(t_env *env);
-void				print_env(t_env *env);
+void				print_env(t_env *env, int fd);
 t_env				*env_new(void);
 char				*find_env_value(char *key, t_env *env);
 t_env				*find_env_entry(char *key, t_env *env);
@@ -81,18 +81,23 @@ t_obj				*init_obj(char *sample, int type, t_redir *redir);
 void				*free_obj(t_obj *obj);
 void				*free_redir(t_redir *redir);
 int					is_cmd(char *sample);
-int					parse_cmds(t_obj *obj, char *input, int *i);
-int					parse_echo(t_obj *obj, char *input, int *i);
-int					parse_cd(t_obj *obj, char *input, int *i);
-int					parse_pwd(t_obj *obj, char *input, int *i);
-int					parse_export(t_obj *obj, char *input, int *i);
-int					parse_unset(t_obj *obj, char *input, int *i);
-int					parse_env(t_obj *obj, char *input, int *i);
-int					parse_exit(t_obj *obj, char *input, int *i);
+int					parse_cmds(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_echo(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_cd(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_pwd(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_export(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_unset(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_env(t_obj *obj, char *input, int *i, t_env *env);
+int					parse_exit(t_obj *obj, char *input, int *i, t_env *env);
 int					is_space(char a);
 int					pass_spaces(char *str, int i);
 int					is_quote(char *str, int i);
 int					lonely_quote(char *str);
 int					find_string_end(char *src, int i);
+int					find_redir(t_redir *redir, char *input, int *i);
+int					parse_redir(t_redir *redir, char *input, int *i, int *s_fd);
+int					is_redir(char *str, int i);
+char				*sample_str(char *input, int *i, char *sample);
+int					is_separator(char *str, int i);
 
 #endif

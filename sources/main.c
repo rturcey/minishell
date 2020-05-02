@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/01 03:16:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:32:25 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,7 @@ int			main(int argc, char **argv, char **env)
 		get_next_line(0, &line);
 		//test print env + test exit + test export
 
-		if (ft_strncmp(line, "env", 4) == 0)
-			print_env(lstenv);
-		else if (ft_strncmp(line, "exit", 5) == 0)
+		if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			free(line);
 			break ;
@@ -92,7 +90,7 @@ int			main(int argc, char **argv, char **env)
 			export_var(test, lstenv);
 		}
 		else
-			general_parser(line);
+			general_parser(line, lstenv);
 		free(line);
 	}
 	env_clear(lstenv);
