@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/03 13:26:44 by esoulard         ###   ########.fr       */
+/*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
+/*   Updated: 2020/05/03 16:59:11 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int					is_quote(char *str, int i, char quote);
 int					lonely_quote(char *str);
 int					find_string_end(char *src, int i);
 int					find_redir(t_redir *redir, char *input, int *i);
-int					parse_redir(t_redir *redir, char *input, int *i, int *s_fd);
+int					find_redir_err(t_redir *redir, char *input, int *i);
 int					is_redir(char *str, int i);
 char				*sample_str(char *input, int *i, char *sample);
 int					is_separator(char *str, int i);

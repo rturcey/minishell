@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/02 18:09:36 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 16:53:13 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	*free_obj(t_obj *obj)
 		tmp = obj->next;
 		free(obj->obj);
 		free_arg(obj->args);
-		//free_redir(obj->redir);
+		free_redir(obj->redir);
 		free(obj->result);
 		free(obj);
 		obj = tmp;

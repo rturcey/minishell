@@ -1,7 +1,8 @@
 SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
 				./sources/export.c ./sources/env_utils2.c ./sources/cmd_utils.c \
 				./sources/cmd_utils2.c ./sources/obj_utils.c ./sources/obj_utils2.c \
-				./sources/string_utils.c ./sources/redir.c
+				./sources/string_utils.c ./sources/redir.c ./sources/redir_utils.c \
+				./sources/redir_err.c
 
 INC_DIR		= ./includes/
 
@@ -25,7 +26,7 @@ ${NAME}:	${OBJS}
 			${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT}
 
 leaks :		${NAME}
-			valgrind --tool=memcheck --leak-check=summary --leak-resolution=high --show-reachable=yes ./${NAME}
+			valgrind --tool=memcheck --leak-check=full --leak-resolution=high --show-reachable=yes ./${NAME}
 
 clean :
 			rm -f ${OBJS}

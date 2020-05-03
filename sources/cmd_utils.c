@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/02 18:35:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 11:47:45 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ int		parse_cmds(t_obj *obj, char *input, int *i, t_env *env)
 	parse_cmd[4] = parse_unset;
 	parse_cmd[5] = parse_env;
 	parse_cmd[6] = parse_exit;
-	parse_cmd[obj->type](obj, input, i, env);
+	if (parse_cmd[obj->type](obj, input, i, env) == -1)
+	{
+		while (is_end(input, *i) == 0)
+			(*i)++;
+		return (-1);
+	}
 	return (0);
 }

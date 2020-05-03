@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/03 11:42:46 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 14:12:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 			ft_putstr_fd("env: too many arguments\n", obj->redir->err_output);
 			return (-1);
 		}
-		else if (ret < 0)
-			return (-1);
 	}
 	print_env(env, obj->redir->cmd_output);
 	return (0);

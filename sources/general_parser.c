@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/01 00:09:24 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/03 13:27:18 by esoulard         ###   ########.fr       */
+/*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
+/*   Updated: 2020/05/03 16:59:32 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int		general_parser(char *input, t_env *env)
 	t_obj	*obj;
 	int		j;
 	t_redir	*redir;
+	int		limit = 1;
 
 	if (lonely_quote(input) == -1)
 		return (-1);
@@ -101,9 +102,15 @@ int		general_parser(char *input, t_env *env)
 		obj = NULL;
 		sample = NULL;
 		redir = redir_new();
+		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
+		if (limit-- == 1)
+			find_redir_err(redir, input, &i);
 		find_redir(redir, input, &i);
 		if ((sample = sample_str(input, &i, sample)) == NULL)
+		{
+			free_redir(redir);
 			return (-1);
+		}
 		ft_printf("string sampled [%s]\n", sample);
 		if ((j = is_cmd(sample)) != -1)
 		{
@@ -114,9 +121,10 @@ int		general_parser(char *input, t_env *env)
 		}
 		i = pass_spaces(input, i);
 		free(sample);
-		free_redir(redir);
 		if (obj)
 			free_obj(obj);
+		else
+			free_redir(redir);
 	}
 	return (0);
 }
