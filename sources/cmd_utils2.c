@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/02 18:40:24 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 11:42:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,21 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 {
+	int		ret;
+
 	while (input[*i] && is_separator(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
-		if (find_redir(obj->redir, input, i) == 0)
+		if ((ret = find_redir(obj->redir, input, i)) == 0)
 		{
-			ft_putstr_fd("error, bad syntax (ENV)\n", obj->redir->err_output);
-			return (0);
+			while (*i < (int)ft_strlen(input))
+				if (find_redir(obj->redir, input, i) == 0)
+					(*i)++;
+			ft_putstr_fd("env: too many arguments\n", obj->redir->err_output);
+			return (-1);
 		}
+		else if (ret < 0)
+			return (-1);
 	}
 	print_env(env, obj->redir->cmd_output);
 	return (0);

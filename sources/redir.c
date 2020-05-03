@@ -6,11 +6,18 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/02 18:53:22 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 11:40:36 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		is_end(char *str, int i)
+{
+	if (!str[i] || is_separator(str, i) == 1)
+		return (1);
+	return (0);
+}
 
 /*
 ** returns 1 if >, 2 if >>, 3 if <
@@ -35,16 +42,21 @@ int		parse_redir(t_redir *redir, char *input, int *i, int *s_fd)
 {
 	char	sym;
 	char	*path;
+	int		j;
 
 	path = NULL;
 	if (s_fd[1] == 2)
 		(*i)++;
 	*i = pass_spaces(input, *i);
-	if (!input[*i] || is_separator(input, *i) != 0 || is_redir(input, *i) != 0)
+	j = *i;
+	while (ft_isalnum(input[j]) == 1)
+		j++;
+	if (is_end(input, j) != 0 || is_redir(input, j) != 0)
 	{
-		sym = input[*i];
-		//envoyer erreur "bash: erreur de syntaxe près du symbole inattendu « sym »"
-		ft_printf("ERROR PARSE_REDIR (a formater)\n");
+		if (!(sym = input[j]))
+			dprintf(redir->err_output, "bash: erreur de syntaxe près du symbole inattendu « newline »\n");
+		else
+			dprintf(redir->err_output, "bash: erreur de syntaxe près du symbole inattendu « %c »\n", sym);
 		return (-1);
 	}
 	path = sample_str(input, i, path);

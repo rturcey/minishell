@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/02 18:35:54 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 11:21:55 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ int					parse_redir(t_redir *redir, char *input, int *i, int *s_fd);
 int					is_redir(char *str, int i);
 char				*sample_str(char *input, int *i, char *sample);
 int					is_separator(char *str, int i);
+int					is_end(char *str, int i);
 
 #endif
