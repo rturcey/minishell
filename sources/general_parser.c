@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 00:09:24 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/03 11:36:41 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 13:27:18 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,20 @@ int		is_separator(char *str, int i)
 **Making a clean string, unnecessary quotes removed
 */
 
+void 	skim_str(char *sample, int k)
+{
+	while (sample[++k] && sample[k + 1])
+		sample[k] = sample[k + 1];
+	while (sample[k])
+		sample[k++] = '\0';
+}
+
 char	*sample_str(char *input, int *i, char *sample)
 {
 	int end;
 	int j;
 	int k;
+	int check;
 
 	if (!input[*i])
 		return (NULL);
@@ -44,15 +53,21 @@ char	*sample_str(char *input, int *i, char *sample)
 	if (!(sample = ft_substr(input, *i, (end - *i))))
 		return (NULL);
 	j = -1;
+	j = -1;
 	while (sample[++j])
 	{
-		while (is_quote(sample, j) == 1)
+		if (is_quote(sample, j, 0) == 1)
 		{
-			k = j - 1;
-			while (sample[++k] && sample[k + 1])
-				sample[k] = sample[k + 1];
-			while (sample[k])
-				sample[k++] = '\0';
+			k = get_next_quote(sample, j) - 1;
+			*i = k - 1;
+			check = 0;
+			while (check != 2)
+			{
+				skim_str(sample, k);
+				k = j - 1;
+				check++;
+			}
+			j = *i;
 		}
 	}
 	*i = end;
@@ -77,7 +92,7 @@ int		general_parser(char *input, t_env *env)
 	int		j;
 	t_redir	*redir;
 
-	if (lonely_quote(input) == 1)
+	if (lonely_quote(input) == -1)
 		return (-1);
 	i = 0;
 	i = pass_spaces(input, i);

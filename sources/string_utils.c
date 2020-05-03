@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 15:54:06 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/02 14:51:37 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,45 +27,68 @@ int		pass_spaces(char *str, int i)
 	return (i);
 }
 
-int		is_quote(char *str, int i)
+int		is_quote(char *str, int i, char quote)
 {
-	if (str[i] == '\'' || str[i] == '\"')
+	if (quote == 0)
 	{
-		if ((i > 0) && (str[i - 1] == '\\'))
-			return (0);
-		return (1);
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			if ((i > 0) && (str[i - 1] == '\\'))
+				return (0);
+			return (1);
+		}
+	}
+	else
+	{
+		if (str[i] == quote)
+		{
+			if ((i > 0) && (str[i - 1] == '\\'))
+				return (0);
+			return (1);
+		}
 	}
 	return (0);
+}
+
+int		get_next_quote(char *str, int i)
+{
+	char tmp;
+
+	if (!str[i] || is_quote(str, i, 0) != 1)
+		return (-1);
+	tmp = str[i++];
+	while (str[i] && is_quote(str, i, tmp) == 0)
+		i++;
+	if (is_quote(str, i, tmp) == 0)
+		return (-1);
+	return (i);
 }
 
 int		lonely_quote(char *str)
 {
 	int i;
-	int count;
 
 	i = -1;
-	count = 0;
 	while (str[++i])
 	{
-		if (is_quote(str, i) == 1)
-			count++;
+		if (is_quote(str, i, 0) == 1)
+		{
+			if ((i = get_next_quote(str, i)) == -1)
+				return (-1);
+			//i -= 1;
+		}
 	}
-	if (count % 2 != 0)
-		return (1);
 	return (0);
 }
 
 int		find_string_end(char *input, int i)
 {
-	char	tmp;
-
 	while (input[i] && is_space(input[i]) == 0)
 	{
-		if (is_quote(input, i))
+		if (is_quote(input, i, 0))
 		{
-			tmp = input[i++];
-			while (input[i] && input[i] != tmp)
-				i++;
+			if ((i = get_next_quote(input, i)) == -1)
+				return (-1);
 		}
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/03 11:21:55 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/03 13:26:44 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int					parse_env(t_obj *obj, char *input, int *i, t_env *env);
 int					parse_exit(t_obj *obj, char *input, int *i, t_env *env);
 int					is_space(char a);
 int					pass_spaces(char *str, int i);
-int					is_quote(char *str, int i);
+int					is_quote(char *str, int i, char quote);
 int					lonely_quote(char *str);
 int					find_string_end(char *src, int i);
 int					find_redir(t_redir *redir, char *input, int *i);
@@ -100,5 +100,6 @@ int					is_redir(char *str, int i);
 char				*sample_str(char *input, int *i, char *sample);
 int					is_separator(char *str, int i);
 int					is_end(char *str, int i);
+int					get_next_quote(char *str, int i);
 
 #endif
