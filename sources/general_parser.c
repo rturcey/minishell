@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/05 10:45:42 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/05 17:40:52 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,46 @@ int		is_separator(char *str, int i)
 **Making a clean string, unnecessary quotes removed
 */
 
-void 	skim_str(char *sample, int k)
+void	skim_str(char *sample, int k, int *i)
 {
 	while (sample[++k] && sample[k + 1])
 		sample[k] = sample[k + 1];
 	while (sample[k])
 		sample[k++] = '\0';
+	(*i)++;
+}
+
+void	sample_quote_cond(char *input, int *i, char *sample, int *j)
+{
+	int k;
+	int l;
+	int check;
+
+	k = get_next_quote(sample, *j) - 1;
+	l = (*j) - 1;
+	if (is_quote(input, *i, '\"') == 1)
+	{
+		while (++l < k)
+		{
+			if (sample[l] == '\\' && sample[l + 1] && k--)
+				skim_str(sample, l - 1, i);
+		}
+	}
+	l = k - 1;
+	check = -1;
+	while (++check != 2)
+	{
+		skim_str(sample, k, i);
+		k = (*j) - 1;
+	}
+	(*i) += l - (*j);
+	(*j) = l;
 }
 
 char	*sample_str(char *input, int *i, char *sample)
 {
 	int end;
 	int j;
-	int k;
-	int check;
 
 	if (!input[*i])
 		return (NULL);
@@ -53,22 +79,13 @@ char	*sample_str(char *input, int *i, char *sample)
 	if (!(sample = ft_substr(input, *i, (end - *i))))
 		return (NULL);
 	j = -1;
-	j = -1;
 	while (sample[++j])
 	{
-		if (is_quote(sample, j, 0) == 1)
-		{
-			k = get_next_quote(sample, j) - 1;
-			*i = k - 1;
-			check = 0;
-			while (check != 2)
-			{
-				skim_str(sample, k);
-				k = j - 1;
-				check++;
-			}
-			j = *i;
-		}
+		if (sample[j] == '\\')
+			skim_str(sample, j - 1, i);
+		else if (is_quote(input, *i, 0) == 1)
+			sample_quote_cond(input, i, sample, &j);
+		(*i)++;
 	}
 	*i = end;
 	return (sample);
@@ -93,7 +110,8 @@ int		general_parser(char *input, t_env *env)
 	t_redir	*redir;
 	int		limit = 1;
 
-	if (lonely_quote(input) == -1)
+	if ((lonely_quote(input) == -1) ||
+		(last_backslash(input) == -1))
 	{
 		ft_putstr_fd("bash: multiligne non géré\n", 2);
 		return (-1);

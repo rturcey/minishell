@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/02 14:51:37 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/05 17:41:57 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,43 @@ int		pass_spaces(char *str, int i)
 	return (i);
 }
 
+int		is_quote2(char *str, int i, char quote, int count)
+{
+	if (str[i] == quote)
+	{
+		if ((i > 0) && (str[i - 1] == '\\'))
+		{
+			while (str[--i] && str[i] == '\\')
+				count++;
+			if (count % 2 != 0)
+				return (0);
+		}
+		return (1);
+	}
+	return (0);
+}
+
 int		is_quote(char *str, int i, char quote)
 {
+	int count;
+
+	count = 0;
 	if (quote == 0)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
 			if ((i > 0) && (str[i - 1] == '\\'))
-				return (0);
+			{
+				while (str[--i] && str[i] == '\\')
+					count++;
+				if (count % 2 != 0)
+					return (0);
+			}
 			return (1);
 		}
 	}
 	else
-	{
-		if (str[i] == quote)
-		{
-			if ((i > 0) && (str[i - 1] == '\\'))
-				return (0);
-			return (1);
-		}
-	}
+		return (is_quote2(str, i, quote, count));
 	return (0);
 }
 
@@ -54,43 +71,22 @@ int		get_next_quote(char *str, int i)
 {
 	char tmp;
 
-	if (!str[i] || is_quote(str, i, 0) != 1)
+	if (!str[i])
 		return (-1);
 	tmp = str[i++];
-	while (str[i] && is_quote(str, i, tmp) == 0)
-		i++;
-	if (is_quote(str, i, tmp) == 0)
-		return (-1);
-	return (i);
-}
-
-int		lonely_quote(char *str)
-{
-	int i;
-
-	i = -1;
-	while (str[++i])
+	if (tmp == '\"')
 	{
-		if (is_quote(str, i, 0) == 1)
-		{
-			if ((i = get_next_quote(str, i)) == -1)
-				return (-1);
-			//i -= 1;
-		}
+		while (str[i] && is_quote(str, i, tmp) == 0)
+			i++;
+		if (is_quote(str, i, tmp) == 0)
+			return (-1);
 	}
-	return (0);
-}
-
-int		find_string_end(char *input, int i)
-{
-	while (input[i] && is_space(input[i]) == 0)
+	else if (tmp == '\'')
 	{
-		if (is_quote(input, i, 0))
-		{
-			if ((i = get_next_quote(input, i)) == -1)
-				return (-1);
-		}
-		i++;
+		while (str[i] && str[i] != tmp)
+			i++;
+		if (!str[i])
+			return (-1);
 	}
 	return (i);
 }
