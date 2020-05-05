@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/03 16:59:32 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/05 10:45:42 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ int		general_parser(char *input, t_env *env)
 	int		limit = 1;
 
 	if (lonely_quote(input) == -1)
+	{
+		ft_putstr_fd("bash: multiligne non géré\n", 2);
 		return (-1);
+	}
 	i = 0;
 	i = pass_spaces(input, i);
 	while (input[i])

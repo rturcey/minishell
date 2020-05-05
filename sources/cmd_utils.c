@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/03 11:47:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/05 10:41:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,27 @@ int		is_cmd(char *sample)//stock_redir
 
 int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 {
+	char	*result;
+	char	*sample;
+
 	(void)env;
-	(void)obj;
-	(void)input;
-	(void)i;
-	ft_printf("in echo\n");
+	result = ft_strdup("");
+	*i = pass_spaces(input, *i);
+	if (ft_strncmp("-n ", &input[*i], 3) == 0 && ((*i) += 3))
+		obj->option = 1;
+	while (is_end(input, *i) == 0)
+	{
+		*i = pass_spaces(input, *i);
+		if (find_redir(obj->redir, input, i) < 0 || \
+			!(sample = sample_str(input, i, sample)))
+			return (-1);
+		result = ft_strjoin_sp(result, sample);
+	}
+	if (obj->option == 1)
+		ft_putstr_fd(result, obj->redir->cmd_output);
+	else
+		ft_putendl_fd(result, obj->redir->cmd_output);
+	free(result);
 	return (0);
 }
 

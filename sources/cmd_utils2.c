@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/03 14:12:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/05 09:54:10 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,27 @@
 
 int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 {
+	char	*workdir;
+
+	workdir = NULL;
 	(void)env;
-	(void)obj;
-	(void)input;
-	(void)i;
-	ft_printf("in pwd\n");
+	while (input[*i] && is_separator(input, *i) == 0)
+	{
+		*i = pass_spaces(input, *i);
+		if (find_redir(obj->redir, input, i) == 0)
+		{
+			while (*i < (int)ft_strlen(input))
+				if (find_redir(obj->redir, input, i) == 0)
+					(*i)++;
+			ft_putstr_fd("pwd: too many arguments\n", obj->redir->err_output);
+			return (-1);
+		}
+	}
+	if (!(workdir = ft_calloc(PATH_MAX, 1)))
+		return (-1);
+	getcwd(workdir, PATH_MAX);
+	ft_putendl_fd(workdir, obj->redir->cmd_output);
+	free(workdir);
 	return (0);
 }
 
@@ -48,12 +64,10 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 {
-	int		ret;
-
 	while (input[*i] && is_separator(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
-		if ((ret = find_redir(obj->redir, input, i)) == 0)
+		if (find_redir(obj->redir, input, i) == 0)
 		{
 			while (*i < (int)ft_strlen(input))
 				if (find_redir(obj->redir, input, i) == 0)
