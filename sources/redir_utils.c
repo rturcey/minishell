@@ -6,13 +6,13 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:11:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/03 12:21:24 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 09:31:13 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_end(char *str, int i)
+int				is_end(char *str, int i)
 {
 	if (!str[i] || is_separator(str, i) == 1)
 		return (1);
@@ -23,8 +23,32 @@ int		is_end(char *str, int i)
 ** returns 1 if >, 2 if >>, 3 if <
 */
 
-int		is_redir(char *str, int i)
+static int		quote_redir(char *str, int i)
 {
+	if (i > 1 && (ft_strncmp(&str[i - 2], "\'>>", 3) == 0
+		|| ft_strncmp(&str[i - 2], "\">>", 3) == 0))
+			return (1);
+	if (i > 0 && (ft_strncmp(&str[i - 1], "\'>", 2) == 0
+		|| ft_strncmp(&str[i - 1], "\'>>", 3) == 0
+		|| ft_strncmp(&str[i - 1], "\'<", 2) == 0
+		|| ft_strncmp(&str[i - 1], "\">", 2) == 0
+		|| ft_strncmp(&str[i - 1], "\">>", 3) == 0
+		|| ft_strncmp(&str[i - 1], "\"<", 2) == 0))
+			return (1);
+	if (ft_strncmp(&str[i], "\'>", 2) == 0
+		|| ft_strncmp(&str[i], "\'>>", 3) == 0
+		|| ft_strncmp(&str[i], "\'<", 2) == 0
+		|| ft_strncmp(&str[i], "\">", 2) == 0
+		|| ft_strncmp(&str[i], "\">>", 3) == 0
+		|| ft_strncmp(&str[i], "\"<", 2) == 0)
+		return (1);
+	return (0);
+}
+
+int				is_redir(char *str, int i)
+{
+	if (quote_redir(str, i) == 1)
+		return (0);
 	if (str[i] == '>' || str[i] == '<')
 	{
 		if ((i > 0) && (str[i - 1] == '\\'))
