@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 09:53:16 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 13:02:20 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int		split_env(char *line, t_env *elt)
 	return (0);
 }
 
-void			*env_clear(t_env *env)
+int				env_clear(t_env *env)
 {
 	t_env	*tmp;
 
@@ -66,7 +66,7 @@ void			*env_clear(t_env *env)
 		free(env);
 		env = tmp;
 	}
-	return (NULL);
+	return (0);
 }
 
 void			print_env(t_env *env, int fd)
@@ -87,25 +87,25 @@ void			print_env(t_env *env, int fd)
 ** & check if input isn't corrupted
 */
 
-t_env			*init_env(char **env)
+t_env			*init_env(char **env, int in)
 {
 	t_env	*lst;
 	t_env	*tmp;
 	int		i;
 
 	i = 0;
-	if (!env || !env[0] || !(lst = env_new(1)))
+	if (!env || !env[0] || !(lst = env_new(in)))
 		return (NULL);
 	tmp = lst;
-	if (split_env(env[0], lst) == -1)
-		return (env_clear(tmp));
+	if (split_env(env[0], lst) == -1 && env_clear(tmp) == 0)
+		return (NULL);
 	while (env[++i])
 	{
-		if (!(lst->next = env_new(1)))
-			return (env_clear(tmp));
+		if (!(lst->next = env_new(in)) && env_clear(tmp) == 0)
+			return (NULL);
 		lst = lst->next;
-		if (split_env(env[i], lst) == -1)
-			return (env_clear(tmp));
+		if (split_env(env[i], lst) == -1 && env_clear(tmp) == 0)
+			return (NULL);
 	}
 	return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 11:11:36 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 13:00:20 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ typedef struct		s_obj
 typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 
 int					general_parser(char *input, t_env *env);
-t_env				*init_env(char **env);
-void				*env_clear(t_env *env);
+t_env				*init_env(char **env, int in);
+int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
 t_env				*env_new(int in);
 char				*find_env_value(char *key, t_env *env);
@@ -104,5 +104,6 @@ int					is_end(char *str, int i);
 int					get_next_quote(char *str, int i);
 int					unset_var(char **elt, t_env *env);
 int					add_var(t_env *elt, t_env *env);
+int					parse_var(char *input, int *i, t_env *env, int len);
 
 #endif

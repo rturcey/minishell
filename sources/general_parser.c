@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/05 17:40:52 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/06 12:59:52 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ int		general_parser(char *input, t_env *env)
 		if (limit-- == 1)
 			find_redir_err(redir, input, &i);
 		find_redir(redir, input, &i);
-		if ((sample = sample_str(input, &i, sample)) == NULL)
+		if ((sample = sample_str(input, &i, sample)) == NULL
+			|| parse_var(input, &i, env, 0) == -1)
 		{
 			free_redir(redir);
 			return (-1);

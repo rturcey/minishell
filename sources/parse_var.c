@@ -6,41 +6,63 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 11:53:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 13:23:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*ft_keyvar(char *input, int *i, t_env *env)
+static int		check_vars(char *input, int *i)
 {
 	int		j;
-	t_env	*elt;
+	char	*sample;
 
-	j = *i;
-	elt = NULL;
-	while (input[j] && is_space(input, j) == 0 && input[j] != '=')
-		j++;
-	if (!input[j] || input[j] != '=')
-		return (NULL);
-	*i = pass_spaces(input, *i);
-	if (is_end(input, *i) != 0)
-	{
-		elt=env_new(0);
-		add_var(elt, env);
-	}
-	//sampler
-	return (elt);
-}
-
-int		parse_var(char *input, int *i, t_env *env, t_redir *redir)
-{
-	(void)env;
+	sample = NULL;
 	while (is_end(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
-		if (find_redir(redir, input, i) < 0)
+		j = *i;
+		while (is_end(input, j) == 0 && is_space(input, j) == 0 && \
+			input[j] != '=')
+			j++;
+		if (input[j] != '=' && (*i = j))
 			return (-1);
+		*i = pass_spaces(input, *i);
+		if (is_end(input, *i) != 0)
+			return (0);
+		if (*i != j)
+			return (-1);
+		if (!(sample_str(input, i, sample)))
+			return (-1);
+		free(sample);
 	}
 	return (0);
+}
+
+int				parse_var(char *input, int *i, t_env *env, int len)
+{
+	char	*to_split;
+	char	**env_new;
+	t_env	*wagon;
+	t_env	*begin;
+
+	if (check_vars(input, i) == -1)
+		return (0);
+	while (is_end(input, len) == 0)
+		len++;
+	if (!(to_split = ft_substr(input, 0, len)))
+		return (-1);
+	if (!(env_new = ft_split(to_split, ' ')))
+		return (free_str(to_split));
+	if (!(wagon = init_env(env_new, 0)) || !(begin = wagon))
+		return(free_array_and_str(env_new, to_split) == 2);
+	while (wagon)
+	{
+		if (find_env_entry(wagon->key, env))
+			wagon->in = 1;
+		add_var(wagon, env);
+		wagon = wagon->next;
+	}
+	free_array_and_str(env_new, to_split);
+	return (env_clear(begin));
 }
