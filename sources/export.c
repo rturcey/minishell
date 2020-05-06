@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 11:11:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 11:52:04 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int				add_var(t_env *elt, t_env *env)
 	tmp = env;
 	if (!elt->key || !elt->value)
 		return (-1);
-	if (!(bis = find_env_entry(elt->key, env))
+	if (!(bis = find_env_entry(elt->key, env)))
 	{
 		if (ft_strlen(elt->value) != 0)
 		{
