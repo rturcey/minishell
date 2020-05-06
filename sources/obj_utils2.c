@@ -6,16 +6,11 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/05 17:42:33 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/06 15:33:18 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-**Free obj structure and sub-structures
-**!!! sometimes segfault when freeing arg
-*/
 
 void	*free_arg(t_arg *arg)
 {

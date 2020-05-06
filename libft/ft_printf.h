@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 16:47:31 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/15 14:21:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/06 15:22:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int		g_malnb;
 int		g_freenb;
 
 int		ft_printf(const char *arg, ...);
+int		ft_dprintf(int fd, const char *arg, ...);
+int		ft_sprintf(char **result, const char *arg, ...);
 
 char	*ft_malloc(char *type, int size);
 void	ft_free(char *str);
@@ -31,6 +33,8 @@ void	*cpy_arg(const char *arg, char *cpy);
 char	**init_tab(char *arg, char **stock);
 int		cstrlen(char *arg, int i);
 int		actual_len(char *ret);
+int		calculatelen(char **str);
+char	**fill_tab(char **stock, char **cpyarg, va_list ap, int i);
 int		check_width(char *arg, int i);
 char	*add_width(char *ret, char *arg, int i, int min_width);
 char	*add_options(char *ret, char *arg, int i);
@@ -64,7 +68,12 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_unsigned_itoa(unsigned int n);
 char	*ft_putlnbr_base(unsigned long long lnbr, char d, char *str);
+char	*ft_replace_replaceable(char *str, int *stocklen, int i);
 
 int		go_print(char **stock);
+int		go_dprint(int fd, char **stock);
+int		go_sprint(char **result, char **stock);
+
+void	ft_putstr_fd(char *s, int fd);
 
 #endif
