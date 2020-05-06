@@ -9,7 +9,8 @@ ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c get_next_line_bonu
 get_next_line_utils_bonus.c conversions.c conversions2.c ft_isdigit.c ft_itoa.c \
 ft_memcpy.c ft_printf.c ft_strdup.c ft_strjoin.c ft_strlen.c ft_unsigned_itoa.c \
 init_tab.c parse_functions.c precision_functions.c print_util.c width_functions.c \
-ft_strncmp.c ft_strlcat.c ft_substr.c ft_malloc.c ft_strlen_original.c ft_realloc.c
+ft_strncmp.c ft_strlcat.c ft_substr.c ft_malloc.c ft_strlen_original.c ft_realloc.c \
+is_space.c free_array.c
 INCLUDES_DIR = ./
 INCLUDES = libft.h ft_printf.h
 OPTIONS = -I ${INCLUDES}

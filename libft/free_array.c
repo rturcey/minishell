@@ -1,43 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 12:43:00 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 10:56:49 by rturcey          ###   ########.fr       */
+/*   Created: 2020/05/06 10:18:21 by rturcey           #+#    #+#             */
+/*   Updated: 2020/05/06 10:30:33 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+void	*free_array(char **array, int max)
 {
-	char	*haystack;
-	char	needle;
-	int		i;
-
-	haystack = (char *)s;
-	needle = (char)c;
-	i = -1;
-	while (haystack[++i])
+	int i;
+	if (max == -1)
 	{
-		if (haystack[i] == needle)
-			return ((char *)&s[i]);
+		max = 0;
+		while (array[max] != NULL)
+			max++;
 	}
-	if (needle == '\0' && haystack[i] == '\0')
-		return ((char *)&s[i]);
+	i = -1;
+	while (++i < max)
+		free(array[i]);
+	free(array);
 	return (NULL);
 }
 
-char	*ft_strspchr(const char *s)
+int		free_two_str(char *s1, char *s2)
 {
-	int		i;
+	free(s1);
+	free(s2);
+	return (-1);
+}
 
-	i = -1;
-	while (s[++i])
-		if (is_space(s[i]) == 1)
-			return ((char *)&s[i]);
-	return (NULL);
+int		free_array_and_str(char **arr, char *str)
+{
+	free_array(arr, -1);
+	free(str);
+	return (-1);
 }

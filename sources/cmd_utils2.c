@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/05 09:54:10 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 10:52:36 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,30 @@ int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 {
-	(void)env;
-	(void)obj;
-	(void)input;
-	(void)i;
-	ft_printf("in unset\n");
+	char	**elt;
+	char	*tmp;
+	char	*sample;
+
+	tmp = ft_strdup("");
+	while (is_end(input, *i) == 0)
+	{
+		*i = pass_spaces(input, *i);
+		if (find_redir(obj->redir, input, i) < 0 || \
+			!(sample = sample_str(input, i, sample)))
+			return (free_two_str(sample, tmp));
+		if (ft_strchr(sample, '=') || ft_strspchr(sample))
+		{
+			dprintf(obj->redir->err_output, \
+			"unset: %s: invalid parameter name\n", sample);
+			return (free_two_str(sample, tmp));
+		}
+		tmp = ft_strjoin_sp(tmp, sample);
+	}
+	if (!(elt = ft_split(tmp, ' ')))
+		return (-1);
+	free(tmp);
+	unset_var(elt, env);
+	free_array(elt, -1);
 	return (0);
 }
 

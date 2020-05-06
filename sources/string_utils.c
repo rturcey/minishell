@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/05 17:41:57 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/06 10:49:07 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		is_space(char a)
-{
-	if (a == '\f' || a == '\n' || a == '\r' ||
-		a == '\t' || a == '\v' || a == ' ')
-		return (1);
-	return (0);
-}
 
 int		pass_spaces(char *str, int i)
 {

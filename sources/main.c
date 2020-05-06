@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/02 18:32:25 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 10:45:38 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			main(int argc, char **argv, char **env)
 		ft_putstr_fd("couldn't clone the environment", 2);
 		return (-1);
 	}
-	test = env_new();
+	test = env_new(0);
 	test->key = ft_strdup("TEST_VAR");
 	test->value = ft_strdup("");
 	while (1)

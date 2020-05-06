@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/05 10:41:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 10:28:11 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 		*i = pass_spaces(input, *i);
 		if (find_redir(obj->redir, input, i) < 0 || \
 			!(sample = sample_str(input, i, sample)))
-			return (-1);
+			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);
 	}
 	if (obj->option == 1)

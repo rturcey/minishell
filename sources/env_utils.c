@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/02 18:28:38 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 09:53:16 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** lstnew for t_env
 */
 
-t_env			*env_new(void)
+t_env			*env_new(int in)
 {
 	t_env	*new;
 
@@ -24,6 +24,7 @@ t_env			*env_new(void)
 		return (NULL);
 	new->key = NULL;
 	new->value = NULL;
+	new->in = in;
 	new->next = NULL;
 	return (new);
 }
@@ -75,7 +76,8 @@ void			print_env(t_env *env, int fd)
 	tmp = env;
 	while (tmp)
 	{
-		dprintf(fd, "%s=%s\n", tmp->key, tmp->value);
+		if (tmp->in == 1)
+			dprintf(fd, "%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 }
@@ -92,14 +94,14 @@ t_env			*init_env(char **env)
 	int		i;
 
 	i = 0;
-	if (!env || !env[0] || !(lst = env_new()))
+	if (!env || !env[0] || !(lst = env_new(1)))
 		return (NULL);
 	tmp = lst;
 	if (split_env(env[0], lst) == -1)
 		return (env_clear(tmp));
 	while (env[++i])
 	{
-		if (!(lst->next = env_new()))
+		if (!(lst->next = env_new(1)))
 			return (env_clear(tmp));
 		lst = lst->next;
 		if (split_env(env[i], lst) == -1)

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 12:43:01 by esoulard          #+#    #+#             */
-/*   Updated: 2020/04/29 10:44:10 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 10:52:07 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,6 @@ char	*ft_gnl_strjoin(char *s1, char *s2)
 	new[i] = '\0';
 	free(s1);
 	return (new);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	char	*haystack;
-	char	needle;
-	int		i;
-
-	haystack = (char *)s;
-	needle = (char)c;
-	i = -1;
-	while (haystack[++i])
-	{
-		if (haystack[i] == needle)
-			return ((char *)&s[i]);
-	}
-	if (needle == '\0' && haystack[i] == '\0')
-		return ((char *)&s[i]);
-	return (NULL);
 }
 
 char	*ft_strndup(const char *s1, int len)

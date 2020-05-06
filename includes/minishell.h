@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/05 14:41:35 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/06 10:50:20 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct		s_env
 {
 	char			*key;
 	char			*value;
+	int				in;
 	struct s_env	*next;
 }					t_env;
 
@@ -68,7 +69,7 @@ int					general_parser(char *input, t_env *env);
 t_env				*init_env(char **env);
 void				*env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
-t_env				*env_new(void);
+t_env				*env_new(int in);
 char				*find_env_value(char *key, t_env *env);
 t_env				*find_env_entry(char *key, t_env *env);
 t_env				*env_cpy(t_env *elt);
@@ -89,7 +90,6 @@ int					parse_export(t_obj *obj, char *input, int *i, t_env *env);
 int					parse_unset(t_obj *obj, char *input, int *i, t_env *env);
 int					parse_env(t_obj *obj, char *input, int *i, t_env *env);
 int					parse_exit(t_obj *obj, char *input, int *i, t_env *env);
-int					is_space(char a);
 int					pass_spaces(char *str, int i);
 int					is_quote(char *str, int i, char quote);
 int					lonely_quote(char *str);
@@ -102,5 +102,6 @@ char				*sample_str(char *input, int *i, char *sample);
 int					is_separator(char *str, int i);
 int					is_end(char *str, int i);
 int					get_next_quote(char *str, int i);
+int					unset_var(char **elt, t_env *env);
 
 #endif
