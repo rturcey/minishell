@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:02:11 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 10:46:56 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 11:10:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_env			*env_cpy(t_env *elt)
 {
 	t_env	*cpy;
 
-	if (!(cpy = env_new(1)))
+	if (!(cpy = env_new(elt->in)))
 		return (NULL);
 	cpy->key = ft_strdup(elt->key);
 	cpy->value = ft_strdup(elt->value);
