@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:43:00 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 10:56:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 11:20:42 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_strspchr(const char *s)
 
 	i = -1;
 	while (s[++i])
-		if (is_space(s[i]) == 1)
+		if (is_space((char *)s, i) == 1)
 			return ((char *)&s[i]);
 	return (NULL);
 }

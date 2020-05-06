@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/05 17:40:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/06 11:19:39 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		last_backslash(char *str)
 
 int		find_string_end(char *input, int i)
 {
-	while (input[i] && is_space(input[i]) == 0)
+	while (input[i] && is_space(input, i) == 0)
 	{
 		if (is_quote(input, i, 0))
 		{

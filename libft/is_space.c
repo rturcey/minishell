@@ -3,19 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   is_space.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 10:49:47 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 10:49:58 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 11:21:12 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		is_space(char a)
+int		is_space(char *str, int i)
 {
-	if (a == '\f' || a == '\n' || a == '\r' ||
-		a == '\t' || a == '\v' || a == ' ')
+	int count;
+
+	count = 0;
+	if (str[i] == '\f' || str[i] == '\n' || str[i] == '\r' ||
+		str[i] == '\t' || str[i] == '\v' || str[i] == ' ')
+	{
+		if ((i > 0) && (str[i - 1] == '\\'))
+		{
+			while (str[--i] && str[i] == '\\')
+				count++;
+			if (count % 2 != 0)
+				return (0);
+		}
 		return (1);
+	}
 	return (0);
 }

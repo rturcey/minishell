@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 10:49:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 11:19:19 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		pass_spaces(char *str, int i)
 {
-	while (str[i] && is_space(str[i]) == 1)
+	while (str[i] && is_space(str, i) == 1)
 		i++;
 	return (i);
 }

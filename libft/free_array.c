@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 10:18:21 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 10:30:33 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/06 11:22:43 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	*free_array(char **array, int max)
 {
 	int i;
+
 	if (max == -1)
 	{
 		max = 0;
