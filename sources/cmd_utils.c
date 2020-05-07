@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 11:13:39 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/07 11:14:42 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **return appropriate index (corresponding to cmd function)
 */
 
-int		is_cmd(char *sample)//stock_redir
+int		is_cmd(char *sample)
 {
 	char	*cmds[8];
 	int		j;
@@ -72,11 +72,28 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 {
-	(void)env;
-	(void)obj;
-	(void)input;
-	(void)i;
-	ft_printf("in cd\n");
+	char *path;
+
+	path = NULL;
+	if ((*i = pass_spaces(input, *i)) && !input[*i])
+	{
+		if (!(path = ft_strdup(find_env_value("HOME", env))))
+			return (-1);
+	}
+	else if (!(path = sample_str(input, i, path)))
+		return (-1);
+	else if ((*i = pass_spaces(input, *i)) && (is_end(input, *i) != 1))
+	{
+		ft_putstr_fd("cd: too many arguments\n", obj->redir->err_output);
+		return (free_str(path));
+	}
+	if (chdir(path) == -1)
+	{
+		ft_dprintf(obj->redir->err_output,
+			"cd: %s: No such file or directory\n", path);
+		return (free_str(path));
+	}
+	free(path);
 	return (0);
 }
 
