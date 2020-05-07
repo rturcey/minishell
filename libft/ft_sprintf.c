@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:47:53 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 15:23:23 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/07 12:22:09 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		go_sprint(char **result, char **stock)
+char	*go_sprint(char **result, char **stock)
 {
 	int		i;
 	int		len;
@@ -38,15 +38,16 @@ int		go_sprint(char **result, char **stock)
 	free(rat);
 	g_malnb = 0;
 	g_freenb = 0;
-	return (len);
+	return (*result);
 }
 
-int		ft_sprintf(char **result, const char *arg, ...)
+char	*ft_sprintf(const char *arg, ...)
 {
 	va_list	ap;
 	char	**stock;
 	char	*cpyarg;
 	int		i;
+	char	*result;
 
 	stock = NULL;
 	cpyarg = NULL;
@@ -60,5 +61,5 @@ int		ft_sprintf(char **result, const char *arg, ...)
 		fill_tab(stock, &cpyarg, ap, i);
 	ft_free(cpyarg);
 	va_end(ap);
-	return (go_sprint(result, stock));
+	return (go_sprint(&result, stock));
 }

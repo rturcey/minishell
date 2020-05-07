@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/01 15:54:05 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/07 11:32:33 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_obj		*obj_new(void)
 	new->args_count = 0;
 	new->redir = NULL;
 	new->result = NULL;
+	new->error = NULL;
 	new->ret = 0;
 	new->next = NULL;
 	return (new);

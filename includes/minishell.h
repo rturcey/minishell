@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 13:00:20 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/07 12:03:18 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct		s_obj
 	t_arg			*args;
 	t_redir			*redir;
 	char			*result;
+	char			*error;
 	int				ret;
 	struct s_obj	*next;
 }					t_obj;
@@ -105,5 +106,7 @@ int					get_next_quote(char *str, int i);
 int					unset_var(char **elt, t_env *env);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(char *input, int *i, t_env *env, int len);
+int					print_result(t_obj *obj, int ret, char *to_free);
+void				maj_err(t_obj *obj, char *str);
 
 #endif

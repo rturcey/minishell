@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 10:52:36 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/07 12:26:56 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,14 @@ int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 			while (*i < (int)ft_strlen(input))
 				if (find_redir(obj->redir, input, i) == 0)
 					(*i)++;
-			ft_putstr_fd("pwd: too many arguments\n", obj->redir->err_output);
-			return (-1);
+			maj_err(obj, ft_strdup("pwd: too many arguments\n"));
 		}
 	}
 	if (!(workdir = ft_calloc(PATH_MAX, 1)))
 		return (-1);
 	getcwd(workdir, PATH_MAX);
-	ft_putendl_fd(workdir, obj->redir->cmd_output);
-	free(workdir);
-	return (0);
+	obj->result = ft_strjoin_bth(workdir, ft_strdup("\n"));
+	return (print_result(obj, 0, NULL));
 }
 
 int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
@@ -57,20 +55,20 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 	char	**elt;
 	char	*tmp;
 	char	*sample;
+	int		r;
 
 	tmp = ft_strdup("");
 	while (is_end(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
-		if (find_redir(obj->redir, input, i) < 0 || \
-			!(sample = sample_str(input, i, sample)))
+		while ((r = find_redir(obj->redir, input, i)) == 1)
+			r++;
+		*i = pass_spaces(input, *i);
+		if (!(sample = sample_str(input, i, sample)))
 			return (free_two_str(sample, tmp));
 		if (ft_strchr(sample, '=') || ft_strspchr(sample))
-		{
-			dprintf(obj->redir->err_output, \
-			"unset: %s: invalid parameter name\n", sample);
-			return (free_two_str(sample, tmp));
-		}
+			maj_err(obj, ft_sprintf("unset: %s: invalid parameter name\n", \
+			sample));
 		tmp = ft_strjoin_sp(tmp, sample);
 	}
 	if (!(elt = ft_split(tmp, ' ')))
@@ -78,12 +76,12 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 	free(tmp);
 	unset_var(elt, env);
 	free_array(elt, -1);
-	return (0);
+	return (print_result(obj, 0, NULL));
 }
 
 int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 {
-	while (input[*i] && is_separator(input, *i) == 0)
+	while (is_end(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
 		if (find_redir(obj->redir, input, i) == 0)
@@ -91,10 +89,11 @@ int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 			while (*i < (int)ft_strlen(input))
 				if (find_redir(obj->redir, input, i) == 0)
 					(*i)++;
-			ft_putstr_fd("env: too many arguments\n", obj->redir->err_output);
-			return (-1);
+			maj_err(obj, ft_strdup("env: too many arguments\n"));
 		}
 	}
+	if (obj->error)
+		return (print_result(obj, 0, NULL));
 	print_env(env, obj->redir->cmd_output);
 	return (0);
 }

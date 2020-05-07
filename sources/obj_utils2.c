@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 15:33:18 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/07 12:25:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		print_result(t_obj *obj, int ret, char *to_free)
+{
+	if (obj->error)
+		ft_putstr_fd(obj->error, obj->redir->err_output);
+	else if (obj->result)
+		ft_putstr_fd(obj->result, obj->redir->cmd_output);
+	free(to_free);
+	return (ret);
+}
+
+void	maj_err(t_obj *obj, char *str)
+{
+	if (!obj->error)
+		obj->error = str;
+	else
+		free(str);
+}
 
 void	*free_arg(t_arg *arg)
 {
@@ -48,6 +66,7 @@ void	*free_obj(t_obj *obj)
 		free(obj->obj);
 		free_arg(obj->args);
 		free_redir(obj->redir);
+		free(obj->error);
 		free(obj->result);
 		free(obj);
 		obj = tmp;

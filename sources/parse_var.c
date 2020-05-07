@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 14:00:54 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/07 12:30:41 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int		check_vars(char *input, int *i)
 			return (0);
 		if (*i != j + 1)
 			return (-1);
-		if (!(sample_str(input, i, sample)))
+		if (!(sample = sample_str(input, i, sample)))
 			return (-1);
 		free(sample);
 		*i = pass_spaces(input, *i);

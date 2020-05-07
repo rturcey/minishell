@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 16:47:31 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 15:22:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/07 12:21:44 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		g_freenb;
 
 int		ft_printf(const char *arg, ...);
 int		ft_dprintf(int fd, const char *arg, ...);
-int		ft_sprintf(char **result, const char *arg, ...);
+char	*ft_sprintf(const char *arg, ...);
 
 char	*ft_malloc(char *type, int size);
 void	ft_free(char *str);
@@ -72,7 +72,7 @@ char	*ft_replace_replaceable(char *str, int *stocklen, int i);
 
 int		go_print(char **stock);
 int		go_dprint(int fd, char **stock);
-int		go_sprint(char **result, char **stock);
+char	*go_sprint(char **result, char **stock);
 
 void	ft_putstr_fd(char *s, int fd);
 

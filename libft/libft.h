@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 13:11:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/07 11:45:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ char				*ft_strdup(const char *s1);
 char				*ft_strndup(const char *s1, int len);
 void				*ft_realloc(void *origin, size_t size);
 char				*ft_strjoin_sp(char *s1, char *s2);
+char				*ft_strjoin_bth(char *s1, char *s2);
 
 #endif

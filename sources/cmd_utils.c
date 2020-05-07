@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 11:21:10 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/07 12:26:16 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	*result;
 	char	*sample;
+	int		r;
 
 	(void)env;
 	result = ft_strdup("");
@@ -57,17 +58,17 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 	while (is_end(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
-		find_redir(obj->redir, input, i);
+		while ((r = find_redir(obj->redir, input, i)) == 1)
+			r++;
+		*i = pass_spaces(input, *i);
 		if (!(sample = sample_str(input, i, sample)))
 			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);
 	}
-	if (obj->option == 1)
-		ft_putstr_fd(result, obj->redir->cmd_output);
-	else
-		ft_putendl_fd(result, obj->redir->cmd_output);
-	free(result);
-	return (0);
+	if (obj->option != 1)
+		result = ft_strjoin_bth(result, ft_strdup("\n"));
+	obj->result = result;
+	return (print_result(obj, 0, NULL));
 }
 
 int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
@@ -84,17 +85,15 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 		return (-1);
 	else if ((*i = pass_spaces(input, *i)) && (is_end(input, *i) != 1))
 	{
-		ft_putstr_fd("cd: too many arguments\n", obj->redir->err_output);
-		return (free_str(path));
+		maj_err(obj, ft_strdup("cd: too many arguments\n"));
+		return (print_result(obj, 0, path));
 	}
 	if (chdir(path) == -1)
 	{
-		ft_dprintf(obj->redir->err_output,
-			"cd: %s: No such file or directory\n", path);
-		return (free_str(path));
+		maj_err(obj, ft_sprintf("cd: %s: No such file or directory\n", path));
+		return (print_result(obj, 0, path));
 	}
-	free(path);
-	return (0);
+	return (print_result(obj, 0, path));
 }
 
 /*
