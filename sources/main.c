@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 12:39:04 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 09:50:33 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,6 @@ int			main(int argc, char **argv, char **env)
 		{
 			free(line);
 			break ;
-		}
-		else if (ft_strncmp(line, "export TEST=", 12) == 0)
-		{
-			free(test->value);
-			test->value = ft_strdup(&line[12]);
-			export_var(test, lstenv);
 		}
 		else
 			general_parser(line, lstenv);

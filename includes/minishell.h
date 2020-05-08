@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/07 12:03:18 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 09:30:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ int					add_var(t_env *elt, t_env *env);
 int					parse_var(char *input, int *i, t_env *env, int len);
 int					print_result(t_obj *obj, int ret, char *to_free);
 void				maj_err(t_obj *obj, char *str);
+int					split_env(char *line, t_env *elt);
+int					sample_export(char *sample, t_env *env);
 
 #endif

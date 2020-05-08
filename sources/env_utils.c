@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 13:02:20 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 09:29:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** lstnew for t_env
 */
 
-t_env			*env_new(int in)
+t_env	*env_new(int in)
 {
 	t_env	*new;
 
@@ -33,7 +33,7 @@ t_env			*env_new(int in)
 ** split key=value in 2 str, put them in a t_env elt
 */
 
-static int		split_env(char *line, t_env *elt)
+int		split_env(char *line, t_env *elt)
 {
 	int		i;
 	int		j;
@@ -54,7 +54,7 @@ static int		split_env(char *line, t_env *elt)
 	return (0);
 }
 
-int				env_clear(t_env *env)
+int		env_clear(t_env *env)
 {
 	t_env	*tmp;
 
@@ -69,7 +69,7 @@ int				env_clear(t_env *env)
 	return (0);
 }
 
-void			print_env(t_env *env, int fd)
+void	print_env(t_env *env, int fd)
 {
 	t_env	*tmp;
 
@@ -87,7 +87,7 @@ void			print_env(t_env *env, int fd)
 ** & check if input isn't corrupted
 */
 
-t_env			*init_env(char **env, int in)
+t_env	*init_env(char **env, int in)
 {
 	t_env	*lst;
 	t_env	*tmp;

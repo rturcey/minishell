@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/03 16:50:14 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 09:13:07 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int		parse_redir(t_redir *redir, char *input, int *i, int *s_fd)
 		}
 	}
 	free(path);
+	*i = pass_spaces(input, *i);
 	return (1);
 
 }
@@ -68,6 +69,7 @@ int				find_redir(t_redir *redir, char *input, int *i)
 	int		s_fd[2];
 
 	s_fd[0] = 1;
+	*i = pass_spaces(input, *i);
 	if ((s_fd[1] = is_redir(input, *i)) == 0 && ft_isdigit(input[*i]) == 0)
 		return (0);
 	if (ft_isdigit(input[*i]) != 0)

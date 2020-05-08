@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 12:26:56 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 09:32:21 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@ int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 	(void)env;
 	while (input[*i] && is_separator(input, *i) == 0)
 	{
-		*i = pass_spaces(input, *i);
 		if (find_redir(obj->redir, input, i) == 0)
 		{
 			while (*i < (int)ft_strlen(input))
 				if (find_redir(obj->redir, input, i) == 0)
 					(*i)++;
-			maj_err(obj, ft_strdup("pwd: too many arguments\n"));
 		}
 	}
 	if (!(workdir = ft_calloc(PATH_MAX, 1)))
@@ -42,12 +40,20 @@ int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
 {
-	(void)env;
-	(void)obj;
-	(void)input;
-	(void)i;
-	ft_printf("in export\n");
-	return (0);
+	char	*sample;
+	int		r;
+
+	while (is_end(input, *i) == 0)
+	{
+		while ((r = find_redir(obj->redir, input, i)) == 1)
+			r++;
+		if (!(sample = sample_str(input, i, sample)))
+			return (free_str(sample));
+		if (sample_export(sample, env) == -1)
+			maj_err(obj, ft_sprintf("bash: export: « %s » : identifiant non valable", sample));
+		free(sample);
+	}
+	return (print_result(obj, 0, NULL));
 }
 
 int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
@@ -60,10 +66,8 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 	tmp = ft_strdup("");
 	while (is_end(input, *i) == 0)
 	{
-		*i = pass_spaces(input, *i);
 		while ((r = find_redir(obj->redir, input, i)) == 1)
 			r++;
-		*i = pass_spaces(input, *i);
 		if (!(sample = sample_str(input, i, sample)))
 			return (free_two_str(sample, tmp));
 		if (ft_strchr(sample, '=') || ft_strspchr(sample))
@@ -83,7 +87,6 @@ int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 {
 	while (is_end(input, *i) == 0)
 	{
-		*i = pass_spaces(input, *i);
 		if (find_redir(obj->redir, input, i) == 0)
 		{
 			while (*i < (int)ft_strlen(input))
