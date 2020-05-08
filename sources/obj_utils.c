@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 11:32:33 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 10:35:53 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ t_redir		*redir_new(void)
 		return (NULL);
 	new->cmd_input = 0;
 	new->cmd_output = 1;
-	new->cmd_output_pos = NULL;
 	new->err_output = 2;
-	new->err_output_pos = NULL;
 	return (new);
 }
 
@@ -77,18 +75,11 @@ t_obj		*obj_new(void)
 **initialize an object, need to add potential redir (see below)
 */
 
-t_obj		*init_obj(char *sample, int type, t_redir *redir)
+void		init_obj(t_obj *obj, char *sample, int type)
 {
-	t_obj *new;
-
-	if (!(new = obj_new()))
-		return (NULL);
-	if (!(new->obj = ft_strdup(sample)))
-		return (NULL);
-	new->type = type;
-	new->redir = redir;
-	//free(sample);
-	return (new);
+	if (!(obj->obj = ft_strdup(sample)))
+		return ;
+	obj->type = type;
 }
 
 /*

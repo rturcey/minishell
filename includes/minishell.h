@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 09:30:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 10:40:45 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ typedef struct		s_redir
 {
 	int				cmd_input;
 	int				cmd_output;
-	char			*cmd_output_pos;
 	int				err_output;
-	char			*err_output_pos;
 }					t_redir;
 
 typedef struct		s_obj
@@ -79,7 +77,7 @@ void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
 t_obj				*obj_new(void);
 t_redir				*redir_new(void);
-t_obj				*init_obj(char *sample, int type, t_redir *redir);
+void				init_obj(t_obj *obj, char *sample, int type);
 void				*free_obj(t_obj *obj);
 void				*free_redir(t_redir *redir);
 int					is_cmd(char *sample);
@@ -96,7 +94,7 @@ int					is_quote(char *str, int i, char quote);
 int					lonely_quote(char *str);
 int					last_backslash(char *str);
 int					find_string_end(char *src, int i);
-int					find_redir(t_redir *redir, char *input, int *i);
+int					find_redir(t_obj *obj, char *input, int *i);
 int					find_redir_err(t_redir *redir, char *input, int *i);
 int					is_redir(char *str, int i);
 char				*sample_str(char *input, int *i, char *sample);

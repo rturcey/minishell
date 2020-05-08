@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 12:25:28 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 11:11:44 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ void	maj_err(t_obj *obj, char *str)
 {
 	if (!obj->error)
 		obj->error = str;
+	else if (ft_strstr(str, "Permission denied")
+		&& !ft_strstr(obj->error, "Permission denied"))
+	{
+		free(obj->error);
+		obj->error = str;
+	}
 	else
 		free(str);
 }

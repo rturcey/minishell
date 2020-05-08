@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 09:49:52 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 09:54:50 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int				unset_var(char **elt, t_env *env)
 		del_from_key(&env, elt[i]);
 	return (0);
 }
-
-//n'exporte une var (sans =) QUE si elle est deja dans le shell
 
 int				sample_export(char *sample, t_env *env)
 {

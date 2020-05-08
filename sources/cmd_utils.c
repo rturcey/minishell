@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/08 09:14:21 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 11:12:41 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,16 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 
 	(void)env;
 	result = ft_strdup("");
-	while ((r = find_redir(obj->redir, input, i)) == 1)
-			r++;
+	while ((r = find_redir(obj, input, i)) == 1 || r == -1)
+		if (r == -1)
+			return (-1);
 	if (ft_strncmp("-n ", &input[*i], 3) == 0 && ((*i) += 3))
 		obj->option = 1;
 	while (is_end(input, *i) == 0)
 	{
-		while ((r = find_redir(obj->redir, input, i)) == 1)
-			r++;
+		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
+			if (r == -1)
+				return (-1);
 		if (!(sample = sample_str(input, i, sample)))
 			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);

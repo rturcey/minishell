@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 09:48:10 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/08 10:03:55 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ int				parse_var(char *input, int *i, t_env *env, int len)
 		return (-1);
 	if (!(env_new = ft_split(to_split, ' ')))
 		return (free_str(to_split));
-	if (!(wagon = init_env(env_new, 0)) || !(begin = wagon))
-		return(free_array_and_str(env_new, to_split) == 2);
+	if (!(wagon = init_env(env_new, 0)))
+		return (free_array_and_str(env_new, to_split) == 2);
+	begin = wagon;
 	while (wagon)
 	{
 		if (find_env_entry(wagon->key, env))
 			wagon->in = 1;
 		add_var(wagon, env);
-		printf("pffff = %s\n", wagon->key);
 		wagon = wagon->next;
 	}
 	free_array_and_str(env_new, to_split);
