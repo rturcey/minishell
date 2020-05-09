@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:47:40 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 10:11:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:09:07 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ static int		redir_error(t_redir *redir, char *input, int *i, int j)
 			return (-1);
 		sym[0] = input[j];
 	}
-	dprintf(redir->err_output, \
+	ft_dprintf(redir->err_output, \
 	"bash: erreur de syntaxe près du symbole inattendu « %s »\n", sym);
 	free(sym);
 	return (-1);
 }
 
-static int		parse_redir(t_redir *redir, char *input, int *i, int *s_fd)
+static int		parse_redir(t_obj *obj, char *input, int *s_fd, int *i)
 {
 	int		j;
 	char	*path;
@@ -56,13 +56,13 @@ static int		parse_redir(t_redir *redir, char *input, int *i, int *s_fd)
 		(*i)++;
 	*i = pass_spaces(input, *i);
 	j = *i;
-	free(sample_str(input, &j, path));
+	free(sample_str(input, &j, path, obj->env));
 	if (j == *i || is_redir(input, j) != 0)
-		return (redir_error(redir, input, i, j));
+		return (redir_error(obj->redir, input, i, j));
 	return (1);
 }
 
-int				find_redir_err(t_redir *redir, char *input, int *i)
+int				find_redir_err(t_obj *obj, char *input, int *i)
 {
 	int		j;
 	int		s_fd[2];
@@ -81,7 +81,7 @@ int				find_redir_err(t_redir *redir, char *input, int *i)
 		while (ft_isdigit(input[j]) != 0)
 			j++;
 		if ((s_fd[1] = is_redir(input, j)) != 0 && (j++)
-			&& parse_redir(redir, input, &j, s_fd) < 0)
+			&& parse_redir(obj, input, s_fd, &j) < 0)
 		{
 			while (is_end(input, *i) == 0)
 				(*i)++;

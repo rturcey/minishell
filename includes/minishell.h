@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 10:40:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:39:49 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct		s_obj
 	char			*result;
 	char			*error;
 	int				ret;
+	t_env			*env;
 	struct s_obj	*next;
 }					t_obj;
 
@@ -75,7 +76,7 @@ t_env				*env_cpy(t_env *elt);
 int					export_var(t_env *elt, t_env *env);
 void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
-t_obj				*obj_new(void);
+t_obj				*obj_new(t_env *env);
 t_redir				*redir_new(void);
 void				init_obj(t_obj *obj, char *sample, int type);
 void				*free_obj(t_obj *obj);
@@ -95,9 +96,9 @@ int					lonely_quote(char *str);
 int					last_backslash(char *str);
 int					find_string_end(char *src, int i);
 int					find_redir(t_obj *obj, char *input, int *i);
-int					find_redir_err(t_redir *redir, char *input, int *i);
+int					find_redir_err(t_obj *obj, char *input, int *i);
 int					is_redir(char *str, int i);
-char				*sample_str(char *input, int *i, char *sample);
+char				*sample_str(char *input, int *i, char *sample, t_env *env);
 int					is_separator(char *str, int i);
 int					is_end(char *str, int i);
 int					get_next_quote(char *str, int i);
@@ -108,5 +109,8 @@ int					print_result(t_obj *obj, int ret, char *to_free);
 void				maj_err(t_obj *obj, char *str);
 int					split_env(char *line, t_env *elt);
 int					sample_export(char *sample, t_env *env);
+int					check_var(char *sample);
+int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
+
 
 #endif

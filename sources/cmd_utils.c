@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/08 11:12:41 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:05:47 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
 			if (r == -1)
 				return (-1);
-		if (!(sample = sample_str(input, i, sample)))
+		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);
 	}
@@ -79,10 +79,10 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 	path = NULL;
 	if ((*i = pass_spaces(input, *i)) && !input[*i])
 	{
-		if (!(path = ft_strdup(find_env_value("HOME", env))))
+		if (!(path = find_env_value("HOME", env)))
 			return (-1);
 	}
-	else if (!(path = sample_str(input, i, path)))
+	else if (!(path = sample_str(input, i, path, env)))
 		return (-1);
 	else if ((*i = pass_spaces(input, *i)) && (is_end(input, *i) != 1))
 	{

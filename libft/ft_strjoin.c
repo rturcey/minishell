@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 20:45:47 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 11:45:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 11:11:11 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ char	*ft_strjoin_sp(char *s1, char *s2)
 		new[i++] = s2[j++];
 	new[i] = '\0';
 	free(s1);
+	s1 = NULL;
 	free(s2);
+	s2 = NULL;
 	return (new);
 }
 
@@ -85,6 +87,8 @@ char	*ft_strjoin_bth(char *s1, char *s2)
 		new[i++] = s2[j++];
 	new[i] = '\0';
 	free(s1);
+	s1 = NULL;
 	free(s2);
+	s2 = NULL;
 	return (new);
 }

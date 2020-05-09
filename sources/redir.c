@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 11:12:54 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:06:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int		redir_err(int kind, t_redir *redir, char *path)
 	return (redir->err_output);
 }
 
-static int		parse_redir(t_obj *obj, char *input, int *i, int *s_fd)
+static int		parse_redir(t_obj *obj, char *input, int *s_fd, int *i)
 {
 	char	*path;
 	int		ret;
@@ -62,7 +62,7 @@ static int		parse_redir(t_obj *obj, char *input, int *i, int *s_fd)
 	if (s_fd[1] == 2)
 		(*i)++;
 	*i = pass_spaces(input, *i);
-	path = sample_str(input, i, path);
+	path = sample_str(input, i, path, obj->env);
 	if (s_fd[0] == 1)
 		ret = redir_norm(s_fd[1], obj->redir, path);
 	else
@@ -103,5 +103,5 @@ int				find_redir(t_obj *obj, char *input, int *i)
 			return (0);
 	}
 	(*i)++;
-	return (parse_redir(obj, input, i, s_fd));
+	return (parse_redir(obj, input, s_fd, i));
 }

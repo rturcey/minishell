@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 09:50:33 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:22:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	prompt(t_env *env)
 	char	*path;
 	char	*user;
 	char	*host;
+	char	*home;
 	int		fd;
 
 	if (!(path = malloc(PATH_MAX)))
@@ -48,11 +49,12 @@ static void	prompt(t_env *env)
 	get_next_line(fd, &host);
 	getcwd(path, PATH_MAX);
 	user = find_env_value("USER", env);
-	remove_home_path(&path, find_env_value("HOME", env));
+	home = find_env_value("HOME", env);
+	remove_home_path(&path, home);
 	ft_printf("%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, CYAN, path, \
 	END, YELLOW, END);
-	free(host);
-	free(path);
+	free_two_str(user, home);
+	free_two_str(path, host);
 	close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/08 10:35:53 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 11:58:41 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_redir		*redir_new(void)
 **(same as plotted on framapad)
 */
 
-t_obj		*obj_new(void)
+t_obj		*obj_new(t_env *env)
 {
 	t_obj	*new;
 
@@ -68,6 +68,7 @@ t_obj		*obj_new(void)
 	new->error = NULL;
 	new->ret = 0;
 	new->next = NULL;
+	new->env = env;
 	return (new);
 }
 

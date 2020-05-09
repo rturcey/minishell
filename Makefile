@@ -2,7 +2,8 @@ SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
 				./sources/export.c ./sources/env_utils2.c ./sources/cmd_utils.c \
 				./sources/cmd_utils2.c ./sources/obj_utils.c ./sources/obj_utils2.c \
 				./sources/string_utils.c ./sources/string_utils2.c ./sources/redir.c \
-				./sources/redir_utils.c ./sources/redir_err.c ./sources/parse_var.c
+				./sources/redir_utils.c ./sources/redir_err.c ./sources/parse_var.c \
+				./sources/env_utils3.c
 
 INC_DIR		= ./includes/
 

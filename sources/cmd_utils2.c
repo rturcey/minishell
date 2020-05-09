@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/08 10:52:42 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:05:47 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
 		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
 			if (r == -1)
 				return (-1);
-		if (!(sample = sample_str(input, i, sample)))
+		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_str(sample));
 		if (sample_export(sample, env) == -1)
 			maj_err(obj, ft_sprintf(\
@@ -78,9 +78,9 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
 			if (r == -1)
 				return (free_str(tmp));
-		if (!(sample = sample_str(input, i, sample)))
+		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(sample, tmp));
-		if (ft_strchr(sample, '=') || ft_strspchr(sample))
+		if (check_var(sample) != 0)
 			maj_err(obj, ft_sprintf("unset: %s: invalid parameter name\n", \
 			sample));
 		tmp = ft_strjoin_sp(tmp, sample);

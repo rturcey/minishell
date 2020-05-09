@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:02:11 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/06 11:10:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 12:26:55 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ char			*find_env_value(char *key, t_env *env)
 	while (tmp && (i = ft_strncmp(key, tmp->key, len)) != 0)
 		tmp = tmp->next;
 	if (i == 0)
-		return (tmp->value);
-	return (NULL);
+		return (ft_strdup(tmp->value));
+	return (ft_strdup(""));
 }
 
 /*

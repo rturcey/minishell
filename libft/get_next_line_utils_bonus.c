@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 12:43:01 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 10:52:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 11:11:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ft_gnl_strjoin(char *s1, char *s2)
 		new[i++] = s2[j++];
 	new[i] = '\0';
 	free(s1);
+	s1 = NULL;
 	return (new);
 }
 

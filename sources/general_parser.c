@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 10:51:52 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 14:12:45 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,34 +41,34 @@ void	skim_str(char *sample, int k, int *i)
 	(*i)++;
 }
 
-void	sample_quote_cond(char *input, int *i, char *sample, int *j)
+void	sample_quote_cond(char *input, int *i, char **sample, int *j)
 {
 	int k;
 	int l;
 	int check;
 
-	k = get_next_quote(sample, *j) - 1;
+	k = get_next_quote(*sample, *j) - 1;
 	l = (*j) - 1;
 	if (is_quote(input, *i, '\"') == 1)
 	{
 		while (++l < k)
 		{
-			if (sample[l] == '\\' && sample[l + 1] && k--)
-				skim_str(sample, l - 1, i);
+			if ((*sample)[l] == '\\' && (*sample)[l + 1] && k--)
+				skim_str(*sample, l - 1, i);
 		}
 	}
 	l = k - 1;
 	check = -1;
 	while (++check != 2)
 	{
-		skim_str(sample, k, i);
+		skim_str(*sample, k, i);
 		k = (*j) - 1;
 	}
 	(*i) += l - (*j);
 	(*j) = l;
 }
 
-char	*sample_str(char *input, int *i, char *sample)
+char	*sample_str(char *input, int *i, char *sample, t_env *env)
 {
 	int end;
 	int j;
@@ -84,7 +84,10 @@ char	*sample_str(char *input, int *i, char *sample)
 		if (sample[j] == '\\')
 			skim_str(sample, j - 1, i);
 		else if (is_quote(input, *i, 0) == 1)
-			sample_quote_cond(input, i, sample, &j);
+			sample_quote_cond(input, i, &sample, &j);
+		// /!\ au \$
+		if (sample[j] == '$')
+			parse_sample_var(&sample, &j, env, i);
 		(*i)++;
 	}
 	*i = end;
@@ -119,16 +122,16 @@ int		general_parser(char *input, t_env *env)
 	i = pass_spaces(input, i);
 	while (input[i])
 	{
-		if (!(obj = obj_new()))
+		if (!(obj = obj_new(env)))
 			return (-1);
 		sample = NULL;
 		obj->redir = redir_new();
 		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
 		if (limit-- == 1)
-			find_redir_err(obj->redir, input, &i);
+			find_redir_err(obj, input, &i);
 		find_redir(obj, input, &i);
 		if (parse_var(input, &i, env, 0) == -1
-			|| (sample = sample_str(input, &i, sample)) == NULL)
+			|| (sample = sample_str(input, &i, sample, env)) == NULL)
 		{
 			free_obj(obj);
 			return (-1);
