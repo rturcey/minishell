@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/08 11:11:44 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 23:25:14 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	maj_err(t_obj *obj, char *str)
 		free(obj->error);
 		obj->error = str;
 	}
+	else if (ft_strncmp(obj->error, "exit\n", 5) == 0)
+		obj->error = ft_strjoin_bth(obj->error, str);
 	else
 		free(str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 12:05:47 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 23:26:15 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,26 +74,30 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 {
-	char *path;
+	char	*path;
+	int		r;
+	int		ret;
 
 	path = NULL;
-	if ((*i = pass_spaces(input, *i)) && !input[*i])
+	ret = 0;
+	while (input[*i])
 	{
-		if (!(path = find_env_value("HOME", env)))
+		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
+			if (r == -1)
+				return (-1);
+		if (is_end(input, *i) == 1)
+			break ;
+		if ((path != NULL) && ret++)
+			*i = find_string_end(input, *i);
+		else if ((path == NULL) && !(path = sample_str(input, i, path, env)))
 			return (-1);
 	}
-	else if (!(path = sample_str(input, i, path, env)))
+	if ((path == NULL) && !(path = ft_strdup(find_env_value("HOME", env))))
 		return (-1);
-	else if ((*i = pass_spaces(input, *i)) && (is_end(input, *i) != 1))
-	{
+	if (ret > 0)
 		maj_err(obj, ft_strdup("cd: too many arguments\n"));
-		return (print_result(obj, 0, path));
-	}
-	if (chdir(path) == -1)
-	{
+	else if (chdir(path) == -1)
 		maj_err(obj, ft_sprintf("cd: %s: No such file or directory\n", path));
-		return (print_result(obj, 0, path));
-	}
 	return (print_result(obj, 0, path));
 }
 
@@ -106,6 +110,7 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 int		parse_cmds(t_obj *obj, char *input, int *i, t_env *env)
 {
 	t_parse_cmd parse_cmd[7];
+	int			ret;
 
 	parse_cmd[0] = parse_echo;
 	parse_cmd[1] = parse_cd;
@@ -114,11 +119,11 @@ int		parse_cmds(t_obj *obj, char *input, int *i, t_env *env)
 	parse_cmd[4] = parse_unset;
 	parse_cmd[5] = parse_env;
 	parse_cmd[6] = parse_exit;
-	if (parse_cmd[obj->type](obj, input, i, env) == -1)
+	if ((ret = parse_cmd[obj->type](obj, input, i, env)) == -1)
 	{
 		while (is_end(input, *i) == 0)
 			(*i)++;
 		return (-1);
 	}
-	return (0);
+	return (ret);
 }

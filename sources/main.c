@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 12:22:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 23:25:09 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int			main(int argc, char **argv, char **env)
 	char	*line;
 	t_env	*lstenv;
 	t_env	*test;
+	int		ret;
 
 	(void)argc;
 	(void)argv;
@@ -76,20 +77,16 @@ int			main(int argc, char **argv, char **env)
 	test->value = ft_strdup("");
 	while (1)
 	{
+		g_err = 0;
 		prompt(lstenv);
 		get_next_line(0, &line);
 		//test print env + test exit + test export
-
-		if (ft_strncmp(line, "exit", 5) == 0)
-		{
-			free(line);
-			break ;
-		}
-		else
-			general_parser(line, lstenv);
+		ret = general_parser(line, lstenv);
 		free(line);
+		if (ret == 1)
+			break ;
 	}
 	env_clear(lstenv);
 	env_clear(test);
-	return (0);
+	return (g_err);
 }

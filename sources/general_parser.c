@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 14:12:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/09 23:24:51 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,15 @@ int		general_parser(char *input, t_env *env)
 			init_obj(obj, sample, j);
 			if (obj->obj == NULL)
 				return (-1);
-			parse_cmds(obj, input, &i, env);
+			j = parse_cmds(obj, input, &i, env);
 		}
 		i = pass_spaces(input, i);
 		free(sample);
+		if ((strncmp(obj->obj, "exit", ft_strlen(obj->obj)) == 0) && !ft_strstr(obj->error, "too many"))
+		{
+			free_obj(obj);
+			return (1);
+		}
 		if (obj)
 			free_obj(obj);
 	}
