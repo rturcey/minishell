@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 23:24:51 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:33:48 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	skim_str(char *sample, int k, int *i)
 	(*i)++;
 }
 
-void	sample_quote_cond(char *input, int *i, char **sample, int *j)
+void	sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 {
 	int k;
 	int l;
@@ -55,6 +55,12 @@ void	sample_quote_cond(char *input, int *i, char **sample, int *j)
 		{
 			if ((*sample)[l] == '\\' && (*sample)[l + 1] && k--)
 				skim_str(*sample, l - 1, i);
+			else if ((*sample)[l] == '$')
+			{
+				parse_sample_var(sample, &l, env, i);
+				k = get_next_quote(*sample, *j) - 1;
+				*i += 2;
+			}
 		}
 	}
 	l = k - 1;
@@ -84,9 +90,8 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 		if (sample[j] == '\\')
 			skim_str(sample, j - 1, i);
 		else if (is_quote(input, *i, 0) == 1)
-			sample_quote_cond(input, i, &sample, &j);
-		// /!\ au \$
-		if (sample[j] == '$')
+			sample_quote_cond(input, i, &sample, &j, env);
+		else if (sample[j] == '$')
 			parse_sample_var(&sample, &j, env, i);
 		(*i)++;
 	}
