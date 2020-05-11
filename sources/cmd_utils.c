@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/11 21:10:47 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 22:55:28 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
 			if (r == -1)
 				return (-1);
+		if (is_end(input, *i) == 1)
+			break ;
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);
