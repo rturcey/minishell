@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 23:21:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 21:31:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int					g_err;
 typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 
 int					general_parser(char *input, t_env *env);
+void				skim_str(char *sample, int k, int *i);
 t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
@@ -108,11 +109,11 @@ int					unset_var(char **elt, t_env *env);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(char *input, int *i, t_env *env, int len);
 int					print_result(t_obj *obj, int ret, char *to_free);
-void				maj_err(t_obj *obj, char *str);
+void				maj_err(t_obj *obj, char *str, int err);
 int					split_env(char *line, t_env *elt);
 int					sample_export(char *sample, t_env *env);
 int					check_var(char *sample);
 int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
-
-
+void				set_g_err(t_obj *obj);
+int					parse_g_err(char **sample, int *l, int *i);
 #endif

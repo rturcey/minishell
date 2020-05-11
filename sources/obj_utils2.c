@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 23:25:14 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 21:07:39 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		print_result(t_obj *obj, int ret, char *to_free)
 	return (ret);
 }
 
-void	maj_err(t_obj *obj, char *str)
+void	maj_err(t_obj *obj, char *str, int err)
 {
 	if (!obj->error)
 		obj->error = str;
@@ -36,6 +36,7 @@ void	maj_err(t_obj *obj, char *str)
 		obj->error = ft_strjoin_bth(obj->error, str);
 	else
 		free(str);
+	g_err = err;
 }
 
 void	*free_arg(t_arg *arg)

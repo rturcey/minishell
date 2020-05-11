@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 23:26:32 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 21:24:44 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
 			return (free_str(sample));
 		if (sample_export(sample, env) == -1)
 			maj_err(obj, ft_sprintf(\
-			"bash: export: « %s » : identifiant non valable", sample));
+			"export: `%s' : not a valid identifier", sample), 1);
 		free(sample);
 	}
 	return (print_result(obj, 0, NULL));
@@ -81,8 +81,8 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(sample, tmp));
 		if (check_var(sample) != 0)
-			maj_err(obj, ft_sprintf("unset: %s: invalid parameter name\n", \
-			sample));
+			maj_err(obj, ft_sprintf("unset: `=': not a valid identifier\n", \
+			sample), 1);
 		tmp = ft_strjoin_sp(tmp, sample);
 	}
 	if (!(elt = ft_split(tmp, ' ')))
@@ -108,7 +108,7 @@ int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 				else if (r == -1)
 					return (-1);
 			}
-			maj_err(obj, ft_strdup("env: too many arguments\n"));
+			maj_err(obj, ft_strdup("env: too many arguments\n"), 1);
 		}
 		else if (r == -1)
 			return (-1);
@@ -137,12 +137,12 @@ int		parse_exit(t_obj *obj, char *input, int *i, t_env *env)
 		else if ((s == NULL) && !(s = sample_str(input, i, s, env)))
 			return (-1);
 	}
-	maj_err(obj, ft_sprintf("exit\n"));
+	maj_err(obj, ft_sprintf("exit\n"), g_err);
 	if (g_err == 1)
-		maj_err(obj, ft_sprintf("exit: too many arguments\n"));
+		maj_err(obj, ft_sprintf("exit: too many arguments\n"), 1);
 	else if ((s != NULL) && ft_numstr(s) == 1 && (r = ft_atoi(s)))
 		g_err = (r < 0 || r > 255) ? r % 256 : r;
 	else if ((s != NULL) && (ft_numstr(s) != 1) && (g_err = 2))
-		maj_err(obj, ft_sprintf("exit: %s: numeric argument required\n", s));
+		maj_err(obj, ft_sprintf("exit: %s: numeric argument required\n", s), 2);
 	return (print_result(obj, g_err, s));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/10 11:33:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/11 21:30:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ void	skim_str(char *sample, int k, int *i)
 	(*i)++;
 }
 
-void	sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
+int		sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 {
 	int k;
 	int l;
 	int check;
+	int r;
 
 	k = get_next_quote(*sample, *j) - 1;
 	l = (*j) - 1;
@@ -53,13 +54,21 @@ void	sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 	{
 		while (++l < k)
 		{
-			if ((*sample)[l] == '\\' && (*sample)[l + 1] && k--)
+			if ((*sample)[l] == '\\' && ((*sample)[l + 1] == '\"' ||
+				(*sample)[l + 1] == '\\') && k--)
 				skim_str(*sample, l - 1, i);
 			else if ((*sample)[l] == '$')
 			{
-				parse_sample_var(sample, &l, env, i);
+				if ((*sample)[l + 1] && (*sample)[l + 1] == '?')
+				{
+					if (parse_g_err(sample, &l, i) == -1)
+						return (-1);
+				}
+				if ((r = parse_sample_var(sample, &l, env, i)) != -1)
+					(*i)++;
+				else if (r == -1)
+					return (-1);
 				k = get_next_quote(*sample, *j) - 1;
-				*i += 2;
 			}
 		}
 	}
@@ -72,12 +81,14 @@ void	sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 	}
 	(*i) += l - (*j);
 	(*j) = l;
+	return (0);
 }
 
 char	*sample_str(char *input, int *i, char *sample, t_env *env)
 {
 	int end;
 	int j;
+	int r;
 
 	if (!input[*i])
 		return (NULL);
@@ -90,9 +101,22 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 		if (sample[j] == '\\')
 			skim_str(sample, j - 1, i);
 		else if (is_quote(input, *i, 0) == 1)
-			sample_quote_cond(input, i, &sample, &j, env);
+		{
+			if (sample_quote_cond(input, i, &sample, &j, env) == -1)
+				return (char_free_str(sample));
+		}
+		else if ((sample[j] == '$') && sample[j + 1] && (sample[j + 1] == '?'))
+		{
+			if (parse_g_err(&sample, &j, i) == -1)
+				return (char_free_str(sample));
+		}
 		else if (sample[j] == '$')
-			parse_sample_var(&sample, &j, env, i);
+		{
+			if ((r = parse_sample_var(&sample, &j, env, i)) == -2)
+				j--;
+			else if (r == -1)
+				return (char_free_str(sample));
+		}
 		(*i)++;
 	}
 	*i = end;
@@ -121,22 +145,27 @@ int		general_parser(char *input, t_env *env)
 		(last_backslash(input) == -1))
 	{
 		ft_putstr_fd("bash: multi-line comments not supported\n", 2);
-		return (-1);
+		return (0);
 	}
 	i = 0;
 	i = pass_spaces(input, i);
 	while (input[i])
 	{
-		if (!(obj = obj_new(env)))
+		if (!(obj = obj_new(env)) || !(obj->redir = redir_new()))
 			return (-1);
 		sample = NULL;
-		obj->redir = redir_new();
 		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
 		if (limit-- == 1)
 			find_redir_err(obj, input, &i);
 		find_redir(obj, input, &i);
-		if (parse_var(input, &i, env, 0) == -1
-			|| (sample = sample_str(input, &i, sample, env)) == NULL)
+		if (parse_var(input, &i, env, 0) == -1)
+		{
+			free_obj(obj);
+			return (-1);
+		}
+		if (!input[i])
+			continue ;
+		if ((sample = sample_str(input, &i, sample, env)) == NULL)
 		{
 			free_obj(obj);
 			return (-1);
@@ -147,15 +176,23 @@ int		general_parser(char *input, t_env *env)
 			init_obj(obj, sample, j);
 			if (obj->obj == NULL)
 				return (-1);
-			j = parse_cmds(obj, input, &i, env);
+			if ((j = parse_cmds(obj, input, &i, env)) == -1)
+			{
+				free_obj(obj);
+				return (-1);
+			}
+			if (obj && obj->obj && (strncmp(obj->obj, "exit",
+				ft_strlen(obj->obj)) == 0) && !ft_strstr(obj->error,
+				"too many"))
+			{
+				free(sample);
+				free_obj(obj);
+				return (-1);
+			}
+			set_g_err(obj);
 		}
 		i = pass_spaces(input, i);
 		free(sample);
-		if ((strncmp(obj->obj, "exit", ft_strlen(obj->obj)) == 0) && !ft_strstr(obj->error, "too many"))
-		{
-			free_obj(obj);
-			return (1);
-		}
 		if (obj)
 			free_obj(obj);
 	}

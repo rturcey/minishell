@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 23:26:15 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 21:10:47 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 	if ((path == NULL) && !(path = ft_strdup(find_env_value("HOME", env))))
 		return (-1);
 	if (ret > 0)
-		maj_err(obj, ft_strdup("cd: too many arguments\n"));
+		maj_err(obj, ft_strdup("cd: too many arguments\n"), 1);
 	else if (chdir(path) == -1)
-		maj_err(obj, ft_sprintf("cd: %s: No such file or directory\n", path));
+		maj_err(obj, ft_sprintf("cd: %s: No such file or directory\n", path), 1);
 	return (print_result(obj, 0, path));
 }
 

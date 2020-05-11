@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 17:06:40 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 18:17:58 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int					free_array(char **array, int max);
 int					free_str(char *str);
 int					free_array_and_str(char **arr, char *str);
 int					free_two_str(char *s1, char *s2);
+char				*char_free_str(char *str);
 int					ft_atoi(const char *str);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);

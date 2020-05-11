@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 12:06:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/11 21:09:31 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int		parse_redir(t_obj *obj, char *input, int *s_fd, int *i)
 		ret = redir_err(s_fd[1], obj->redir, path);
 	if (ret == -1)
 	{
-		maj_err(obj, ft_sprintf("bash: %s: Permission denied", path));
+		maj_err(obj, ft_sprintf("bash: %s: Permission denied", path), 1);
 		return (print_result(obj, -1, path));
 	}
 	free(path);

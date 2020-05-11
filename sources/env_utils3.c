@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 13:03:31 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/11 18:47:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
 	(*j)++;
 	i = *j;
 	if (!(*sample)[*j] || normed_char((*sample)[*j]) == -1)
-		return (-1);
+		return (-2);
 	while (normed_char((*sample)[i]) == 0)
 		i++;
 	i -= *j;
 	if (!(key = ft_substr(*sample, *j, i)))
-		return (-2);
+		return (-1);
 	*r += ft_strlen(key);
 	if (!(value = find_env_value(key, env)))
-		return (-1);
+		return (-2);
 	free(key);
 	if (!(begin = ft_substr(*sample, 0, (*j) - 1)))
 		return (free_str(value));

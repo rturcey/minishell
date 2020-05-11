@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 23:25:09 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 18:53:03 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,24 @@ int			main(int argc, char **argv, char **env)
 	if (!(lstenv = init_env(env, 1)))
 	{
 		ft_putstr_fd("couldn't clone the environment", 2);
+		return (0);
+	}
+	if (!(test = env_new(0)))
+	{
+		env_clear(lstenv);
 		return (-1);
 	}
-	test = env_new(0);
 	test->key = ft_strdup("TEST_VAR");
 	test->value = ft_strdup("");
+	g_err = 0;
 	while (1)
 	{
-		g_err = 0;
 		prompt(lstenv);
 		get_next_line(0, &line);
 		//test print env + test exit + test export
 		ret = general_parser(line, lstenv);
 		free(line);
-		if (ret == 1)
+		if (ret != 0)
 			break ;
 	}
 	env_clear(lstenv);
