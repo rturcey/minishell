@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 21:30:25 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/11 23:49:23 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ int		sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 	int l;
 	int check;
 	int r;
+	int heck;
 
 	k = get_next_quote(*sample, *j) - 1;
 	l = (*j) - 1;
+	heck = 0;
 	if (is_quote(input, *i, '\"') == 1)
 	{
 		while (++l < k)
@@ -65,7 +67,9 @@ int		sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 						return (-1);
 				}
 				if ((r = parse_sample_var(sample, &l, env, i)) != -1)
-					(*i)++;
+					heck = 1;
+				if (r == -2)
+					(*j)--;
 				else if (r == -1)
 					return (-1);
 				k = get_next_quote(*sample, *j) - 1;
@@ -79,7 +83,8 @@ int		sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 		skim_str(*sample, k, i);
 		k = (*j) - 1;
 	}
-	(*i) += l - (*j);
+	if (heck == 0)
+		(*i) += l - (*j);
 	(*j) = l;
 	return (0);
 }
@@ -98,6 +103,8 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 	j = -1;
 	while (sample[++j])
 	{
+		ft_printf("BEFORE sample[%d][%c] in [%s]\n", j, (sample)[j], sample);
+		ft_printf("BEFORE input[%d][%c] in [%s]\n", *i, input[*i], input);
 		if (sample[j] == '\\')
 			skim_str(sample, j - 1, i);
 		else if (is_quote(input, *i, 0) == 1)
