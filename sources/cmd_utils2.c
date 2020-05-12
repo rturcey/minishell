@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/11 21:24:44 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 06:57:30 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,16 @@ int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	*sample;
-	int		r;
 
 	while (is_end(input, *i) == 0)
 	{
-		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
-			if (r == -1)
-				return (-1);
+		if (redir_loop(obj, input, i) == -1)
+			return (-1);
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_str(sample));
 		if (sample_export(sample, env) == -1)
 			maj_err(obj, ft_sprintf(\
-			"export: `%s' : not a valid identifier", sample), 1);
+			"export: %s : not a valid identifier", sample), 1);
 		free(sample);
 	}
 	return (print_result(obj, 0, NULL));
@@ -70,18 +68,16 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 	char	**elt;
 	char	*tmp;
 	char	*sample;
-	int		r;
 
 	tmp = ft_strdup("");
 	while (is_end(input, *i) == 0)
 	{
-		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
-			if (r == -1)
-				return (free_str(tmp));
+		if (redir_loop(obj, input, i) == -1)
+			return (free_str(tmp));
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(sample, tmp));
 		if (check_var(sample) != 0)
-			maj_err(obj, ft_sprintf("unset: `=': not a valid identifier\n", \
+			maj_err(obj, ft_sprintf("unset: %s: not a valid identifier\n", \
 			sample), 1);
 		tmp = ft_strjoin_sp(tmp, sample);
 	}
@@ -127,9 +123,8 @@ int		parse_exit(t_obj *obj, char *input, int *i, t_env *env)
 	s = NULL;
 	while (input[*i])
 	{
-		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
-			if (r == -1)
-				return (-1);
+		if (redir_loop(obj, input, i) == -1)
+			return (-1);
 		if (is_end(input, *i) == 1)
 			break ;
 		if (s != NULL && ((ft_numstr(s) != 1) || (g_err = 1)))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 23:49:23 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 07:02:22 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,6 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 	j = -1;
 	while (sample[++j])
 	{
-		ft_printf("BEFORE sample[%d][%c] in [%s]\n", j, (sample)[j], sample);
-		ft_printf("BEFORE input[%d][%c] in [%s]\n", *i, input[*i], input);
 		if (sample[j] == '\\')
 			skim_str(sample, j - 1, i);
 		else if (is_quote(input, *i, 0) == 1)
@@ -186,7 +184,8 @@ int		general_parser(char *input, t_env *env)
 			if ((j = parse_cmds(obj, input, &i, env)) == -1)
 			{
 				free_obj(obj);
-				return (-1);
+				free_str(sample);
+				return (0);
 			}
 			if (obj && obj->obj && (strncmp(obj->obj, "exit",
 				ft_strlen(obj->obj)) == 0) && !ft_strstr(obj->error,

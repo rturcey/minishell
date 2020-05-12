@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 21:31:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 06:51:26 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <stdio.h>
+# include <errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -116,4 +117,6 @@ int					check_var(char *sample);
 int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
 void				set_g_err(t_obj *obj);
 int					parse_g_err(char **sample, int *l, int *i);
+int					redir_loop(t_obj *obj, char *input, int *i);
+
 #endif

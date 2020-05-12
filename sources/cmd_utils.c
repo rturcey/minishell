@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/11 22:55:28 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 06:59:05 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,18 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	*result;
 	char	*sample;
-	int		r;
 
 	(void)env;
 	result = ft_strdup("");
-	while ((r = find_redir(obj, input, i)) == 1 || r == -1)
-		if (r == -1)
-			return (-1);
+	if (redir_loop(obj, input, i) == -1)
+		return (free_str(result));
 	if (ft_strncmp("-n ", &input[*i], 3) == 0 && ((*i) += 3))
 		obj->option = 1;
 	while (is_end(input, *i) == 0)
 	{
-		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
-			if (r == -1)
-				return (-1);
-		if (is_end(input, *i) == 1)
+		if (redir_loop(obj, input, i) == -1)
+			return (free_str(result));
+		if (is_end(input, *i) == 1 && free_str(result) == -1)
 			break ;
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(result, sample));
@@ -77,16 +74,14 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	*path;
-	int		r;
 	int		ret;
 
 	path = NULL;
 	ret = 0;
 	while (input[*i])
 	{
-		while ((r = find_redir(obj, input, i)) == 1 || r == -1)
-			if (r == -1)
-				return (-1);
+		if (redir_loop(obj, input, i) == -1)
+			return (-1);
 		if (is_end(input, *i) == 1)
 			break ;
 		if ((path != NULL) && ret++)
@@ -99,7 +94,8 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 	if (ret > 0)
 		maj_err(obj, ft_strdup("cd: too many arguments\n"), 1);
 	else if (chdir(path) == -1)
-		maj_err(obj, ft_sprintf("cd: %s: No such file or directory\n", path), 1);
+		maj_err(obj, ft_sprintf("cd: %s: %s\n", \
+		path, strerror(errno)), 1);
 	return (print_result(obj, 0, path));
 }
 

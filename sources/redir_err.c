@@ -6,11 +6,21 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:47:40 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 12:09:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/12 06:33:04 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int				redir_loop(t_obj *obj, char *input, int *i)
+{
+	int		r;
+
+	while ((r = find_redir(obj, input, i)) == 1 || r == -1)
+		if (r == -1)
+			return (-1);
+	return (0);
+}
 
 /*
 ** when parsing encounters wrong char/str (or no char)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 21:09:31 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 06:54:31 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int		redir_norm(int kind, t_redir *redir, char *path)
 	{
 		if (redir->cmd_input != 0)
 			close(redir->cmd_input);
-		redir->cmd_input = open(path, O_CREAT | O_RDONLY, 0644);
+		redir->cmd_input = open(path, O_RDONLY, 0644);
 		return (redir->cmd_input);
 	}
 	return (redir->cmd_output);
@@ -69,7 +69,7 @@ static int		parse_redir(t_obj *obj, char *input, int *s_fd, int *i)
 		ret = redir_err(s_fd[1], obj->redir, path);
 	if (ret == -1)
 	{
-		maj_err(obj, ft_sprintf("bash: %s: Permission denied", path), 1);
+		maj_err(obj, ft_sprintf("bash: %s: %s\n", path, strerror(errno)), 1);
 		return (print_result(obj, -1, path));
 	}
 	free(path);
