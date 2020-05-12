@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/11 18:17:58 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:06:31 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,13 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 char				*ft_strstr(const char *haystack, const char *needle);
 int					free_array(char **array, int max);
 int					free_str(char *str);
-int					free_array_and_str(char **arr, char *str);
+int					free_array_and_str(char **arr, int max, char *str);
 int					free_two_str(char *s1, char *s2);
+int					free_two_arrays(char **arra, char **arrb);
+int					free_two_arr_and_str(char **arra, char **arrb, char *str,
+	int ret);
+int					free_two_arr_two_str(char **arra, char **arrb, char *stra,
+	char *strb);
 char				*char_free_str(char *str);
 int					ft_atoi(const char *str);
 void				*ft_calloc(size_t count, size_t size);

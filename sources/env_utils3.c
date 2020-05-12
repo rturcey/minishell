@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 18:47:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 21:35:35 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,15 @@ int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
 	free(*sample);
 	*j = *j + ft_strlen(value) - 2;
 	return (replace_var(sample, begin, value, key));
+}
+
+t_both_env		*group_both_env(t_env *ms_env, char **bash_env)
+{
+	t_both_env	*both_env;
+
+	if (!(both_env = malloc(sizeof(t_both_env))))
+		return (NULL);
+	both_env->ms_env = ms_env;
+	both_env->bash_env = bash_env;
+	return (both_env);
 }

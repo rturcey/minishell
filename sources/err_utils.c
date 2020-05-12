@@ -6,18 +6,27 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/11 21:30:29 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 14:19:37 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_g_err(t_obj *obj)
+int		set_g_err(t_obj *obj, char *sample)
 {
 	if (!obj || !obj->obj)
-		return ;
+		return (0);
+	if (obj && obj->obj && (strncmp(obj->obj, "exit",
+		ft_strlen(obj->obj)) == 0) && !ft_strstr(obj->error,
+		"too many"))
+	{
+		free(sample);
+		free_obj(obj);
+		return (1);
+	}
 	if (!(obj->error))
 		g_err = 0;
+	return (0);
 }
 
 int		parse_g_err(char **sample, int *l, int *i)

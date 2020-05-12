@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 18:53:03 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:02:28 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ static void	prompt(t_env *env)
 
 int			main(int argc, char **argv, char **env)
 {
-	char	*line;
-	t_env	*lstenv;
-	t_env	*test;
-	int		ret;
+	char		*line;
+	t_env		*lstenv;
+	t_env		*test;
+	int			ret;
+	t_both_env	*both_env;
 
 	(void)argc;
 	(void)argv;
@@ -71,6 +72,11 @@ int			main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("couldn't clone the environment", 2);
 		return (0);
+	}
+	if (!(both_env = group_both_env(lstenv, env)))
+	{
+		env_clear(lstenv);
+		return (-1);
 	}
 	if (!(test = env_new(0)))
 	{
@@ -85,12 +91,13 @@ int			main(int argc, char **argv, char **env)
 		prompt(lstenv);
 		get_next_line(0, &line);
 		//test print env + test exit + test export
-		ret = general_parser(line, lstenv);
+		ret = general_parser(line, lstenv, both_env);
 		free(line);
 		if (ret != 0)
 			break ;
 	}
 	env_clear(lstenv);
+	free(both_env);
 	env_clear(test);
 	return (g_err);
 }

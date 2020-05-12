@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 06:51:26 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/12 22:03:08 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # include "libft.h"
@@ -35,6 +36,12 @@ typedef struct		s_env
 	int				in;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct		s_both_env
+{
+	char			**bash_env;
+	t_env			*ms_env;
+}					t_both_env;
 
 typedef struct		s_arg
 {
@@ -68,8 +75,9 @@ int					g_err;
 
 typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 
-int					general_parser(char *input, t_env *env);
+int					general_parser(char *input, t_env *env, t_both_env *both);
 void				skim_str(char *sample, int k, int *i);
+t_both_env			*group_both_env(t_env *ms_env, char **bash_env);
 t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
@@ -83,8 +91,9 @@ void				del_from_key(t_env **begin, char *key);
 t_obj				*obj_new(t_env *env);
 t_redir				*redir_new(void);
 void				init_obj(t_obj *obj, char *sample, int type);
-void				*free_obj(t_obj *obj);
+int					free_obj(t_obj *obj);
 void				*free_redir(t_redir *redir);
+int					parse_exec(t_obj *obj, char *input, int *i, t_both_env *b);
 int					is_cmd(char *sample);
 int					parse_cmds(t_obj *obj, char *input, int *i, t_env *env);
 int					parse_echo(t_obj *obj, char *input, int *i, t_env *env);
@@ -106,6 +115,7 @@ char				*sample_str(char *input, int *i, char *sample, t_env *env);
 int					is_separator(char *str, int i);
 int					is_end(char *str, int i);
 int					get_next_quote(char *str, int i);
+int					count_strings(char *input, int i);
 int					unset_var(char **elt, t_env *env);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(char *input, int *i, t_env *env, int len);
@@ -115,7 +125,7 @@ int					split_env(char *line, t_env *elt);
 int					sample_export(char *sample, t_env *env);
 int					check_var(char *sample);
 int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
-void				set_g_err(t_obj *obj);
+int					set_g_err(t_obj *obj, char *sample);
 int					parse_g_err(char **sample, int *l, int *i);
 int					redir_loop(t_obj *obj, char *input, int *i);
 

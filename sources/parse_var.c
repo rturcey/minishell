@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_var.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 11:40:29 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/12 15:02:33 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int				parse_var(char *input, int *i, t_env *env, int len)
 	if (!(env_new = ft_split(to_split, ' ')))
 		return (free_str(to_split));
 	if (!(wagon = init_env(env_new, 0)))
-		return (free_array_and_str(env_new, to_split) == 2);
+		return (free_array_and_str(env_new, -1, to_split) == 2);
 	begin = wagon;
 	while (wagon)
 	{
@@ -66,6 +66,6 @@ int				parse_var(char *input, int *i, t_env *env, int len)
 		add_var(wagon, env);
 		wagon = wagon->next;
 	}
-	free_array_and_str(env_new, to_split);
+	free_array_and_str(env_new, -1, to_split);
 	return (env_clear(begin));
 }

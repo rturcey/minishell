@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/12 06:48:33 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/12 19:28:39 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	*free_redir(t_redir *redir)
 	return (NULL);
 }
 
-void	*free_obj(t_obj *obj)
+int		free_obj(t_obj *obj)
 {
 	t_obj	*tmp;
 
@@ -80,5 +80,5 @@ void	*free_obj(t_obj *obj)
 		free(obj);
 		obj = tmp;
 	}
-	return (NULL);
+	return (-1);
 }

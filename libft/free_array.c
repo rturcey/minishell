@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 10:18:21 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/11 18:18:01 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:04:04 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int		free_array(char **array, int max)
 {
 	int i;
 
+	if (!array)
+		return (-1);
 	if (max == -1)
 	{
 		max = 0;
@@ -43,9 +45,9 @@ int		free_two_str(char *s1, char *s2)
 	return (-1);
 }
 
-int		free_array_and_str(char **arr, char *str)
+int		free_array_and_str(char **arr, int max, char *str)
 {
-	free_array(arr, -1);
+	free_array(arr, max);
 	free_str(str);
 	return (-1);
 }

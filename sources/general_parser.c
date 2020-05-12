@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 07:02:22 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/12 22:29:20 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,14 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 **the appropriate function
 */
 
-int		general_parser(char *input, t_env *env)
+int		general_parser(char *input, t_env *env, t_both_env *both_env)
 {
-	char	*sample;
-	int		i;
-	t_obj	*obj;
-	int		j;
-	int		limit = 1;
+	char		*sample;
+	int			i;
+	t_obj		*obj;
+	int			j;
+	int			limit = 1;
+	int			stock_i;
 
 	if ((lonely_quote(input) == -1) ||
 		(last_backslash(input) == -1))
@@ -156,8 +157,10 @@ int		general_parser(char *input, t_env *env)
 	i = pass_spaces(input, i);
 	while (input[i])
 	{
-		if (!(obj = obj_new(env)) || !(obj->redir = redir_new()))
+		if (!(obj = obj_new(env)))
 			return (-1);
+		if (!(obj->redir = redir_new()))
+			return (free_obj(obj));
 		sample = NULL;
 		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
 		if (limit-- == 1)
@@ -170,11 +173,9 @@ int		general_parser(char *input, t_env *env)
 		}
 		if (!input[i])
 			continue ;
+		stock_i = i;
 		if ((sample = sample_str(input, &i, sample, env)) == NULL)
-		{
-			free_obj(obj);
-			return (-1);
-		}
+			return (free_obj(obj));
 		ft_printf("string sampled [%s]\n", sample);
 		if ((j = is_cmd(sample)) != -1)
 		{
@@ -187,18 +188,27 @@ int		general_parser(char *input, t_env *env)
 				free_str(sample);
 				return (0);
 			}
-			if (obj && obj->obj && (strncmp(obj->obj, "exit",
-				ft_strlen(obj->obj)) == 0) && !ft_strstr(obj->error,
-				"too many"))
+			if (set_g_err(obj, sample) == 1)
+				return (-1);
+			free(sample);
+		}
+		else
+		{
+			i = stock_i;
+			if ((j = parse_exec(obj, input, &i, both_env)) == -1)
 			{
 				free(sample);
-				free_obj(obj);
-				return (-1);
+				return (free_obj(obj));
 			}
-			set_g_err(obj);
+			else if ((j == -2) && (g_err = 127))
+			{
+				ft_dprintf(2, "%s: command not found\n", sample);
+				free(sample);
+				free_obj(obj);
+				return (0);
+			}
 		}
 		i = pass_spaces(input, i);
-		free(sample);
 		if (obj)
 			free_obj(obj);
 	}
