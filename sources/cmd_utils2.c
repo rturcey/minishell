@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/12 06:57:30 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/12 12:05:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,23 +121,25 @@ int		parse_exit(t_obj *obj, char *input, int *i, t_env *env)
 	int		r;
 
 	s = NULL;
+	r = 0;
 	while (input[*i])
 	{
 		if (redir_loop(obj, input, i) == -1)
 			return (-1);
 		if (is_end(input, *i) == 1)
 			break ;
-		if (s != NULL && ((ft_numstr(s) != 1) || (g_err = 1)))
+		if (s != NULL && ((ft_numstr(s) != 1) || (r = 1)))
 			*i = find_string_end(input, *i);
 		else if ((s == NULL) && !(s = sample_str(input, i, s, env)))
 			return (-1);
 	}
 	maj_err(obj, ft_sprintf("exit\n"), g_err);
-	if (g_err == 1)
+	g_err = 0;
+	if (r == 1)
 		maj_err(obj, ft_sprintf("exit: too many arguments\n"), 1);
 	else if ((s != NULL) && ft_numstr(s) == 1 && (r = ft_atoi(s)))
 		g_err = (r < 0 || r > 255) ? r % 256 : r;
-	else if ((s != NULL) && (ft_numstr(s) != 1) && (g_err = 2))
+	else if ((s != NULL) && (ft_numstr(s) != 1))
 		maj_err(obj, ft_sprintf("exit: %s: numeric argument required\n", s), 2);
 	return (print_result(obj, g_err, s));
 }
