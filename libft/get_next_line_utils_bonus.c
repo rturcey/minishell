@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 12:43:01 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 11:11:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/13 15:02:18 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_gnl_strjoin(char *s1, char *s2)
+static void	free_strjoin(char *s1)
+{
+	free(s1);
+	s1 = NULL;
+}
+
+char		*ft_gnl_strjoin(char *s1, char *s2)
 {
 	char	*new;
 	int		s1len;
@@ -37,12 +43,11 @@ char	*ft_gnl_strjoin(char *s1, char *s2)
 	while (s2[j])
 		new[i++] = s2[j++];
 	new[i] = '\0';
-	free(s1);
-	s1 = NULL;
+	free_strjoin(s1);
 	return (new);
 }
 
-char	*ft_strndup(const char *s1, int len)
+char		*ft_strndup(const char *s1, int len)
 {
 	char	*cpy;
 	int		i;

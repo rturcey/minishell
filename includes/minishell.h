@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 22:03:08 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/13 14:48:51 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ typedef struct		s_env
 	int				in;
 	struct s_env	*next;
 }					t_env;
-
-typedef struct		s_both_env
-{
-	char			**bash_env;
-	t_env			*ms_env;
-}					t_both_env;
 
 typedef struct		s_arg
 {
@@ -75,9 +69,8 @@ int					g_err;
 
 typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 
-int					general_parser(char *input, t_env *env, t_both_env *both);
+int					general_parser(char *input, t_env *env);
 void				skim_str(char *sample, int k, int *i);
-t_both_env			*group_both_env(t_env *ms_env, char **bash_env);
 t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
@@ -85,6 +78,7 @@ t_env				*env_new(int in);
 char				*find_env_value(char *key, t_env *env);
 t_env				*find_env_entry(char *key, t_env *env);
 t_env				*env_cpy(t_env *elt);
+char				**env_to_array(t_env *env);
 int					export_var(t_env *elt, t_env *env);
 void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
@@ -93,7 +87,7 @@ t_redir				*redir_new(void);
 void				init_obj(t_obj *obj, char *sample, int type);
 int					free_obj(t_obj *obj);
 void				*free_redir(t_redir *redir);
-int					parse_exec(t_obj *obj, char *input, int *i, t_both_env *b);
+int					parse_exec(t_obj *obj, char *input, int *i, t_env *env);
 int					is_cmd(char *sample);
 int					parse_cmds(t_obj *obj, char *input, int *i, t_env *env);
 int					parse_echo(t_obj *obj, char *input, int *i, t_env *env);

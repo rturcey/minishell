@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/12 12:05:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/13 14:36:17 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		parse_unset(t_obj *obj, char *input, int *i, t_env *env)
 		return (-1);
 	free(tmp);
 	unset_var(elt, env);
-	free_array(elt, -1);
+	free_array(elt, -1, -1);
 	return (print_result(obj, 0, NULL));
 }
 

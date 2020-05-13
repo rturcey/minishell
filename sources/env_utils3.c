@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/13 10:52:24 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/13 14:49:42 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,7 @@ int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
 	return (replace_var(sample, begin, value, key));
 }
 
-t_both_env		*group_both_env(t_env *ms_env, char **bash_env)
-{
-	t_both_env	*both_env;
-
-	if (!(both_env = malloc(sizeof(t_both_env))))
-		return (NULL);
-	both_env->ms_env = ms_env;
-	both_env->bash_env = bash_env;
-	return (both_env);
-}
-
-char		**env_to_array(t_env *env)
+char			**env_to_array(t_env *env)
 {
 	int		i;
 	t_env	*tmp;
@@ -105,7 +94,7 @@ char		**env_to_array(t_env *env)
 	{
 		if (!(arr[i++] = ft_strjoin_dic(env->key, env->value)))
 		{
-			free_array(arr, i - 1);
+			free_array(arr, i - 1, -1);
 			return (NULL);
 		}
 		env = env->next;

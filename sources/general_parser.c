@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 22:29:20 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/13 14:22:01 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 **the appropriate function
 */
 
-int		general_parser(char *input, t_env *env, t_both_env *both_env)
+int		general_parser(char *input, t_env *env)
 {
 	char		*sample;
 	int			i;
@@ -195,7 +195,7 @@ int		general_parser(char *input, t_env *env, t_both_env *both_env)
 		else
 		{
 			i = stock_i;
-			if ((j = parse_exec(obj, input, &i, both_env)) == -1)
+			if ((j = parse_exec(obj, input, &i, env)) == -1)
 			{
 				free(sample);
 				return (free_obj(obj));

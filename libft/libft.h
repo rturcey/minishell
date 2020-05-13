@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/13 10:41:05 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/13 14:35:08 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 char				*ft_strnstr(const char *haystack, const char *needle,
 	size_t len);
 char				*ft_strstr(const char *haystack, const char *needle);
-int					free_array(char **array, int max);
+int					free_array(char **array, int max, int ret);
 int					free_str(char *str);
 int					free_array_and_str(char **arr, int max, char *str);
 int					free_two_str(char *s1, char *s2);

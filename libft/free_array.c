@@ -6,13 +6,13 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 10:18:21 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 22:04:04 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/13 14:37:24 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		free_array(char **array, int max)
+int		free_array(char **array, int max, int ret)
 {
 	int i;
 
@@ -28,7 +28,7 @@ int		free_array(char **array, int max)
 	while (++i < max)
 		free(array[i]);
 	free(array);
-	return (-1);
+	return (ret);
 }
 
 int		free_str(char *str)
@@ -47,7 +47,7 @@ int		free_two_str(char *s1, char *s2)
 
 int		free_array_and_str(char **arr, int max, char *str)
 {
-	free_array(arr, max);
+	free_array(arr, max, -1);
 	free_str(str);
 	return (-1);
 }
