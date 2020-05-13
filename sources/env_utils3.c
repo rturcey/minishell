@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/13 10:50:29 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/13 10:52:24 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,6 @@ char		**env_to_array(t_env *env)
 		}
 		env = env->next;
 	}
+	arr[i] = NULL;
 	return (arr);
 }
