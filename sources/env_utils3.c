@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 21:35:35 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/13 10:48:19 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,27 @@ t_both_env		*group_both_env(t_env *ms_env, char **bash_env)
 	both_env->ms_env = ms_env;
 	both_env->bash_env = bash_env;
 	return (both_env);
+}
+
+char		**env_to_array(t_env *env)
+{
+	int		i;
+	t_env	*tmp;
+	char	**arr;
+
+	i = 0;
+	tmp = env;
+	while (env && (++i))
+		env = env->next;
+	env = tmp;
+	if (!(arr = malloc(++i * sizeof(char *))))
+		return (-1);
+	i = 0:
+	while (env)
+	{
+		if (!(arr[i++] = ft_strjoin_dic(env->key, env->value)))
+			return (free_array(arr, i - 1));
+		env = env->next;
+	}
+	return (arr);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 20:45:47 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/12 23:26:27 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/13 10:40:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,31 @@ char	*ft_strjoin_bth(char *s1, char *s2)
 	s1 = NULL;
 	free(s2);
 	s2 = NULL;
+	return (new);
+}
+
+char	*ft_strjoin_dic(char *s1, char *s2)
+{
+	char	*new;
+	int		i;
+	int		j;
+
+	i = -1;
+	j = 0;
+	new = NULL;
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	while (s2[j])
+		j++;
+	if (!(new = malloc(sizeof(char) * (ft_pstrlen(s1) + j + 3))))
+		return (NULL);
+	while (s1[++i])
+		new[i] = s1[i];
+	j = 0;
+	new[i] = '=';
+	while (s2[j])
+		new[i++] = s2[j++];
+	new[i++] = '\n';
+	new[i] = '\0';
 	return (new);
 }
