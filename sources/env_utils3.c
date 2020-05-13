@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/13 10:48:19 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/13 10:50:29 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,15 @@ char		**env_to_array(t_env *env)
 		env = env->next;
 	env = tmp;
 	if (!(arr = malloc(++i * sizeof(char *))))
-		return (-1);
-	i = 0:
+		return (NULL);
+	i = 0;
 	while (env)
 	{
 		if (!(arr[i++] = ft_strjoin_dic(env->key, env->value)))
-			return (free_array(arr, i - 1));
+		{
+			free_array(arr, i - 1);
+			return (NULL);
+		}
 		env = env->next;
 	}
 	return (arr);
