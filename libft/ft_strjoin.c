@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 20:45:47 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/14 09:36:32 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/14 10:43:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char		*ft_strjoin_dic(char *s1, char *s2)
 	return (new);
 }
 
-char		*ft_strjoin_nofree(char *s1, char *s2)
+char		*ft_strjoin_slash(char *s1, char *s2)
 {
 	char	*new;
 	int		i;
@@ -136,11 +136,12 @@ char		*ft_strjoin_nofree(char *s1, char *s2)
 		return (NULL);
 	while (s2[j])
 		j++;
-	if (!(new = malloc(sizeof(char) * (ft_pstrlen(s1) + j + 1))))
+	if (!(new = malloc(sizeof(char) * (ft_pstrlen(s1) + j + 2))))
 		return (NULL);
 	while (s1[++i])
 		new[i] = s1[i];
 	j = 0;
+	new[i++] = '/';
 	while (s2[j])
 		new[i++] = s2[j++];
 	new[i] = '\0';

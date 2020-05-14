@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/13 14:50:00 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:22:09 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,13 @@ int		parse_exec(t_obj *obj, char *input, int *i, t_env *env)
 	int		stock_i;
 	int		r;
 	char	**b_env;
+	char	*path;
 
 	stock_i = *i;
 	tmp = NULL;
 	if (!(tmp = sample_str(input, i, tmp, env)))
 		return (-1);
+	return (check_path(obj, tmp, env, &path));
 	av = NULL;
 	*i = stock_i;
 	if (!(b_env = env_to_array(env)))
