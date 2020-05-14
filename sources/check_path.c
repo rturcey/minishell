@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/14 12:03:30 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/14 12:10:30 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int			check_path(t_obj *obj, char *sample, t_env *env, char **path)
 	t_stat	st;
 
 	i = -1;
-	(void)obj;
-	(void)path;
 	if (ft_strchr(sample, '/'))
 		return (sample_path(obj, sample, path));
 	test = find_env_value("PATH", env);
