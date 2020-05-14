@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/13 14:49:42 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/14 09:12:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int				replace_pwd(t_env *env)
+{
+	t_env	*pwd;
+	char	*workdir;
+
+	pwd = env_new(1);
+	if (!(workdir = ft_calloc(PATH_MAX, 1)))
+		return (-1);
+	getcwd(workdir, PATH_MAX);
+	if (!(pwd->value = workdir))
+		return (-1);
+	if (!(pwd->key = ft_strdup("PWD")))
+		return (free_str(workdir));
+	add_var(pwd, env);
+	del_var(pwd);
+	return (0);
+}
 
 static int		normed_char(char c)
 {

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/12 06:59:05 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/14 09:11:27 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 	else if (chdir(path) == -1)
 		maj_err(obj, ft_sprintf("cd: %s: %s\n", \
 		path, strerror(errno)), 1);
+	else if (replace_pwd(env) == -1)
+		return (free_str(path));
 	return (print_result(obj, 0, path));
 }
 
