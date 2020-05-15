@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/14 10:42:29 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/15 22:07:08 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int					free_two_arr_and_str(char **arra, char **arrb, char *str,
 	int ret);
 int					free_two_arr_two_str(char **arra, char **arrb, char *stra,
 	char *strb);
+char				**char_free_array(char **arr, int max);
 char				*char_free_str(char *str);
 int					ft_atoi(const char *str);
 void				*ft_calloc(size_t count, size_t size);

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/13 14:22:01 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/15 23:44:42 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,9 @@ int		general_parser(char *input, t_env *env)
 		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
 		if (limit-- == 1)
 			find_redir_err(obj, input, &i);
-		find_redir(obj, input, &i);
+		//find_redir(obj, input, &i);
+		if (redir_loop(obj, input, &i) == -1)
+			return(-1);
 		if (parse_var(input, &i, env, 0) == -1)
 		{
 			free_obj(obj);
@@ -195,15 +197,13 @@ int		general_parser(char *input, t_env *env)
 		else
 		{
 			i = stock_i;
+			free(sample);
 			if ((j = parse_exec(obj, input, &i, env)) == -1)
-			{
-				free(sample);
 				return (free_obj(obj));
-			}
-			else if ((j == -2) && (g_err = 127))
+			else if (j == -2)
 			{
-				ft_dprintf(2, "%s: command not found\n", sample);
-				free(sample);
+				maj_err(obj, ft_sprintf("%s: command not found\n", obj->obj), 127);
+				print_result(obj, 0, NULL);
 				free_obj(obj);
 				return (0);
 			}

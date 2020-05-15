@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/14 11:22:09 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/16 00:06:04 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,57 +17,31 @@
 ** I need to look into forking and processes and stuff.
 */
 
-int		try_exec(char *tmp, char **av, char **env, int fr)
+int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
 {
-	int wstatus;
+	pid_t	pid;
 
-	wstatus = 0;
-	if (execve(tmp, av, env) == 0)
-		wait(&wstatus);
-	else
+	if ((pid = fork()) < 0)
 	{
-		if (fr == 1)
-			free(tmp);
+		ft_dprintf(2, ft_sprintf("fork: %s\n", strerror(errno)));
 		return (-1);
 	}
-	return (0);
-}
-
-/*
-** Preparing for execve.
-** If execve doesn't work with just the sample we got, we need to check
-** if the program is found at the end of any path in PATH (they're separated
-** with ':'). We split the paths, gather them in a char **path, and go through
-** the different path + ('/' + tmp) combinations, trying to exec each one.
-*/
-
-int		prep_exec(char *tmp, char **av, t_env *env, char **b_env)
-{
-	char	**path;
-	char	*tmp_cp;
-	int		i;
-
-	if ((try_exec(tmp, av, b_env, 0) == -1) && (i = -1))
+	else if (pid == 0) 
 	{
-		tmp_cp = find_env_value("PATH", env);
-		if (!(path = ft_split(tmp_cp, ':')) && (free_str(tmp_cp) == -1))
-			return (free_array_and_str(av, -1, tmp));
-		free_str(tmp_cp);
-		if (!(tmp_cp = ft_strjoin_bth(ft_strdup("/"), tmp)) &&
-			(free_str(tmp) == -1))
-			return (free_two_arrays(av, path));
-		while (path[++i] != NULL)
-		{
-			if (!(tmp = ft_strjoin_bth(ft_strdup(path[i]), ft_strdup(tmp_cp))))
-				return (free_two_arr_and_str(path, av, tmp_cp, -1));
-			if (try_exec(tmp, av, b_env, 1) == 0)
-				return (free_two_arr_two_str(av, path, tmp, tmp_cp));
-		}
-		free_two_arr_and_str(path, av, tmp_cp, -1);
-	}
-	else
-		free_array_and_str(av, -1, tmp);
-	return (-2);
+		ft_printf("Child process.  ");
+		if ((dup2(obj->redir->cmd_output, 1) == -1) ||
+			dup2(obj->redir->err_output, 2) == -1)
+			return (-1);
+		execve(tmp, av, env);
+    }
+    else
+    {
+		ft_printf("PARENT started with pid=%d.\n", (int)pid);
+		int status = 0;
+		wait(&status);
+		ft_printf("PARENT resumed with status code: %d.  Now terminating parent.\n", status);
+    }
+	return (0);
 }
 
 /*
@@ -78,29 +52,37 @@ char	**conv_av(char *input, int *i, t_obj *obj, t_env *env)
 {
 	int		j;
 	char	**av;
-	int		r;
-	int		k;
 
-	if (!(av = malloc(sizeof(char *) * (count_strings(input, *i) + 1))))
+	if (!(av = malloc(sizeof(char *) * (count_strings(input, *i) + 2))))
 		return (NULL);
-	k = *i;
 	j = 0;
-	r = 0;
+	if (!(av[j++] = ft_strdup(obj->obj)))
+		return(char_free_array(av, 0));
 	while (is_end(input, *i) == 0)
 	{
-		if (redir_loop(obj, input, &k) == -1)
-			return (NULL);
-		if ((is_end(input, k) == 1) && (r = 1))
+		if (redir_loop(obj, input, i) == -1)
+			return(char_free_array(av, j));
+		if ((is_end(input, *i) == 1))
 			break ;
-		if (!(av[j] = sample_str(input, &k, av[j], env)))
-			return (NULL);
+		if (!(av[j] = sample_str(input, i, av[j], env)))
+			return(char_free_array(av, j));
 		j++;
 	}
-	if (r == 1)
-		av[j] = NULL;
-	else
-		av[j + 1] = NULL;
+	av[j] = NULL;
 	return (av);
+}
+
+int		add_redirs(char *input, int *i, t_obj *obj)
+{
+	while (is_end(input, *i) == 0)
+	{
+		if (redir_loop(obj, input, i) == -1)
+			return(-1);
+		if ((is_end(input, *i) == 1))
+			break ;
+		*i = find_string_end(input, *i);
+	}
+	return (0);
 }
 
 /*
@@ -114,30 +96,28 @@ char	**conv_av(char *input, int *i, t_obj *obj, t_env *env)
 int		parse_exec(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	**av;
-	char	*tmp;
-	int		stock_i;
 	int		r;
 	char	**b_env;
 	char	*path;
+	int		stock_i;
 
-	stock_i = *i;
-	tmp = NULL;
-	if (!(tmp = sample_str(input, i, tmp, env)))
-		return (-1);
-	return (check_path(obj, tmp, env, &path));
+	path = NULL;
 	av = NULL;
-	*i = stock_i;
+	if (redir_loop(obj, input, i) == -1)
+			return(-1);
+	if (!(obj->obj = sample_str(input, i, obj->obj, env)))
+		return (-1);
+	stock_i = *i;
+	if (add_redirs(input, i, obj) == -1)
+		return (-1);
+	if (((r = check_path(obj, env, &path)) != 0) || ((r == 0) && !path))
+		return (r);
+	ft_printf("check path r[%d] worked for [%s] \n", r, path);
 	if (!(b_env = env_to_array(env)))
-		return (free_str(tmp));
-	if (!(av = conv_av(input, i, obj, env)))
-	{
-		*i = stock_i;
-		return (free_two_arr_and_str(av, b_env, tmp, -1));
-	}
-	if ((((r = prep_exec(tmp, av, env, b_env)) == -1) || (r == -2)))
-	{
-		*i = stock_i;
-		return (free_array(b_env, -1, r));
-	}
-	return (free_two_arr_and_str(av, b_env, tmp, 0));
+		return (free_str(path));
+	if (!(av = conv_av(input, &stock_i, obj, env)))
+		return (free_array_and_str(b_env, -1, path));
+	if (try_exec(path, av, b_env, obj) == -1)
+		return (free_two_arr_and_str(av, b_env, path, -1));
+	return (free_two_arr_and_str(av, b_env, path, 0));
 }

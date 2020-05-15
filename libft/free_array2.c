@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 22:03:52 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/13 14:35:56 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/15 22:06:52 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,11 @@ int		free_two_arr_two_str(char **arra, char **arrb, char *stra, char *strb)
 	free_array(arrb, -1, -1);
 	free_str(stra);
 	free_str(strb);
-	return (0);
+	return (-1);
+}
+
+char	**char_free_array(char **arr, int max)
+{
+	free_array(arr, max, -1);
+	return (NULL);
 }

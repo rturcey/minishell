@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 10:18:21 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/13 14:37:24 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/15 14:04:28 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,12 @@ int		free_array(char **array, int max, int ret)
 	}
 	i = -1;
 	while (++i < max)
+	{
 		free(array[i]);
+		array[i] = NULL;
+	}
 	free(array);
+	array = NULL;
 	return (ret);
 }
 

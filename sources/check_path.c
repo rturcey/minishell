@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/14 12:27:31 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/15 23:32:46 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,36 @@ static int	check_permissions(t_stat st)
 	return (1);
 }
 
+/*
+** 0 and path NULL = permission denied
+** 0 and path = go exec
+** -1 = fatal error return -1 all the way to ms shutdown
+** -2 = command not found return -2 
+*/
 static int	sample_path(t_obj *obj, char *sample, char **path)
 {
 	t_stat	st;
+	int		ret;
 
+	ret = 0;
 	if ((stat(sample, &st)) == 0 && S_ISDIR(st.st_mode) == 0)
 	{
 		if (check_permissions(st) == 0)
 		{
 			if (!(*path = ft_strdup(sample)))
-				return (free_str(sample));
+				return (-1);
 			printf("permission ok !\n");
 		}
 		else
 			maj_err(obj, ft_sprintf("bash: %s: %s\n", sample, \
 			"Permission denied"), 1);
 	}
-	else if ((stat(sample, &st)) != 0)
-		maj_err(obj, ft_sprintf("bash: %s: %s\n", sample, strerror(errno)), 1);
+	else if (((stat(sample, &st)) != 0) && (ret = -2))
+		maj_err(obj, ft_sprintf("bash: %s: %s\n", sample, strerror(errno)), 1);//? or just return -2
 	else
 		maj_err(obj, ft_sprintf("bash: %s : %s\n", sample, \
 		"is a directory"), 1);
-	free(sample);
-	return (print_result(obj, -1, NULL));
+	return (print_result(obj, ret, NULL));
 }
 
 static int	loop_path(char *path_str, char **path, char *sample, t_obj *obj)
@@ -56,20 +63,20 @@ static int	loop_path(char *path_str, char **path, char *sample, t_obj *obj)
 		if (check_permissions(st) == 0)
 		{
 			if (!(*path = ft_strdup(test)))
-				return (free_two_str(path_str, test));
+				return (free_two_str(path_str, test));//maybe dont free path_str?
 			printf("permission ok !\n");
 		}
 		else
 			maj_err(obj, ft_sprintf("bash: %s: %s\n", sample, \
 			"Permission denied"), 1);
 		free(test);
-		return (1);
+		return (0);
 	}
 	free(test);
-	return (0);
+	return (-2);
 }
 
-int			check_path(t_obj *obj, char *sample, t_env *env, char **path)
+int			check_path(t_obj *obj, t_env *env, char **path)
 {
 	char	**path_arr;
 	char	*value;
@@ -77,20 +84,20 @@ int			check_path(t_obj *obj, char *sample, t_env *env, char **path)
 	int		r;
 
 	i = -1;
-	if (ft_strchr(sample, '/'))
-		return (sample_path(obj, sample, path));
+	if (ft_strchr(obj->obj, '/'))
+		return (sample_path(obj, obj->obj, path));
 	if (!(value = find_env_value("PATH", env)))
-		return (free_str(sample));
+		return (-1);
 	if (!(path_arr = ft_split(value, ':')))
-		return (free_two_str(value, sample));
+		return (free_str(value));
 	free(value);
 	while (path_arr[++i])
-		if ((r = loop_path(path_arr[i], path, sample, obj)) != 0)
+		if ((r = loop_path(path_arr[i], path, obj->obj, obj)) != -2)
 		{
 			if (r == -1)
-				return (free_array_and_str(path_arr, -1, sample));
+				return (free_array(path_arr, -1, -1));
 			break ;
 		}
 	free_array(path_arr, -1, -1);
-	return (print_result(obj, -1, sample));
+	return (print_result(obj, r, NULL));
 }
