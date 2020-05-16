@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 20:45:47 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/14 10:43:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/16 12:02:15 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-static void	free_strjoin(char *s1, char *s2)
-{
-	free(s1);
-	s1 = NULL;
-	free(s2);
-	s2 = NULL;
-}
 
 char		*ft_printf_strjoin(char *s1, char *s2, int stocklen, int ratlen)
 {
@@ -66,7 +58,7 @@ char		*ft_strjoin_sp(char *s1, char *s2)
 	while (s2[j])
 		new[i++] = s2[j++];
 	new[i] = '\0';
-	free_strjoin(s1, s2);
+	free_two_strjoin(s1, s2);
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/15 23:44:42 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/16 11:41:14 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,8 @@ int		general_parser(char *input, t_env *env)
 		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
 		if (limit-- == 1)
 			find_redir_err(obj, input, &i);
-		//find_redir(obj, input, &i);
 		if (redir_loop(obj, input, &i) == -1)
-			return(-1);
+			return (-1);
 		if (parse_var(input, &i, env, 0) == -1)
 		{
 			free_obj(obj);

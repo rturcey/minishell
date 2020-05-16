@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/14 09:11:27 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/16 11:40:15 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,24 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 	return (print_result(obj, 0, NULL));
 }
 
+int		replace_pwd(t_env *env)
+{
+	t_env	*pwd;
+	char	*workdir;
+
+	pwd = env_new(1);
+	if (!(workdir = ft_calloc(PATH_MAX, 1)))
+		return (-1);
+	getcwd(workdir, PATH_MAX);
+	if (!(pwd->value = workdir))
+		return (-1);
+	if (!(pwd->key = ft_strdup("PWD")))
+		return (free_str(workdir));
+	add_var(pwd, env);
+	del_var(pwd);
+	return (0);
+}
+
 int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	*path;
@@ -94,8 +112,7 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 	if (ret > 0)
 		maj_err(obj, ft_strdup("cd: too many arguments\n"), 1);
 	else if (chdir(path) == -1)
-		maj_err(obj, ft_sprintf("cd: %s: %s\n", \
-		path, strerror(errno)), 1);
+		maj_err(obj, ft_sprintf("cd: %s: %s\n", path, strerror(errno)), 1);
 	else if (replace_pwd(env) == -1)
 		return (free_str(path));
 	return (print_result(obj, 0, path));

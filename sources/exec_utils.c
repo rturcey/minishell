@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/16 00:06:04 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/16 11:38:43 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,28 @@
 int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
 {
 	pid_t	pid;
+	int		status;
 
 	if ((pid = fork()) < 0)
 	{
 		ft_dprintf(2, ft_sprintf("fork: %s\n", strerror(errno)));
 		return (-1);
 	}
-	else if (pid == 0) 
+	else if (pid == 0)
 	{
 		ft_printf("Child process.  ");
 		if ((dup2(obj->redir->cmd_output, 1) == -1) ||
 			dup2(obj->redir->err_output, 2) == -1)
 			return (-1);
 		execve(tmp, av, env);
-    }
-    else
-    {
+	}
+	else
+	{
 		ft_printf("PARENT started with pid=%d.\n", (int)pid);
-		int status = 0;
+		status = 0;
 		wait(&status);
-		ft_printf("PARENT resumed with status code: %d.  Now terminating parent.\n", status);
-    }
+		ft_printf("PARENT resumed, status code: %d. Terminating\n", status);
+	}
 	return (0);
 }
 
@@ -57,15 +58,15 @@ char	**conv_av(char *input, int *i, t_obj *obj, t_env *env)
 		return (NULL);
 	j = 0;
 	if (!(av[j++] = ft_strdup(obj->obj)))
-		return(char_free_array(av, 0));
+		return (char_free_array(av, 0));
 	while (is_end(input, *i) == 0)
 	{
 		if (redir_loop(obj, input, i) == -1)
-			return(char_free_array(av, j));
+			return (char_free_array(av, j));
 		if ((is_end(input, *i) == 1))
 			break ;
 		if (!(av[j] = sample_str(input, i, av[j], env)))
-			return(char_free_array(av, j));
+			return (char_free_array(av, j));
 		j++;
 	}
 	av[j] = NULL;
@@ -77,7 +78,7 @@ int		add_redirs(char *input, int *i, t_obj *obj)
 	while (is_end(input, *i) == 0)
 	{
 		if (redir_loop(obj, input, i) == -1)
-			return(-1);
+			return (-1);
 		if ((is_end(input, *i) == 1))
 			break ;
 		*i = find_string_end(input, *i);
@@ -104,7 +105,7 @@ int		parse_exec(t_obj *obj, char *input, int *i, t_env *env)
 	path = NULL;
 	av = NULL;
 	if (redir_loop(obj, input, i) == -1)
-			return(-1);
+		return (-1);
 	if (!(obj->obj = sample_str(input, i, obj->obj, env)))
 		return (-1);
 	stock_i = *i;

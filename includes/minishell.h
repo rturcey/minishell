@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/15 23:10:29 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/16 11:48:06 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define CYAN "\033[1;96m"
 # define END  "\033[0m"
 
-typedef struct		stat t_stat;
+typedef struct stat	t_stat;
 
 typedef struct		s_env
 {
