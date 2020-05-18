@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/16 11:34:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 10:43:32 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	sample_path(t_obj *obj, char *sample, char **path)
 		{
 			if (!(*path = ft_strdup(sample)))
 				return (-1);
-			ft_printf("permission ok !\n");
+			//ft_printf("permission ok !\n");
 		}
 		else
 			maj_err(obj, ft_sprintf("bash: %s: %s\n", sample, \
@@ -66,7 +66,7 @@ static int	loop_path(char *path_str, char **path, char *sample, t_obj *obj)
 		{
 			if (!(*path = ft_strdup(test)))
 				return (free_two_str(path_str, test));
-			ft_printf("permission ok !\n");
+			//ft_printf("permission ok !\n");
 		}
 		else
 			maj_err(obj, ft_sprintf("bash: %s: %s\n", sample, \

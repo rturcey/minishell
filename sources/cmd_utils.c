@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/16 11:40:15 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/17 22:50:10 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 	{
 		if (redir_loop(obj, input, i) == -1)
 			return (free_str(result));
-		if (is_end(input, *i) == 1 && free_str(result) == -1)
+		if (is_end(input, *i) == 1)// && free_str(result) == -1)
 			break ;
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);
 	}
+	//ft_printf("segv? res = [%s]\n", result);
 	if (obj->option != 1)
 		result = ft_strjoin_bth(result, ft_strdup("\n"));
 	obj->result = result;

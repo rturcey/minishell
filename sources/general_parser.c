@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/16 11:41:14 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 10:42:04 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ int		general_parser(char *input, t_env *env)
 	i = pass_spaces(input, i);
 	while (input[i])
 	{
+		//ft_printf("input[%d][%c]\n", i, input[i]);
 		if (!(obj = obj_new(env)))
 			return (-1);
 		if (!(obj->redir = redir_new()))
@@ -177,18 +178,20 @@ int		general_parser(char *input, t_env *env)
 		stock_i = i;
 		if ((sample = sample_str(input, &i, sample, env)) == NULL)
 			return (free_obj(obj));
-		ft_printf("string sampled [%s]\n", sample);
+		//ft_printf("string sampled [%s]\n", sample);
 		if ((j = is_cmd(sample)) != -1)
 		{
 			init_obj(obj, sample, j);
 			if (obj->obj == NULL)
 				return (-1);
+			//ft_printf("before parse cmd\n");
 			if ((j = parse_cmds(obj, input, &i, env)) == -1)
 			{
 				free_obj(obj);
 				free_str(sample);
 				return (0);
 			}
+			//ft_printf("after parse cmd\n");
 			if (set_g_err(obj, sample) == 1)
 				return (-1);
 			free(sample);
@@ -207,7 +210,8 @@ int		general_parser(char *input, t_env *env)
 				return (0);
 			}
 		}
-		i = pass_spaces(input, i);
+		i = find_end(input, i);
+		//i = pass_spaces(input, i);
 		if (obj)
 			free_obj(obj);
 	}

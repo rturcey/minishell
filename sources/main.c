@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/15 23:44:47 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/17 21:17:38 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	prompt(t_env *env)
 	user = find_env_value("USER", env);
 	home = find_env_value("HOME", env);
 	remove_home_path(&path, home);
-	ft_printf("%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, CYAN, path, \
+	ft_dprintf(2, "%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, CYAN, path, \
 	END, YELLOW, END);
 	free_two_str(user, home);
 	free_two_str(path, host);

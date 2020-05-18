@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/15 22:53:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/17 22:49:41 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		last_backslash(char *str)
 
 	i = 0;
 	if (!str[i])
-		return (-1);
+		return (0);
 	i = ft_strlen(str) - 1;
 	count = 0;
 	if (str[i] == '\\')
@@ -78,4 +78,13 @@ int		count_strings(char *input, int i)
 		i = pass_spaces(input, i);
 	}
 	return (count);
+}
+
+int		find_end(char *input, int i)
+{
+	while (input[i] && is_end(input, i) != 1)
+		i++;
+	if (input[i] && is_separator(input, i) == 1)
+		i++;
+	return (i);
 }

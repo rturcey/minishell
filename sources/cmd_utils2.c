@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/13 14:36:17 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 10:41:48 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 	{
 		if ((r = find_redir(obj, input, i) == 0))
 		{
-			while (*i < (int)ft_strlen(input))
+			while (*i < (int)ft_strlen(input) && (is_separator(input, *i) == 0))
 			{
 				if ((r = find_redir(obj, input, i) == 0))
 					(*i)++;

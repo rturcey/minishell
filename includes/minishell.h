@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/16 11:48:06 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/17 21:45:58 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int					is_quote(char *str, int i, char quote);
 int					lonely_quote(char *str);
 int					last_backslash(char *str);
 int					find_string_end(char *src, int i);
+int					find_end(char *input, int i);
 int					find_redir(t_obj *obj, char *input, int *i);
 int					find_redir_err(t_obj *obj, char *input, int *i);
 int					is_redir(char *str, int i);
