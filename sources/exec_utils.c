@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 10:44:11 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 19:19:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
 		//ft_printf("PARENT started with pid=%d.\n", (int)pid);
 		status = 0;
 		wait(&status);
+		g_err = status;
 		//ft_printf("PARENT resumed, status code: %d. Terminating\n", status);
 	}
 	return (0);
@@ -112,7 +113,10 @@ int		parse_exec(t_obj *obj, char *input, int *i, t_env *env)
 	if (add_redirs(input, i, obj) == -1)
 		return (-1);
 	if (((r = check_path(obj, env, &path)) != 0) || ((r == 0) && !path))
+	{
+		//ft_printf("after check path\n");
 		return (r);
+	}
 	//ft_printf("check path r[%d] worked for [%s] \n", r, path);
 	if (!(b_env = env_to_array(env)))
 		return (free_str(path));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 20:04:29 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
 int					set_g_err(t_obj *obj, char *sample);
 int					parse_g_err(char **sample, int *l, int *i);
 int					redir_loop(t_obj *obj, char *input, int *i);
-int					replace_pwd(t_env *env);
+int					replace_pwd(t_env *env, char **path);
 int					check_path(t_obj *obj, t_env *env, char **path);
 
 #endif

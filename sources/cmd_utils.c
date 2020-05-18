@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 20:08:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,29 +65,39 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 			return (free_two_str(result, sample));
 		result = ft_strjoin_sp(result, sample);
 	}
-	//ft_printf("segv? res = [%s]\n", result);
 	if (obj->option != 1)
 		result = ft_strjoin_bth(result, ft_strdup("\n"));
 	obj->result = result;
 	return (print_result(obj, 0, NULL));
 }
 
-int		replace_pwd(t_env *env)
+int		replace_pwd(t_env *env, char **path)
 {
 	t_env	*pwd;
 	char	*workdir;
+	int		ret;
 
 	pwd = env_new(1);
 	if (!(workdir = ft_calloc(PATH_MAX, 1)))
 		return (-1);
-	getcwd(workdir, PATH_MAX);
+	ret = 0;
+	if ((getcwd(workdir, PATH_MAX) == NULL) && (ft_strncmp(*path, ".",
+		ft_strlen(*path)) == 0) && (ret = -2))
+	{
+		if (!(workdir = ft_strjoin_slash(find_env_val("PWD", env), ".")))
+			return (-1);
+		free_str(*path);
+		*path = ft_strdup(workdir);
+	}
+	else if (getcwd(workdir, PATH_MAX) == NULL)
+		return (free_str(workdir));
 	if (!(pwd->val = workdir))
 		return (-1);
 	if (!(pwd->key = ft_strdup("PWD")))
 		return (free_str(workdir));
 	add_var(pwd, env);
 	del_var(pwd);
-	return (0);
+	return (ret);
 }
 
 int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
@@ -114,8 +124,15 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 		maj_err(obj, ft_strdup("cd: too many arguments\n"), 1);
 	else if (chdir(path) == -1)
 		maj_err(obj, ft_sprintf("cd: %s: %s\n", path, strerror(errno)), 1);
-	else if (replace_pwd(env) == -1)
+	else if ((ret = replace_pwd(env, &path)) == -1)
 		return (free_str(path));
+	else if (ret == -2)
+	{
+		maj_err(obj, ft_sprintf("cd: error retrieving current directory:\
+			getcwd: cannot access parent directories: No such file or\
+			directory\n"), 0);
+		chdir(path);
+	}
 	return (print_result(obj, 0, path));
 }
 

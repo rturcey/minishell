@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 10:41:48 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 20:08:53 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ int		parse_pwd(t_obj *obj, char *input, int *i, t_env *env)
 		else if (r == -1)
 			return (-1);
 	}
-	if (!(workdir = ft_calloc(PATH_MAX, 1)))
-		return (-1);
-	getcwd(workdir, PATH_MAX);
+	workdir = find_env_val("PWD", env);
 	obj->result = ft_strjoin_bth(workdir, ft_strdup("\n"));
 	return (print_result(obj, 0, NULL));
 }

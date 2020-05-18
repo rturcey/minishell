@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 12:32:55 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 20:06:56 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,14 +190,12 @@ int		general_parser(char *input, t_env *env)
 				free_obj(obj);
 				return (-1);
 			}
-			//ft_printf("before parse cmd\n");
 			if ((j = parse_cmds(obj, input, &i, env)) == -1)
 			{
 				free_obj(obj);
 				free_str(sample);
 				return (0);
 			}
-			//ft_printf("after parse cmd\n");
 			if (set_g_err(obj, sample) == 1)
 				return (-1);
 			free(sample);
@@ -215,9 +213,9 @@ int		general_parser(char *input, t_env *env)
 				free_obj(obj);
 				return (0);
 			}
+
 		}
 		i = find_end(input, i);
-		//i = pass_spaces(input, i);
 		if (obj)
 			free_obj(obj);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 20:07:38 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ static void	prompt(t_env *env)
 	char	*home;
 	int		fd;
 
-	if (!(path = malloc(PATH_MAX)))
-		return ;
 	fd = open("/etc/hostname", O_RDONLY);
 	get_next_line(fd, &host);
-	getcwd(path, PATH_MAX);
+	path = find_env_val("PWD", env);
 	user = find_env_val("USER", env);
 	home = find_env_val("HOME", env);
 	remove_home_path(&path, home);
