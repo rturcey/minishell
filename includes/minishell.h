@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/17 21:45:58 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ typedef struct stat	t_stat;
 typedef struct		s_env
 {
 	char			*key;
-	char			*value;
+	char			*val;
 	int				in;
 	struct s_env	*next;
 }					t_env;
 
 typedef struct		s_arg
 {
-	char			*value;
+	char			*val;
 	struct s_arg	*next;
 }					t_arg;
 
@@ -77,7 +77,7 @@ t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
 t_env				*env_new(int in);
-char				*find_env_value(char *key, t_env *env);
+char				*find_env_val(char *key, t_env *env);
 t_env				*find_env_entry(char *key, t_env *env);
 t_env				*env_cpy(t_env *elt);
 char				**env_to_array(t_env *env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:47:53 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/15 14:22:33 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ char	*add_options(char *ret, char *arg, int i)
 	return (ret);
 }
 
-char	*replace_values(char *cpyarg, int star, va_list ap, int k)
+char	*replace_vals(char *cpyarg, int star, va_list ap, int k)
 {
 	int		i;
 	int		j;
-	char	*value;
+	char	*val;
 	char	*new;
 
 	i = 0;
 	j = 0;
-	value = ft_itoa(va_arg(ap, int));
-	if (!(new = ft_malloc("char", (ft_pstrlen(cpyarg) + ft_pstrlen(value)
+	val = ft_itoa(va_arg(ap, int));
+	if (!(new = ft_malloc("char", (ft_pstrlen(cpyarg) + ft_pstrlen(val)
 	+ 1))))
 		return (NULL);
 	while (cpyarg[j] && j < star)
@@ -52,14 +52,14 @@ char	*replace_values(char *cpyarg, int star, va_list ap, int k)
 	if (j == star)
 	{
 		j++;
-		while (value[k])
-			new[i++] = value[k++];
+		while (val[k])
+			new[i++] = val[k++];
 	}
 	while (cpyarg[j])
 		new[i++] = cpyarg[j++];
 	new[i] = '\0';
 	ft_free(cpyarg);
-	ft_free(value);
+	ft_free(val);
 	return (new);
 }
 
@@ -71,7 +71,7 @@ char	*convert_type(char **cpyarg, int i, va_list ap)
 	while (is_type(*cpyarg, i) == 0)
 	{
 		if ((*cpyarg)[i] == '*')
-			*cpyarg = replace_values(*cpyarg, i, ap, 0);
+			*cpyarg = replace_vals(*cpyarg, i, ap, 0);
 		i++;
 	}
 	if ((*cpyarg)[i] == 'c')

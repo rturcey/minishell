@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_var.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/12 15:02:33 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:23:01 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static int		check_vars(char *input, int *i, t_env *env)
 {
 	int		j;
-	char	*sample;
+	char	*s;
 
-	sample = NULL;
+	s = NULL;
 	while (is_end(input, *i) == 0)
 	{
 		*i = pass_spaces(input, *i);
@@ -33,12 +33,81 @@ static int		check_vars(char *input, int *i, t_env *env)
 			return (0);
 		if (*i != j + 1)
 			return (-1);
-		if (!(sample = sample_str(input, i, sample, env)))
+		if (!(s = sample_str(input, i, s, env)))
 			return (-1);
-		free(sample);
+		free(s);
 		*i = pass_spaces(input, *i);
 	}
 	return (0);
+}
+
+static int		replace_var(t_env *w, char *key, t_env *tru)
+{
+	char	*buf;
+	char	*s;
+	int		i;
+	int		j;
+	int		bs;
+
+	i = -1;
+	while ((w->val)[++i])
+		if (w->val[i] == '$')
+			if (ft_strncmp(&w->val[i + 1], key, ft_strlen(key)) == 0)
+			{
+				if (!(s = ft_substr(&w->val[i], 0, ft_strlen(key) + 1)))
+					return (-1);
+				j = 0;
+				if (parse_sample_var(&s, &j, tru, &bs) < 0)
+					return (free_str(s));
+				if (!(buf = ft_strdup(&w->val[i + ft_strlen(key) + 1]))
+				|| !(s = ft_strjoin_bth(s, buf))
+				|| !(s = ft_strjoin_bth(ft_substr(w->val, 0, i), s)))
+					return (-1);
+				free(w->val);
+				w->val = s;
+				return (0);
+			}
+	return (0);
+}
+
+static int		check_var_inside(t_env *w, t_env *env)
+{
+	t_env	*tmp;
+	t_env	*k;
+	char	*ret;
+
+	tmp = w;
+	while (tmp)
+	{
+		if (ft_strchr(tmp->val, '$'))
+		{
+			k = w;
+			while (k)
+			{
+				if ((ret = ft_strnstr(tmp->val, k->key, ft_strlen(tmp->val))))
+				{
+					if (ret[ft_strlen(k->key)] == ':'
+					|| is_end(ret, ft_strlen(k->key)))
+						if (replace_var(tmp, k->key, env) == -1)
+							return (-1);
+				}
+				k = k->next;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+static void		add_multiple_var(t_env *w, t_env *env)
+{
+	while (w)
+	{
+		if (find_env_entry(w->key, env))
+			w->in = 1;
+		add_var(w, env);
+		w = w->next;
+	}
 }
 
 int				parse_var(char *input, int *i, t_env *env, int len)
@@ -59,13 +128,9 @@ int				parse_var(char *input, int *i, t_env *env, int len)
 	if (!(wagon = init_env(env_new, 0)))
 		return (free_array_and_str(env_new, -1, to_split) == 2);
 	begin = wagon;
-	while (wagon)
-	{
-		if (find_env_entry(wagon->key, env))
-			wagon->in = 1;
-		add_var(wagon, env);
-		wagon = wagon->next;
-	}
+	if (check_var_inside(wagon, env) < 0)
+		return (free_array_and_str(env_new, -1, to_split) == 2);
+	add_multiple_var(wagon, env);
 	free_array_and_str(env_new, -1, to_split);
 	return (env_clear(begin));
 }

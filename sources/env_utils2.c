@@ -6,17 +6,17 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:02:11 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 12:26:55 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** returns the value associated to key, or NULL if key isn't in env
+** returns the val associated to key, or NULL if key isn't in env
 */
 
-char			*find_env_value(char *key, t_env *env)
+char			*find_env_val(char *key, t_env *env)
 {
 	t_env	*tmp;
 	int		i;
@@ -27,7 +27,7 @@ char			*find_env_value(char *key, t_env *env)
 	while (tmp && (i = ft_strncmp(key, tmp->key, len)) != 0)
 		tmp = tmp->next;
 	if (i == 0)
-		return (ft_strdup(tmp->value));
+		return (ft_strdup(tmp->val));
 	return (ft_strdup(""));
 }
 
@@ -61,7 +61,7 @@ t_env			*env_cpy(t_env *elt)
 	if (!(cpy = env_new(elt->in)))
 		return (NULL);
 	cpy->key = ft_strdup(elt->key);
-	cpy->value = ft_strdup(elt->value);
+	cpy->val = ft_strdup(elt->val);
 	return (cpy);
 }
 
@@ -72,7 +72,7 @@ t_env			*env_cpy(t_env *elt)
 void			del_var(t_env *var)
 {
 	free(var->key);
-	free(var->value);
+	free(var->val);
 	free(var);
 	var = NULL;
 }

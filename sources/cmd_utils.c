@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/17 22:50:10 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		replace_pwd(t_env *env)
 	if (!(workdir = ft_calloc(PATH_MAX, 1)))
 		return (-1);
 	getcwd(workdir, PATH_MAX);
-	if (!(pwd->value = workdir))
+	if (!(pwd->val = workdir))
 		return (-1);
 	if (!(pwd->key = ft_strdup("PWD")))
 		return (free_str(workdir));
@@ -108,7 +108,7 @@ int		parse_cd(t_obj *obj, char *input, int *i, t_env *env)
 		else if ((path == NULL) && !(path = sample_str(input, i, path, env)))
 			return (-1);
 	}
-	if ((path == NULL) && !(path = ft_strdup(find_env_value("HOME", env))))
+	if ((path == NULL) && !(path = ft_strdup(find_env_val("HOME", env))))
 		return (-1);
 	if (ret > 0)
 		maj_err(obj, ft_strdup("cd: too many arguments\n"), 1);

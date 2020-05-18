@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/16 11:39:54 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int				check_var(char *sample)
 	return (0);
 }
 
-static int		replace_var(char **sample, char *begin, char *value, char *end)
+static int		replace_var(char **sample, char *begin, char *val, char *end)
 {
-	if (!(*sample = ft_strjoin_bth(begin, value)))
+	if (!(*sample = ft_strjoin_bth(begin, val)))
 	{
 		free(end);
-		return (free_two_str(begin, value));
+		return (free_two_str(begin, val));
 	}
 	if (!(*sample = ft_strjoin_bth(*sample, end)))
 		return (free_two_str(*sample, end));
@@ -50,7 +50,7 @@ static int		replace_var(char **sample, char *begin, char *value, char *end)
 int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
 {
 	char	*key;
-	char	*value;
+	char	*val;
 	char	*begin;
 	int		i;
 
@@ -64,16 +64,16 @@ int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
 	if (!(key = ft_substr(*sample, *j, i)))
 		return (-1);
 	*r += ft_strlen(key);
-	if (!(value = find_env_value(key, env)))
+	if (!(val = find_env_val(key, env)))
 		return (-2);
 	free(key);
 	if (!(begin = ft_substr(*sample, 0, (*j) - 1)))
-		return (free_str(value));
+		return (free_str(val));
 	if (!(key = ft_substr(*sample, i + *j, ft_strlen(*sample))))
-		return (free_two_str(value, begin));
+		return (free_two_str(val, begin));
 	free(*sample);
-	*j = *j + ft_strlen(value) - 2;
-	return (replace_var(sample, begin, value, key));
+	*j = *j + ft_strlen(val) - 2;
+	return (replace_var(sample, begin, val, key));
 }
 
 char			**env_to_array(t_env *env)
@@ -92,7 +92,7 @@ char			**env_to_array(t_env *env)
 	i = 0;
 	while (env)
 	{
-		if (!(arr[i++] = ft_strjoin_dic(env->key, env->value)))
+		if (!(arr[i++] = ft_strjoin_dic(env->key, env->val)))
 		{
 			free_array(arr, i - 1, -1);
 			return (NULL);

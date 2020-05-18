@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 09:29:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ t_env	*env_new(int in)
 	if (!(new = malloc(sizeof(t_env))))
 		return (NULL);
 	new->key = NULL;
-	new->value = NULL;
+	new->val = NULL;
 	new->in = in;
 	new->next = NULL;
 	return (new);
 }
 
 /*
-** split key=value in 2 str, put them in a t_env elt
+** split key=val in 2 str, put them in a t_env elt
 */
 
 int		split_env(char *line, t_env *elt)
@@ -49,7 +49,7 @@ int		split_env(char *line, t_env *elt)
 	while (++j < i)
 		elt->key[j] = line[j];
 	elt->key[j] = '\0';
-	if (!(elt->value = ft_strdup(&line[i + 1])))
+	if (!(elt->val = ft_strdup(&line[i + 1])))
 		return (-1);
 	return (0);
 }
@@ -62,7 +62,7 @@ int		env_clear(t_env *env)
 	{
 		tmp = env->next;
 		free(env->key);
-		free(env->value);
+		free(env->val);
 		free(env);
 		env = tmp;
 	}
@@ -77,7 +77,7 @@ void	print_env(t_env *env, int fd)
 	while (tmp)
 	{
 		if (tmp->in == 1)
-			dprintf(fd, "%s=%s\n", tmp->key, tmp->value);
+			dprintf(fd, "%s=%s\n", tmp->key, tmp->val);
 		tmp = tmp->next;
 	}
 }

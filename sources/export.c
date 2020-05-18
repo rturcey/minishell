@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/09 10:26:16 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int				add_var(t_env *elt, t_env *env)
 	t_env	*bis;
 
 	tmp = env;
-	if (!elt->key || !elt->value)
+	if (!elt->key || !elt->val)
 		return (-1);
 	if (!(bis = find_env_entry(elt->key, env)))
 	{
@@ -64,9 +64,9 @@ int				add_var(t_env *elt, t_env *env)
 			return (-1);
 		return (0);
 	}
-	free(bis->value);
-	bis->value = NULL;
-	bis->value = ft_strdup(elt->value);
+	free(bis->val);
+	bis->val = NULL;
+	bis->val = ft_strdup(elt->val);
 	return (0);
 }
 
@@ -76,7 +76,7 @@ int				export_var(t_env *elt, t_env *env)
 	t_env	*bis;
 
 	tmp = env;
-	if (!elt->key || !elt->value)
+	if (!elt->key || !elt->val)
 		return (-1);
 	if (!(bis = find_env_entry(elt->key, env)))
 	{
@@ -87,9 +87,9 @@ int				export_var(t_env *elt, t_env *env)
 		tmp->next->in = 1;
 		return (0);
 	}
-	free(bis->value);
-	bis->value = NULL;
-	bis->value = ft_strdup(elt->value);
+	free(bis->val);
+	bis->val = NULL;
+	bis->val = ft_strdup(elt->val);
 	bis->in = 1;
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/17 21:17:38 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	prompt(t_env *env)
 	fd = open("/etc/hostname", O_RDONLY);
 	get_next_line(fd, &host);
 	getcwd(path, PATH_MAX);
-	user = find_env_value("USER", env);
-	home = find_env_value("HOME", env);
+	user = find_env_val("USER", env);
+	home = find_env_val("HOME", env);
 	remove_home_path(&path, home);
 	ft_dprintf(2, "%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, CYAN, path, \
 	END, YELLOW, END);
@@ -78,7 +78,7 @@ int			main(int argc, char **argv, char **env)
 		return (-1);
 	}
 	test->key = ft_strdup("TEST_VAR");
-	test->value = ft_strdup("");
+	test->val = ft_strdup("");
 	g_err = 0;
 	while (1)
 	{

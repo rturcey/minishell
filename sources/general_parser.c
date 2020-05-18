@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 10:42:04 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:32:55 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,10 @@ int		general_parser(char *input, t_env *env)
 			return (-1);
 		}
 		if (!input[i])
+		{
+			free_obj(obj);
 			continue ;
+		}
 		stock_i = i;
 		if ((sample = sample_str(input, &i, sample, env)) == NULL)
 			return (free_obj(obj));
@@ -183,7 +186,10 @@ int		general_parser(char *input, t_env *env)
 		{
 			init_obj(obj, sample, j);
 			if (obj->obj == NULL)
+			{
+				free_obj(obj);
 				return (-1);
+			}
 			//ft_printf("before parse cmd\n");
 			if ((j = parse_cmds(obj, input, &i, env)) == -1)
 			{

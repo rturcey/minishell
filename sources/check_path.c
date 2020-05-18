@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 10:43:32 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,18 @@ static int	loop_path(char *path_str, char **path, char *sample, t_obj *obj)
 int			check_path(t_obj *obj, t_env *env, char **path)
 {
 	char	**path_arr;
-	char	*value;
+	char	*val;
 	int		i;
 	int		r;
 
 	i = -1;
 	if (ft_strchr(obj->obj, '/'))
 		return (sample_path(obj, obj->obj, path));
-	if (!(value = find_env_value("PATH", env)))
+	if (!(val = find_env_val("PATH", env)))
 		return (-1);
-	if (!(path_arr = ft_split(value, ':')))
-		return (free_str(value));
-	free(value);
+	if (!(path_arr = ft_split(val, ':')))
+		return (free_str(val));
+	free(val);
 	while (path_arr[++i])
 		if ((r = loop_path(path_arr[i], path, obj->obj, obj)) != -2)
 		{

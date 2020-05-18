@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/12 14:19:37 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,24 @@ int		set_g_err(t_obj *obj, char *sample)
 
 int		parse_g_err(char **sample, int *l, int *i)
 {
-	char	*value;
+	char	*val;
 	char	*begin;
 	char	*end;
 
 	skim_str(*sample, (*l) - 1, i);
 	skim_str(*sample, (*l) - 1, i);
-	if (!(value = ft_itoa(g_err)))
+	if (!(val = ft_itoa(g_err)))
 		return (-1);
 	if (!(begin = ft_substr(*sample, 0, (*l))))
-		return (free_str(value));
+		return (free_str(val));
 	if (!(end = ft_substr(*sample, *l, ft_strlen(*sample))))
-		return (free_two_str(value, begin));
+		return (free_two_str(val, begin));
 	free(*sample);
-	*i += ft_strlen(value);
-	if (!(*sample = ft_strjoin_bth(begin, value)))
+	*i += ft_strlen(val);
+	if (!(*sample = ft_strjoin_bth(begin, val)))
 	{
 		free(end);
-		return (free_two_str(begin, value));
+		return (free_two_str(begin, val));
 	}
 	if (!(*sample = ft_strjoin_bth(*sample, end)))
 		return (free_two_str(*sample, end));

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 11:58:41 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_arg		*arg_new(void)
 
 	if (!(new = malloc(sizeof(t_arg))))
 		return (NULL);
-	new->value = NULL;
+	new->val = NULL;
 	new->next = NULL;
 	return (new);
 }
