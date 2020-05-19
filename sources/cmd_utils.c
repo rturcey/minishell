@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 20:08:25 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:15:00 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 	result = ft_strdup("");
 	if (redir_loop(obj, input, i) == -1)
 		return (free_str(result));
-	if (ft_strncmp("-n ", &input[*i], 3) == 0 && ((*i) += 3))
-		obj->option = 1;
+	pass_option(obj, input, i);
 	while (is_end(input, *i) == 0)
 	{
 		if (redir_loop(obj, input, i) == -1)
