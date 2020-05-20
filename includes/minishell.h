@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 11:07:03 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 16:26:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct		s_obj
 	struct s_obj	*next;
 }					t_obj;
 
-int					g_err;
+long long int		g_err;
 
 typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 

@@ -6,17 +6,17 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:45:39 by esoulard          #+#    #+#             */
-/*   Updated: 2019/10/10 14:31:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/20 18:05:12 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int		ft_atoi(const char *str)
+#include <stdio.h>
+long long	ft_atoi(const char *str)
 {
-	int result;
-	int minus;
-	int i;
+	long long	result;
+	int			minus;
+	int			i;
 
 	i = 0;
 	result = 0;

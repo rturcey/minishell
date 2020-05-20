@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 11:32:01 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 18:08:01 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,9 +171,10 @@ int		general_parser(char *input, t_env *env)
 			return (free_obj(obj));
 		sample = NULL;
 		//il faudra ajouter un moyen de ne verifier les wrong redir que pour chaque bloc de cmd
-		if (limit-- == 1)
-			find_redir_err(obj, input, &i);
-		if (redir_loop(obj, input, &i) == -1)
+		if ((limit-- == 1) && (find_redir_err(obj, input, &i) == -1)
+			&& (g_err = 2))
+				return (0);
+		if ((redir_loop(obj, input, &i) == -1) && (g_err = 2))
 			return (-1);
 		if (parse_var(input, &i, env, 0) == -1)
 		{
@@ -217,8 +218,8 @@ int		general_parser(char *input, t_env *env)
 			{
 				maj_err(obj, ft_sprintf("%s: command not found\n", obj->obj), 127);
 				print_result(obj, 0, NULL);
-				free_obj(obj);
-				return (0);
+				// free_obj(obj);
+				// return (0);
 			}
 
 		}

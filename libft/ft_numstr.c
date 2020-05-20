@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 16:28:32 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/09 23:17:24 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/20 17:44:41 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		ft_numstr(char *str)
 	i = -1;
 	if (!str || str[0] == '\0')
 		return (0);
-	if (str[0] == '-')
+	if (str[0] == '-' || str[0] == '+')
 		i = 0;
 	while (str[++i])
 	{

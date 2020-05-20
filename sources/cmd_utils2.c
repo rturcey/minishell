@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/20 15:19:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/20 20:50:14 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ int		parse_env(t_obj *obj, char *input, int *i, t_env *env)
 
 int		parse_exit(t_obj *obj, char *input, int *i, t_env *env)
 {
-	char	*s;
-	int		r;
+	char			*s;
+	long long		r;
 
 	s = NULL;
 	r = 0;
@@ -132,11 +132,12 @@ int		parse_exit(t_obj *obj, char *input, int *i, t_env *env)
 			return (-1);
 	}
 	maj_err(obj, ft_sprintf("exit\n"), g_err);
-	if (r == 1)
+	if ((r == 1) && (g_err = 1))
 		maj_err(obj, ft_sprintf("exit: too many arguments\n"), 1);
-	else if ((s != NULL) && ft_numstr(s) == 1 && (r = ft_atoi(s)))
+	else if (s != NULL && ft_numstr(s) == 1 && chk_ll(s) == 0 &&
+		(r = ft_atoi(s)))
 		g_err = (r < 0 || r > 255) ? r % 256 : r;
-	else if ((s != NULL) && (ft_numstr(s) != 1))
+	else if (s != NULL && (ft_numstr(s) != 1 || chk_ll(s) != 0) && (g_err = 2))
 		maj_err(obj, ft_sprintf("exit: %s: numeric argument required\n", s), 2);
 	return (print_result(obj, g_err, s));
 }
