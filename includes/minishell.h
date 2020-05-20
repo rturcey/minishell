@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/19 10:15:20 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 11:07:03 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,6 @@ int					redir_loop(t_obj *obj, char *input, int *i);
 int					replace_pwd(t_env *env, char **path);
 int					check_path(t_obj *obj, t_env *env, char **path);
 void				pass_option(t_obj *obj, char *input, int *i);
+int					normed_char(char c);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 20:06:56 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/20 11:32:01 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,26 @@ int		sample_quote_cond(char *input, int *i, char **sample, int *j, t_env *env)
 	{
 		while (++l < k)
 		{
-			if ((*sample)[l] == '\\' && ((*sample)[l + 1] == '\"' ||
-				(*sample)[l + 1] == '\\') && k--)
+			if ((*sample)[l + 1] != '$' && ((*sample)[l] == '\\' && ((*sample)[l + 1] == '\"' ||
+				(*sample)[l + 1] == '\\') && k--))
 				skim_str(*sample, l - 1, i);
-			else if ((*sample)[l] == '$')
+			else if ((*sample)[l] == '$' && l > 0 && (*sample)[l - 1] == '\\' && k--)
+				skim_str(*sample, l - 2, i);
+			else if ((*sample)[l] == '$' && normed_char((*sample)[l + 1]) == 0)
 			{
 				if ((*sample)[l + 1] && (*sample)[l + 1] == '?')
 				{
 					if (parse_g_err(sample, &l, i) == -1)
 						return (-1);
 				}
-				if ((r = parse_sample_var(sample, &l, env, i)) != -1)
+				else if ((r = parse_sample_var(sample, &l, env, i)) != -3)
+				{
+					if (r == -1)
+						return (-1);
 					heck = 1;
-				if (r == -2)
-					(*j)--;
-				else if (r == -1)
-					return (-1);
+					if (r == -2)
+						(*j)--;
+				}
 				k = get_next_quote(*sample, *j) - 1;
 			}
 		}
@@ -103,19 +107,22 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 	j = -1;
 	while (sample[++j])
 	{
-		if (sample[j] == '\\')
+		if (sample[j] == '\\' && sample[j + 1] != '$')
 			skim_str(sample, j - 1, i);
 		else if (is_quote(input, *i, 0) == 1)
 		{
 			if (sample_quote_cond(input, i, &sample, &j, env) == -1)
 				return (char_free_str(sample));
 		}
-		else if ((sample[j] == '$') && sample[j + 1] && (sample[j + 1] == '?'))
+		else if ((sample[j] == '$') && sample[j + 1] && (sample[j + 1] == '?') \
+		&& (j == 0 || sample[j - 1] != '\\'))
 		{
 			if (parse_g_err(&sample, &j, i) == -1)
 				return (char_free_str(sample));
 		}
-		else if (sample[j] == '$')
+		else if (sample[j] == '$' && j > 0 && sample[j - 1] == '\\')
+				skim_str(sample, j - 2, i);
+		else if (sample[j] == '$' && normed_char(sample[j + 1]) == 0)
 		{
 			if ((r = parse_sample_var(&sample, &j, env, i)) == -2)
 				j--;

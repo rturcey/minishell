@@ -6,16 +6,16 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 11:26:58 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		normed_char(char c)
+int				normed_char(char c)
 {
 	if (ft_isalnum(c) == 0)
-		if (c != '-' && c != '_')
+		if (c != '-' && c != '_' && c != '?')
 			return (-1);
 	return (0);
 }
@@ -58,7 +58,10 @@ int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
 	i = *j;
 	if (!(*sample)[*j] || normed_char((*sample)[*j]) == -1)
 		return (-2);
-	while (normed_char((*sample)[i]) == 0)
+	if (!ft_isdigit((*sample)[i]))
+		while (normed_char((*sample)[i]) == 0)
+			i++;
+	else
 		i++;
 	i -= *j;
 	if (!(key = ft_substr(*sample, *j, i)))

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/19 10:15:00 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 12:07:14 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,29 @@ int		parse_echo(t_obj *obj, char *input, int *i, t_env *env)
 {
 	char	*result;
 	char	*sample;
+	int		l;
 
 	(void)env;
-	result = ft_strdup("");
+	if (!(result = ft_strdup("")))
+		return (-1);
 	if (redir_loop(obj, input, i) == -1)
 		return (free_str(result));
 	pass_option(obj, input, i);
 	while (is_end(input, *i) == 0)
 	{
+		l = 0;
 		if (redir_loop(obj, input, i) == -1)
 			return (free_str(result));
-		if (is_end(input, *i) == 1)// && free_str(result) == -1)
+		if (is_end(input, *i) == 1)
 			break ;
+		if (ft_strncmp(&input[*i], "\"\"", 2) == 0)
+			l = 1;
 		if (!(sample = sample_str(input, i, sample, env)))
 			return (free_two_str(result, sample));
-		result = ft_strjoin_sp(result, sample);
+		if (l == 0 && sample[0] == '\0')
+			free(sample);
+		else
+			result = ft_strjoin_sp(result, sample);
 	}
 	if (obj->option != 1)
 		result = ft_strjoin_bth(result, ft_strdup("\n"));

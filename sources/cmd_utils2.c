@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 20:08:53 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/05/20 11:45:39 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		parse_export(t_obj *obj, char *input, int *i, t_env *env)
 			return (free_str(sample));
 		if (sample_export(sample, env) == -1)
 			maj_err(obj, ft_sprintf(\
-			"export: %s : not a valid identifier", sample), 1);
+			"export: %s : not a valid identifier\n", sample), 1);
 		free(sample);
 	}
 	return (print_result(obj, 0, NULL));
