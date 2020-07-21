@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 20:07:50 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/21 13:50:25 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,12 @@ void	*free_arg(t_arg *arg)
 
 void	*free_redir(t_redir *redir)
 {
-	if (redir->cmd_input > 0)
-		close(redir->cmd_input);
+	int		i;
+
+	i = -1;
+	while (redir->cmd_input[++i] > -1)
+		close(redir->cmd_input[i]);
+	free(redir->cmd_input);
 	if (redir->cmd_output != 1 && redir->cmd_output != -1)
 		close(redir->cmd_output);
 	if (redir->err_output != 2 && redir->err_output != -1)

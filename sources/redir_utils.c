@@ -6,11 +6,24 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:11:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/08 10:12:18 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/21 13:30:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int				make_tab(t_redir *redir)
+{
+	int		i;
+
+	i = -1;
+	free(redir->cmd_input);
+	if (!(redir->cmd_input = malloc((redir->incount + 1) * sizeof(int))))
+		return (-1);
+	while (++i < redir->incount + 1)
+		redir->cmd_input[i] = -2;
+	return (0);
+}
 
 int				is_end(char *str, int i)
 {

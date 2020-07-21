@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 18:08:01 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/21 13:19:04 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ int		general_parser(char *input, t_env *env)
 		if ((limit-- == 1) && (find_redir_err(obj, input, &i) == -1)
 			&& (g_err = 2))
 				return (0);
+		if (make_tab(obj->redir) == -1 && (g_err = 2))
+				return (-1);
 		if ((redir_loop(obj, input, &i) == -1) && (g_err = 2))
 			return (-1);
 		if (parse_var(input, &i, env, 0) == -1)
