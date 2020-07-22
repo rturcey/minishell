@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_err.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:47:40 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/21 13:46:18 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 16:14:59 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,11 @@ int				find_redir_err(t_obj *obj, char *input, int *i)
 
 	s_fd[0] = 1;
 	j = *i;
-	while (is_end(input, j) == 0)
+	while (is_end(input, j) == 0 && (j = pass_spaces(input, j)))
 	{
-		j = pass_spaces(input, j);
 		while (input[j] && (s_fd[1] = is_redir(input, j)) == 0
 			&& ft_isdigit(input[j]) == 0)
 			j++;
-		if (is_redir(input, j) == 3)
-			obj->redir->incount++;
 		if (!input[j])
 			return (0);
 		if (ft_isdigit(input[j]) != 0)

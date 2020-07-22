@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/21 13:51:46 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/18 19:18:12 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int		input_tab(t_redir *redir, char *path)
-{
-	int		i;
-
-	i = 0;
-	while (redir->cmd_input[i] != -2 && i < redir->incount)
-		i++;
-	if (i < redir->incount)
-		redir->cmd_input[i] = open(path, O_RDONLY, 0644);
-	return (redir->cmd_input[i]);
-}
 
 static int		redir_norm(int kind, t_redir *redir, char *path)
 {
@@ -40,10 +28,10 @@ static int		redir_norm(int kind, t_redir *redir, char *path)
 	}
 	if (kind == 3)
 	{
-		if (input_tab(redir, path) == -1)
-			return (-1);
-		else
-			return (0);
+		if (redir->cmd_input != 0)
+			close(redir->cmd_input);
+		redir->cmd_input = open(path, O_RDONLY, 0644);
+		return (redir->cmd_input);
 	}
 	return (redir->cmd_output);
 }

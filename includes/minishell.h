@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/21 12:31:40 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/05/20 16:26:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ typedef struct		s_arg
 
 typedef struct		s_redir
 {
-	int				incount;
-	int				*cmd_input;
+	int				cmd_input;
 	int				cmd_output;
 	int				err_output;
 }					t_redir;
@@ -130,6 +129,5 @@ int					replace_pwd(t_env *env, char **path);
 int					check_path(t_obj *obj, t_env *env, char **path);
 void				pass_option(t_obj *obj, char *input, int *i);
 int					normed_char(char c);
-int					make_tab(t_redir *redir);
 
 #endif
