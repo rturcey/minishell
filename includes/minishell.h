@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 16:26:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/23 12:54:38 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ typedef struct		s_redir
 	int				err_output;
 }					t_redir;
 
+typedef struct		s_pipe
+{
+	int				lever;
+	int				pipefd[2];
+	int				pid;
+	int				proc;
+	int				count;
+}					t_pipe;
+
 typedef struct		s_obj
 {
 	char			*obj;
@@ -68,6 +77,7 @@ typedef struct		s_obj
 }					t_obj;
 
 long long int		g_err;
+t_pipe				g_p;
 
 typedef int			(*t_parse_cmd)(t_obj *, char *, int *, t_env *);
 

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 18:08:01 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/23 12:51:13 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 				return (char_free_str(sample));
 		}
 		else if (sample[j] == '$' && j > 0 && sample[j - 1] == '\\')
-				skim_str(sample, j - 2, i);
+			skim_str(sample, j - 2, i);
 		else if (sample[j] == '$' && normed_char(sample[j + 1]) == 0)
 		{
 			if ((r = parse_sample_var(&sample, &j, env, i)) == -2)
@@ -144,6 +144,68 @@ char	*sample_str(char *input, int *i, char *sample, t_env *env)
 **strcmp is positive, and send obj and input to
 **the appropriate function
 */
+
+void	init_pipe(char *input, int i)
+{
+	int	end;
+
+	end = find_end(input, i);
+	if (--end >= 0 && input[end] == '|')
+		g_p.lever = 1;
+	else
+	{
+		g_p.count = 0;
+		g_p.lever = 0;
+		g_p.pid = 1;
+		g_p.proc = 0;
+	}
+}
+
+void	pipe_checks(char *input, int *i, t_obj *obj)
+{
+	int status;
+
+	if (g_p.lever == 1)
+	{
+		if ((g_p.pid = fork()) == -1)
+		{
+			ft_dprintf(2, "fork error\n");
+			exit(EXIT_FAILURE);
+		}
+		if (g_p.pid == 0) //child reads from pipe
+		{
+			obj->redir->cmd_input = g_p.pipefd[0];
+			close(g_p.pipefd[1]);// Close unused write end
+			g_p.proc = 2;
+			//ft_dprintf(2, "in child after fork proc %d\n", g_p.proc);
+			g_p.count++;
+			//ft_dprintf(2, "pipe n°%d\n", g_p.count);
+			if (input[find_end(input, *i) - 1] != '|')
+				return ;
+		}
+		else
+		{
+			//ft_dprintf(2, "in parent after fork\n");
+			*i = find_end(input, *i);
+			close(g_p.pipefd[0]);
+			status = 0;
+			wait(&status);
+		}
+	}
+	init_pipe(input, *i);
+	if (g_p.lever == 1)
+	{
+		if (pipe(g_p.pipefd) == -1)
+		{
+			ft_dprintf(2, "pipe error\n");
+			exit(EXIT_FAILURE);
+		}
+		//ft_dprintf(2, "in parent after pipe creation\n");
+		obj->redir->cmd_output = g_p.pipefd[1];
+		if (g_p.count == 0)
+			g_p.proc = 1;
+	}
+}
 
 int		general_parser(char *input, t_env *env)
 {
@@ -181,6 +243,7 @@ int		general_parser(char *input, t_env *env)
 			free_obj(obj);
 			return (-1);
 		}
+		pipe_checks(input, &i, obj);
 		if (!input[i])
 		{
 			free_obj(obj);
@@ -221,11 +284,18 @@ int		general_parser(char *input, t_env *env)
 				// free_obj(obj);
 				// return (0);
 			}
-
 		}
 		i = find_end(input, i);
 		if (obj)
 			free_obj(obj);
+		//ft_dprintf(2, "before check proc %d\n", g_p.proc);
+		while (g_p.proc == 2 && g_p.count > 0)
+		{
+			close(g_p.pipefd[0]);
+			//ft_dprintf(2, "in child %d right before exit\n", g_p.count);
+			exit(EXIT_SUCCESS);
+			g_p.count--;
+		}
 	}
 	return (0);
 }

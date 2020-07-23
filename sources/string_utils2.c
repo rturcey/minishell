@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/17 22:49:41 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/21 12:48:37 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ int		lonely_quote(char *str)
 		if (is_quote(str, i, 0) == 1)
 		{
 			if ((i = get_next_quote(str, i)) == -1)
+				return (-1);
+		}
+	}
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '|')
+		{
+			i = pass_spaces(str, ++i);
+			if (!str[i])
 				return (-1);
 		}
 	}

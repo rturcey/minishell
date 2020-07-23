@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 20:07:38 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/23 12:23:52 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int			main(int argc, char **argv, char **env)
 	test->key = ft_strdup("TEST_VAR");
 	test->val = ft_strdup("");
 	g_err = 0;
+	g_p.lever = 0;
+	g_p.count = 0;
 	while (1)
 	{
 		prompt(lstenv);
