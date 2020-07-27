@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/23 12:51:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/27 23:23:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,10 @@ void	init_pipe(char *input, int i)
 		g_p.lever = 1;
 	else
 	{
-		g_p.count = 0;
 		g_p.lever = 0;
-		g_p.pid = 1;
-		g_p.proc = 0;
+		g_p.pid = -1;
+		g_p.forked = 0;
+		g_p.type = 0;
 	}
 }
 
@@ -165,45 +165,64 @@ void	pipe_checks(char *input, int *i, t_obj *obj)
 {
 	int status;
 
-	if (g_p.lever == 1)
+	(void)obj;
+	if (g_p.lever == 1) // ROUND 2 : WE HAVE A PIPE BEFORE CMD
 	{
-		if ((g_p.pid = fork()) == -1)
+		if ((g_p.pid = fork()) == -1) // START CHILD PROCESS
 		{
 			ft_dprintf(2, "fork error\n");
 			exit(EXIT_FAILURE);
 		}
-		if (g_p.pid == 0) //child reads from pipe
+		ft_dprintf(2, "AFTER PIPE FORK pid %d\n", g_p.pid);
+		if (g_p.pid == 0) // CHILD PROCESS
 		{
 			obj->redir->cmd_input = g_p.pipefd[0];
-			close(g_p.pipefd[1]);// Close unused write end
-			g_p.proc = 2;
-			//ft_dprintf(2, "in child after fork proc %d\n", g_p.proc);
-			g_p.count++;
-			//ft_dprintf(2, "pipe n°%d\n", g_p.count);
-			if (input[find_end(input, *i) - 1] != '|')
+			close(g_p.pipefd[1]); // CLOSE UNUSED WRITE END
+			dup2(g_p.pipefd[0], 0); // DUP PIPE INPUT TO 0
+			//close(g_p.pipefd[0]);
+			g_p.forked = 2; // JUST TO KNOW THIS PROCESS IS FORKED, DUNNO IF I NEED IT OR NOT IN THE END I AM JUST CONFUSED MAN
+			g_p.type = 1; // TO KNOW WE'RE DEALING WITH A CHILD
+			g_p.count++; // COUNTING HOW MANY FORKS WE'RE DEEP IN
+			ft_dprintf(2, "CHILD after fork %d\n", g_p.count);
+			if (input[find_end(input, *i) - 1] != '|') // CANT REMEMBER WHY I DID, MIGHT REMOVE 
 				return ;
 		}
-		else
+		else // PARENT PROCESS
 		{
-			//ft_dprintf(2, "in parent after fork\n");
-			*i = find_end(input, *i);
-			close(g_p.pipefd[0]);
+			ft_dprintf(2, "PARENT after fork waiting\n");
+			*i = find_end(input, *i); // SKIPPING THE CMD THE CHILD'S WORKING ON
+			close(g_p.pipefd[0]); // CLOSE UNUSED READ END
+			dup2(g_p.pipefd[1], 1); // DUP PIPE OUTPUT TO 1
 			status = 0;
-			wait(&status);
+			wait(&status); // WAIT FOR CHILD EXIT SIGNAL
+			close(g_p.pipefd[1]); // ONCE CHILD IS DEAD, CLOSING PIPE OUTPUT
+			g_p.count--;
+			if (g_p.count > 0) // MEANS WE'RE STILL IN THE PIPELINE, PARENT REVERTS TO CHILD MODE
+			{
+				g_p.type = 1; // PROCESS REIDENTIFIED AS CHILD
+				ft_dprintf(2, "GRANDCHILD DEAD, PARENT BACK TO BEING CHILD\n");
+			}
+			else
+				ft_dprintf(2, "PARENT RESUMED\n");
+			if (is_end(input, *i) == 1) // TO NOT GET STUCK IN CHECK LOOP IF WE'RE DONE
+				return ;
 		}
 	}
-	init_pipe(input, *i);
-	if (g_p.lever == 1)
+	init_pipe(input, *i); // ROUND ONE, CHECK IF PIPE AFTER CMD AND INIT VALUES
+	if (g_p.lever == 1) // PIPE FOUND AFTER CMD
 	{
-		if (pipe(g_p.pipefd) == -1)
+		if (pipe(g_p.pipefd) == -1) // OPEN PIPE
 		{
 			ft_dprintf(2, "pipe error\n");
 			exit(EXIT_FAILURE);
 		}
-		//ft_dprintf(2, "in parent after pipe creation\n");
-		obj->redir->cmd_output = g_p.pipefd[1];
-		if (g_p.count == 0)
-			g_p.proc = 1;
+		obj->redir->cmd_output = g_p.pipefd[1]; // ?? IS THAT NECESSARY
+		//if (g_p.count == 0)
+		// 	g_p.proc = 1;
+		if (g_p.count > 0) // FOUND A PIPE BUT ALREADY IN A PIPE, CHILD SHOULD BE TREATED AS PARENT
+			ft_dprintf(2, "CHILD IS NOW PARENT\n");
+		g_p.type = 0; // PARENT IS TYPE 0 BECAUSE WHY NOT
+		ft_dprintf(2, "PARENT after pipe creation\n"); // PARENT NOW DOES ITS THING IN GEN PARSER
 	}
 }
 
@@ -226,7 +245,7 @@ int		general_parser(char *input, t_env *env)
 	i = pass_spaces(input, i);
 	while (input[i])
 	{
-		//ft_printf("input[%d][%c]\n", i, input[i]);
+		ft_dprintf(2, "input[%d][%c]\n", i, input[i]);
 		if (!(obj = obj_new(env)))
 			return (-1);
 		if (!(obj->redir = redir_new()))
@@ -289,13 +308,14 @@ int		general_parser(char *input, t_env *env)
 		if (obj)
 			free_obj(obj);
 		//ft_dprintf(2, "before check proc %d\n", g_p.proc);
-		while (g_p.proc == 2 && g_p.count > 0)
+		ft_dprintf(2, "end of gen parser loop\n");
+		if (g_p.type == 1)
 		{
 			close(g_p.pipefd[0]);
-			//ft_dprintf(2, "in child %d right before exit\n", g_p.count);
+			ft_dprintf(2, "CHILD %d right before exit\n", g_p.count);
 			exit(EXIT_SUCCESS);
-			g_p.count--;
 		}
+		getchar();
 	}
 	return (0);
 }

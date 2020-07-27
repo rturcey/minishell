@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/23 12:54:38 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/26 15:25:08 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ typedef struct		s_pipe
 	int				lever;
 	int				pipefd[2];
 	int				pid;
-	int				proc;
+	int				forked;
+	int				type;
 	int				count;
 }					t_pipe;
 
