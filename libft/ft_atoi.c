@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:45:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/20 18:05:12 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/25 14:51:20 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+
 long long	ft_atoi(const char *str)
 {
 	long long	result;

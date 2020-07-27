@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_llong.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/20 20:30:34 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/20 20:50:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/25 14:50:05 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int		chk_ll(char *str)
 	int		i;
 
 	i = 0;
-	sign = '+';
-	if (str[i] == '+' || str[i] == '-')
+	if ((sign = '+') && (str[i] == '+' || str[i] == '-'))
 		sign = str[i++];
 	while (str[i] == '0')
 		i++;
