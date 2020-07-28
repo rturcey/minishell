@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/27 23:23:21 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/28 19:30:04 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,22 @@ int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
 	}
 	else if (pid == 0)
 	{
-		//ft_printf("Child process.  ");
-		// if (g_p.forked != 2)
-		// {
-			//ft_dprintf(2, "CHILD [FROM EXEC] gonna exec %s\n", av[0]);
-			ft_dprintf(2, "CHILD [EXEC] gonna exec %s\n", av[0]);
-			if ((dup2(obj->redir->cmd_output, 1) == -1) ||
-				dup2(obj->redir->err_output, 2) == -1)
+		ft_dprintf(2, "CHILD [EXEC] gonna exec %s\n", av[0]);
+		if ((dup2(obj->redir->cmd_output, 1) == -1) ||
+			dup2(obj->redir->err_output, 2) == -1)
+			return (-1);
+		if (obj->redir->cmd_input >= 0)
+			if (dup2(obj->redir->cmd_input, 0) == -1)
 				return (-1);
-			if (obj->redir->cmd_input >= 0)
-				if (dup2(obj->redir->cmd_input, 0) == -1)
-					return (-1);
-		// }
-		// else
-		// 	ft_dprintf(2, "CHILD [FROM PIPE] gonna exec %s\n", av[0]);
-
 		execve(tmp, av, env);
 	}
 	else
 	{
 		ft_dprintf(2, "FORKED IN EXEC PARENT waiting\n");
-		//ft_printf("PARENT started with pid=%d.\n", (int)pid);
 		status = 0;
 		wait(&status);
 		g_err = status;
 		ft_dprintf(2, "FORKED IN EXEC PARENT resumed\n");
-		//ft_printf("PARENT resumed, status code: %d. Terminating\n", status);
 	}
 	return (0);
 }
