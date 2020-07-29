@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/27 09:44:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/29 11:22:33 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@
 **DUMMY PARSING FUNCTIONS
 */
 
-static int	echo_loop(char **result, char *input, int *i, t_env *env)
+static int	echo_loop(char **result, int *i, t_sh *sh)
 {
 	int		l;
 	char	*sample;
 
 	l = 0;
 	sample = NULL;
-	if (ft_strncmp(&input[*i], "\"\"", 2) == 0)
+	if (ft_strncmp(&sh->input[*i], "\"\"", 2) == 0)
 		l = 1;
-	if (!(sample = sample_str(input, i, sample, env)))
+	if (!(sample = sample_str(sh, i, sample)))
 		return (free_str(*result));
 	if (l == 0 && sample[0] == '\0')
 		free(sample);
@@ -34,29 +34,28 @@ static int	echo_loop(char **result, char *input, int *i, t_env *env)
 	return (0);
 }
 
-int			parse_echo(t_obj *obj, char *input, int *i, t_env *env)
+int			parse_echo(t_sh *sh, int *i)
 {
 	char	*result;
 
-	(void)env;
-	if (redir_loop(obj, input, i) == -1)
+	if (redir_loop(sh, i) == -1)
 		return (-1);
-	pass_option(obj, input, i);
+	pass_option(sh, i);
 	if (!(result = ft_strdup("")))
 		return (-1);
-	while (is_end(input, *i) == 0)
+	while (is_end(sh->input, *i) == 0)
 	{
-		if (redir_loop(obj, input, i) == -1)
+		if (redir_loop(sh, i) == -1)
 			return (free_str(result));
-		if (is_end(input, *i) == 1)
+		if (is_end(sh->input, *i) == 1)
 			break ;
-		if (echo_loop(&result, input, i, env) == -1)
+		if (echo_loop(&result, i, sh) == -1)
 			return (-1);
 	}
-	if (obj->option != 1)
+	if (sh->obj->option != 1)
 		result = ft_strjoin_bth(result, ft_strdup("\n"));
-	obj->result = result;
-	return (print_result(obj, 0, NULL));
+	sh->obj->result = result;
+	return (print_result(sh, 0, NULL));
 }
 
 int			replace_pwd(t_env *env, char **path)
@@ -88,7 +87,7 @@ int			replace_pwd(t_env *env, char **path)
 	return (ret);
 }
 
-static void	err_cd(t_obj *obj, int ret, char *path)
+static void	err_cd(t_sh *sh, int ret, char *path)
 {
 	char	*mg;
 	char	*mgb;
@@ -96,40 +95,40 @@ static void	err_cd(t_obj *obj, int ret, char *path)
 	mg = ft_strdup("cd: error retrieving current directory: getcwd: cannot ");
 	mgb = ft_strdup("access parent directories: No such file or directory\n");
 	if (ret > 0)
-		maj_err(obj, ft_strdup("cd: too many arguments\n"), 1);
+		maj_err(sh, ft_strdup("cd: too many arguments\n"), 1);
 	else if (chdir(path) == -1)
-		maj_err(obj, ft_sprintf("cd: %s: %s\n", path, strerror(errno)), 1);
+		maj_err(sh, ft_sprintf("cd: %s: %s\n", path, strerror(errno)), 1);
 	else if (ret == -2)
 	{
 		if (!(mg = ft_strjoin_bth(mg, mgb)))
 			return ;
-		maj_err(obj, mg, 0);
+		maj_err(sh, mg, 0);
 		chdir(path);
 	}
 }
 
-int			parse_cd(t_obj *obj, char *input, int *i, t_env *env)
+int			parse_cd(t_sh *sh, int *i)
 {
 	char	*path;
 	int		ret;
 
 	path = NULL;
 	ret = 0;
-	while (input[*i])
+	while (sh->input[*i])
 	{
-		if (redir_loop(obj, input, i) == -1)
+		if (redir_loop(sh, i) == -1)
 			return (-1);
-		if (is_end(input, *i) == 1)
+		if (is_end(sh->input, *i) == 1)
 			break ;
 		if ((path != NULL) && ret++)
-			*i = find_string_end(input, *i);
-		else if ((path == NULL) && !(path = sample_str(input, i, path, env)))
+			*i = find_string_end(sh->input, *i);
+		else if ((path == NULL) && !(path = sample_str(sh, i, path)))
 			return (-1);
 	}
-	if ((path == NULL) && !(path = ft_strdup(find_env_val("HOME", env))))
+	if ((path == NULL) && !(path = ft_strdup(find_env_val("HOME", sh->env))))
 		return (-1);
-	err_cd(obj, ret, path);
-	if ((ret = replace_pwd(env, &path)) == -1)
+	err_cd(sh, ret, path);
+	if ((ret = replace_pwd(sh->env, &path)) == -1)
 		return (free_str(path));
-	return (print_result(obj, 0, path));
+	return (print_result(sh, 0, path));
 }

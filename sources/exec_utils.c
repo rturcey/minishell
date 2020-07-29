@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/28 19:30:04 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/29 11:00:58 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** I need to look into forking and processes and stuff.
 */
 
-int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
+int		try_exec(char *tmp, char **av, char **env, t_sh *sh)
 {
 	pid_t	pid;
 	int		status;
@@ -30,22 +30,18 @@ int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
 	}
 	else if (pid == 0)
 	{
-		ft_dprintf(2, "CHILD [EXEC] gonna exec %s\n", av[0]);
-		if ((dup2(obj->redir->cmd_output, 1) == -1) ||
-			dup2(obj->redir->err_output, 2) == -1)
+		if ((dup2(sh->obj->redir->cmd_output, 1) == -1) ||
+			dup2(sh->obj->redir->err_output, 2) == -1)
 			return (-1);
-		if (obj->redir->cmd_input >= 0)
-			if (dup2(obj->redir->cmd_input, 0) == -1)
+		if (sh->obj->redir->cmd_input >= 0)
+			if (dup2(sh->obj->redir->cmd_input, 0) == -1)
 				return (-1);
 		execve(tmp, av, env);
 	}
-	else
+	else if ((status = 0) == 0)
 	{
-		ft_dprintf(2, "FORKED IN EXEC PARENT waiting\n");
-		status = 0;
 		wait(&status);
-		g_err = status;
-		ft_dprintf(2, "FORKED IN EXEC PARENT resumed\n");
+		sh->err = status;
 	}
 	return (0);
 }
@@ -54,23 +50,23 @@ int		try_exec(char *tmp, char **av, char **env, t_obj *obj)
 ** Putting potential params for the program in a char **av
 */
 
-char	**conv_av(char *input, int *i, t_obj *obj, t_env *env)
+char	**conv_av(t_sh *sh, int *i)
 {
 	int		j;
 	char	**av;
 
-	if (!(av = malloc(sizeof(char *) * (count_strings(input, *i) + 2))))
+	if (!(av = malloc(sizeof(char *) * (count_strings(sh->input, *i) + 2))))
 		return (NULL);
 	j = 0;
-	if (!(av[j++] = ft_strdup(obj->obj)))
+	if (!(av[j++] = ft_strdup(sh->obj->obj)))
 		return (char_free_array(av, 0));
-	while (is_end(input, *i) == 0)
+	while (is_end(sh->input, *i) == 0)
 	{
-		if (redir_loop(obj, input, i) == -1)
+		if (redir_loop(sh, i) == -1)
 			return (char_free_array(av, j));
-		if ((is_end(input, *i) == 1))
+		if ((is_end(sh->input, *i) == 1))
 			break ;
-		if (!(av[j] = sample_str(input, i, av[j], env)))
+		if (!(av[j] = sample_str(sh, i, av[j])))
 			return (char_free_array(av, j));
 		j++;
 	}
@@ -78,15 +74,15 @@ char	**conv_av(char *input, int *i, t_obj *obj, t_env *env)
 	return (av);
 }
 
-int		add_redirs(char *input, int *i, t_obj *obj)
+int		add_redirs(t_sh *sh, int *i)
 {
-	while (is_end(input, *i) == 0)
+	while (is_end(sh->input, *i) == 0)
 	{
-		if (redir_loop(obj, input, i) == -1)
+		if (redir_loop(sh, i) == -1)
 			return (-1);
-		if ((is_end(input, *i) == 1))
+		if ((is_end(sh->input, *i) == 1))
 			break ;
-		*i = find_string_end(input, *i);
+		*i = find_string_end(sh->input, *i);
 	}
 	return (0);
 }
@@ -99,7 +95,7 @@ int		add_redirs(char *input, int *i, t_obj *obj)
 ** We return -2 if no program was found, -1 in case of a fatal error.
 */
 
-int		parse_exec(t_obj *obj, char *input, int *i, t_env *env)
+int		parse_exec(t_sh *sh, int *i)
 {
 	char	**av;
 	int		r;
@@ -109,24 +105,20 @@ int		parse_exec(t_obj *obj, char *input, int *i, t_env *env)
 
 	path = NULL;
 	av = NULL;
-	if (redir_loop(obj, input, i) == -1)
+	if (redir_loop(sh, i) == -1)
 		return (-1);
-	if (!(obj->obj = sample_str(input, i, obj->obj, env)))
+	if (!(sh->obj->obj = sample_str(sh, i, sh->obj->obj)))
 		return (-1);
 	stock_i = *i;
-	if (add_redirs(input, i, obj) == -1)
+	if (add_redirs(sh, i) == -1)
 		return (-1);
-	if (((r = check_path(obj, env, &path)) != 0) || ((r == 0) && !path))
-	{
-		//ft_printf("after check path\n");
+	if (((r = check_path(sh, &path)) != 0) || ((r == 0) && !path))
 		return (r);
-	}
-	//ft_printf("check path r[%d] worked for [%s] \n", r, path);
-	if (!(b_env = env_to_array(env)))
+	if (!(b_env = env_to_array(sh->env)))
 		return (free_str(path));
-	if (!(av = conv_av(input, &stock_i, obj, env)))
+	if (!(av = conv_av(sh, &stock_i)))
 		return (free_array_and_str(b_env, -1, path));
-	if (try_exec(path, av, b_env, obj) == -1)
+	if (try_exec(path, av, b_env, sh) == -1)
 		return (free_two_arr_and_str(av, b_env, path, -1));
 	return (free_two_arr_and_str(av, b_env, path, 0));
 }

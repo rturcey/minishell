@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 10:10:47 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/27 09:46:04 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/29 11:28:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			is_cmd(char *sample)
 **we got from strncmp
 */
 
-int			parse_cmds(t_obj *obj, char *input, int *i, t_env *env)
+int			parse_cmds(t_sh *sh, int *i)
 {
 	t_parse_cmd parse_cmd[7];
 	int			ret;
@@ -58,25 +58,25 @@ int			parse_cmds(t_obj *obj, char *input, int *i, t_env *env)
 	parse_cmd[4] = parse_unset;
 	parse_cmd[5] = parse_env;
 	parse_cmd[6] = parse_exit;
-	if ((ret = parse_cmd[obj->type](obj, input, i, env)) == -1)
+	if ((ret = parse_cmd[sh->obj->type](sh, i)) == -1)
 	{
-		while (is_end(input, *i) == 0)
+		while (is_end(sh->input, *i) == 0)
 			(*i)++;
 		return (-1);
 	}
 	return (ret);
 }
 
-void		pass_option(t_obj *obj, char *input, int *i)
+void		pass_option(t_sh *sh, int *i)
 {
-	while (is_end(input, *i) == 0)
+	while (is_end(sh->input, *i) == 0)
 	{
-		if (ft_strncmp("-n", &input[*i], 2) == 0
-			&& (is_end(input, *i + 2) == 1 || is_space(input, *i + 2) == 1)
+		if (ft_strncmp("-n", &sh->input[*i], 2) == 0
+			&& (is_end(sh->input, *i + 2) == 1 || is_space(sh->input, *i + 2) == 1)
 			&& ((*i) += 2))
-			obj->option = 1;
+			sh->obj->option = 1;
 		else
 			return ;
-		*i = pass_spaces(input, *i);
+		*i = pass_spaces(sh->input, *i);
 	}
 }

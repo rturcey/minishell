@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 20:07:50 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/29 11:24:15 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		print_result(t_obj *obj, int ret, char *to_free)
+int		print_result(t_sh *sh, int ret, char *to_free)
 {
-	if (obj->error)
-		ft_putstr_fd(obj->error, obj->redir->err_output);
-	else if (obj->result)
-		ft_putstr_fd(obj->result, obj->redir->cmd_output);
+	if (sh->obj->error)
+		ft_putstr_fd(sh->obj->error, sh->obj->redir->err_output);
+	else if (sh->obj->result)
+		ft_putstr_fd(sh->obj->result, sh->obj->redir->cmd_output);
 	free(to_free);
 	return (ret);
 }
 
-void	maj_err(t_obj *obj, char *str, int err)
+void	maj_err(t_sh *sh, char *str, int err)
 {
-	if (!obj->error)
-		obj->error = str;
+	if (!sh->obj->error)
+		sh->obj->error = str;
 	else if (ft_strstr(str, "Permission denied")
-		&& !ft_strstr(obj->error, "Permission denied"))
+		&& !ft_strstr(sh->obj->error, "Permission denied"))
 	{
-		free(obj->error);
-		obj->error = str;
+		free(sh->obj->error);
+		sh->obj->error = str;
 	}
-	else if (ft_strncmp(obj->error, "exit\n", 5) == 0)
-		obj->error = ft_strjoin_bth(obj->error, str);
+	else if (ft_strncmp(sh->obj->error, "exit\n", 5) == 0)
+		sh->obj->error = ft_strjoin_bth(sh->obj->error, str);
 	else
 		free(str);
-	g_err = err;
+	sh->err = err;
 }
 
 void	*free_arg(t_arg *arg)

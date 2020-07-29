@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   redir_err.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:47:40 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 16:14:59 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/29 11:12:06 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				redir_loop(t_obj *obj, char *input, int *i)
+int				redir_loop(t_sh *sh, int *i)
 {
 	int		r;
 
-	while ((r = find_redir(obj, input, i)) == 1 || r == -1)
+	while ((r = find_redir(sh, i)) == 1 || r == -1)
 		if (r == -1)
 			return (-1);
 	return (0);
@@ -54,7 +54,7 @@ static int		redir_error(t_redir *redir, char *input, int *i, int j)
 	return (-1);
 }
 
-static int		parse_redir(t_obj *obj, char *input, int *s_fd, int *i)
+static int		parse_redir(t_sh *sh, int *s_fd, int *i)
 {
 	int		j;
 	char	*path;
@@ -64,36 +64,36 @@ static int		parse_redir(t_obj *obj, char *input, int *s_fd, int *i)
 	path = NULL;
 	if (s_fd[1] == 2)
 		(*i)++;
-	*i = pass_spaces(input, *i);
+	*i = pass_spaces(sh->input, *i);
 	j = *i;
-	free(sample_str(input, &j, path, obj->env));
-	if (j == *i || is_redir(input, j) != 0)
-		return (redir_error(obj->redir, input, i, j));
+	free(sample_str(sh, &j, path));
+	if (j == *i || is_redir(sh->input, j) != 0)
+		return (redir_error(sh->obj->redir, sh->input, i, j));
 	return (1);
 }
 
-int				find_redir_err(t_obj *obj, char *input, int *i)
+int				find_redir_err(t_sh *sh, int *i)
 {
 	int		j;
 	int		s_fd[2];
 
 	s_fd[0] = 1;
 	j = *i;
-	while (is_end(input, j) == 0 && (j = pass_spaces(input, j)))
+	while (is_end(sh->input, j) == 0 && (j = pass_spaces(sh->input, j)))
 	{
-		while (input[j] && (s_fd[1] = is_redir(input, j)) == 0
-			&& ft_isdigit(input[j]) == 0)
+		while (sh->input[j] && (s_fd[1] = is_redir(sh->input, j)) == 0
+			&& ft_isdigit(sh->input[j]) == 0)
 			j++;
-		if (!input[j])
+		if (!sh->input[j])
 			return (0);
-		if (ft_isdigit(input[j]) != 0)
-			s_fd[0] = ft_atoi(&input[j]);
-		while (ft_isdigit(input[j]) != 0)
+		if (ft_isdigit(sh->input[j]) != 0)
+			s_fd[0] = ft_atoi(&sh->input[j]);
+		while (ft_isdigit(sh->input[j]) != 0)
 			j++;
-		if ((s_fd[1] = is_redir(input, j)) != 0 && (j++)
-			&& parse_redir(obj, input, s_fd, &j) < 0)
+		if ((s_fd[1] = is_redir(sh->input, j)) != 0 && (j++)
+			&& parse_redir(sh, s_fd, &j) < 0)
 		{
-			while (is_end(input, *i) == 0)
+			while (is_end(sh->input, *i) == 0)
 				(*i)++;
 			return (-1);
 		}

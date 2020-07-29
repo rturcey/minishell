@@ -3,14 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/28 18:36:52 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/29 15:32:06 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_sh	*init_sh(t_env *env)
+{
+	t_sh	*sh;
+
+	if (!(sh = malloc(sizeof(t_sh))))
+		return (NULL);
+	if (!(sh->pip = malloc(sizeof(t_pipe))))
+	{
+		free(sh);
+		return (NULL);
+	}
+	sh->env = env;
+	sh->lev = 1;
+	sh->err = 0;
+	return (sh);
+}
+
+static void	clear_sh(t_sh *sh)
+{
+	if (sh->env)
+		env_clear(sh->env);
+	free (sh->pip);
+	free(sh);
+}
 
 static void	remove_home_path(char **path, char *home)
 {
@@ -60,8 +85,8 @@ int			main(int argc, char **argv, char **env)
 {
 	char		*line;
 	t_env		*lstenv;
-	t_env		*test;
 	int			ret;
+	t_sh		*sh;
 
 	(void)argc;
 	(void)argv;
@@ -70,27 +95,24 @@ int			main(int argc, char **argv, char **env)
 		ft_putstr_fd("couldn't clone the environment", 2);
 		return (0);
 	}
-	if (!(test = env_new(0)))
+	if (!(sh = init_sh(lstenv)))
 	{
 		env_clear(lstenv);
 		return (-1);
 	}
-	test->key = ft_strdup("TEST_VAR");
-	test->val = ft_strdup("");
-	g_err = 0;
 	while (1)
 	{
-		g_p.lever = 0;
-		g_p.count = 0;
+		sh->pip->count = 0;
+		sh->pip->lever = 0;
 		prompt(lstenv);
 		get_next_line(0, &line);
-		//test print env + test exit + test export
-		ret = general_parser(line, lstenv);
+		sh->input = line;
+		ret = general_parser(sh);
 		free(line);
 		if (ret != 0)
 			break ;
 	}
-	env_clear(lstenv);
-	env_clear(test);
-	return (g_err);
+	ret = sh->err;
+	clear_sh(sh);
+	return (ret);
 }
