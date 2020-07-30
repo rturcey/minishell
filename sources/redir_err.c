@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:47:40 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 11:12:06 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,26 @@ int				redir_loop(t_sh *sh, int *i)
 ** after a redir sign, finds it and prints error
 */
 
-static int		redir_error(t_redir *redir, char *input, int *i, int j)
+static int		redir_error(t_redir *redir, char *in, int *i, int j)
 {
 	char	*sym;
 	int		k;
 
 	k = 0;
 	if (j > *i)
-		sym = ft_substr(input, *i, j);
-	else if (input[j] && input[j] == '>' && input[j + 1] == '>')
+		sym = ft_substr(in, *i, j);
+	else if (in[j] && in[j] == '>' && in[j + 1] == '>')
 	{
 		if (!(sym = ft_strdup(">>")))
 			return (-1);
 	}
-	else if (!input[j] && !(sym = ft_strdup("newline")))
+	else if (!in[j] && !(sym = ft_strdup("newline")))
 		return (-1);
-	else if (input[j])
+	else if (in[j])
 	{
 		if (!(sym = ft_strdup("c")))
 			return (-1);
-		sym[0] = input[j];
+		sym[0] = in[j];
 	}
 	ft_dprintf(redir->err_output, \
 	"bash: erreur de syntaxe près du symbole inattendu « %s »\n", sym);
@@ -64,11 +64,11 @@ static int		parse_redir(t_sh *sh, int *s_fd, int *i)
 	path = NULL;
 	if (s_fd[1] == 2)
 		(*i)++;
-	*i = pass_spaces(sh->input, *i);
+	*i = pass_spaces(sh->in, *i);
 	j = *i;
 	free(sample_str(sh, &j, path));
-	if (j == *i || is_redir(sh->input, j) != 0)
-		return (redir_error(sh->obj->redir, sh->input, i, j));
+	if (j == *i || is_redir(sh->in, j) != 0)
+		return (redir_error(sh->obj->redir, sh->in, i, j));
 	return (1);
 }
 
@@ -79,21 +79,21 @@ int				find_redir_err(t_sh *sh, int *i)
 
 	s_fd[0] = 1;
 	j = *i;
-	while (is_end(sh->input, j) == 0 && (j = pass_spaces(sh->input, j)))
+	while (is_end(sh->in, j) == 0 && (j = pass_spaces(sh->in, j)))
 	{
-		while (sh->input[j] && (s_fd[1] = is_redir(sh->input, j)) == 0
-			&& ft_isdigit(sh->input[j]) == 0)
+		while (sh->in[j] && (s_fd[1] = is_redir(sh->in, j)) == 0
+			&& ft_isdigit(sh->in[j]) == 0)
 			j++;
-		if (!sh->input[j])
+		if (!sh->in[j])
 			return (0);
-		if (ft_isdigit(sh->input[j]) != 0)
-			s_fd[0] = ft_atoi(&sh->input[j]);
-		while (ft_isdigit(sh->input[j]) != 0)
+		if (ft_isdigit(sh->in[j]) != 0)
+			s_fd[0] = ft_atoi(&sh->in[j]);
+		while (ft_isdigit(sh->in[j]) != 0)
 			j++;
-		if ((s_fd[1] = is_redir(sh->input, j)) != 0 && (j++)
+		if ((s_fd[1] = is_redir(sh->in, j)) != 0 && (j++)
 			&& parse_redir(sh, s_fd, &j) < 0)
 		{
-			while (is_end(sh->input, *i) == 0)
+			while (is_end(sh->in, *i) == 0)
 				(*i)++;
 			return (-1);
 		}

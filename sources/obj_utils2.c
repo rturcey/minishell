@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/29 11:24:15 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	*free_arg(t_arg *arg)
 
 void	*free_redir(t_redir *redir)
 {
-	if (redir->cmd_input > 0)
-		close(redir->cmd_input);
+	if (redir->cmd_in > 0)
+		close(redir->cmd_in);
 	if (redir->cmd_output != 1 && redir->cmd_output != -1)
 		close(redir->cmd_output);
 	if (redir->err_output != 2 && redir->err_output != -1)

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 14:41:31 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct		s_arg
 
 typedef struct		s_redir
 {
-	int				cmd_input;
+	int				cmd_in;
 	int				cmd_output;
 	int				err_output;
 }					t_redir;
@@ -82,7 +82,7 @@ typedef struct		s_sh
 	t_pipe			*pip;
 	t_obj			*obj;
 	t_env			*env;
-	char			*input;
+	char			*in;
 	int				lev;
 	int				err;
 }					t_sh;
@@ -90,6 +90,7 @@ typedef struct		s_sh
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
 int					general_parser(t_sh *sh);
+void				remove_home_path(char **path, char *home);
 void				skim_str(char *sample, int k, int *i);
 t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
@@ -122,7 +123,7 @@ int					is_quote(char *str, int i, char quote);
 int					lonely_quote(char *str);
 int					last_backslash(char *str);
 int					find_string_end(char *src, int i);
-int					find_end(char *input, int i);
+int					find_end(char *in, int i);
 int					find_redir(t_sh *sh, int *i);
 int					find_redir_err(t_sh *sh, int *i);
 int					is_redir(char *str, int i);
@@ -130,7 +131,7 @@ char				*sample_str(t_sh *sh, int *i, char *sample);
 int					is_separator(char *str, int i);
 int					is_end(char *str, int i);
 int					get_next_quote(char *str, int i);
-int					count_strings(char *input, int i);
+int					count_strings(char *in, int i);
 int					unset_var(char **elt, t_env *env);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(t_sh *sh, int *i, int len);

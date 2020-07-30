@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/29 11:00:58 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int		try_exec(char *tmp, char **av, char **env, t_sh *sh)
 		if ((dup2(sh->obj->redir->cmd_output, 1) == -1) ||
 			dup2(sh->obj->redir->err_output, 2) == -1)
 			return (-1);
-		if (sh->obj->redir->cmd_input >= 0)
-			if (dup2(sh->obj->redir->cmd_input, 0) == -1)
+		if (sh->obj->redir->cmd_in >= 0)
+			if (dup2(sh->obj->redir->cmd_in, 0) == -1)
 				return (-1);
 		execve(tmp, av, env);
 	}
@@ -55,16 +55,16 @@ char	**conv_av(t_sh *sh, int *i)
 	int		j;
 	char	**av;
 
-	if (!(av = malloc(sizeof(char *) * (count_strings(sh->input, *i) + 2))))
+	if (!(av = malloc(sizeof(char *) * (count_strings(sh->in, *i) + 2))))
 		return (NULL);
 	j = 0;
 	if (!(av[j++] = ft_strdup(sh->obj->obj)))
 		return (char_free_array(av, 0));
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
 		if (redir_loop(sh, i) == -1)
 			return (char_free_array(av, j));
-		if ((is_end(sh->input, *i) == 1))
+		if ((is_end(sh->in, *i) == 1))
 			break ;
 		if (!(av[j] = sample_str(sh, i, av[j])))
 			return (char_free_array(av, j));
@@ -76,13 +76,13 @@ char	**conv_av(t_sh *sh, int *i)
 
 int		add_redirs(t_sh *sh, int *i)
 {
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
 		if (redir_loop(sh, i) == -1)
 			return (-1);
-		if ((is_end(sh->input, *i) == 1))
+		if ((is_end(sh->in, *i) == 1))
 			break ;
-		*i = find_string_end(sh->input, *i);
+		*i = find_string_end(sh->in, *i);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 15:39:13 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:16:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ int		is_separator(char *str, int i)
 	return (0);
 }
 
-int		pipeline_end(char *input, int i)
+int		pipeline_end(char *in, int i)
 {
-	while (input[i] && input[i] != ';')
+	while (in[i] && in[i] != ';')
 	{
-		if (is_quote(input, i, 0))
+		if (is_quote(in, i, 0))
 		{
-			if ((i = get_next_quote(input, i)) == -1)
+			if ((i = get_next_quote(in, i)) == -1)
 				return (-1);
 		}
 		i++;
 	}
-	if (input[i] && i > 0 && input[i - 1] == '\\')
-		pipeline_end(input, i);
+	if (in[i] && i > 0 && in[i - 1] == '\\')
+		pipeline_end(in, i);
 	return (i);
 }
 
@@ -61,21 +61,23 @@ int		sample_quote_cond(t_sh *sh, int *i, char **sample, int *j)
 {
 	int k;
 	int l;
+	int	r;
 	int check;
-	int r;
 	int heck;
 
 	k = get_next_quote(*sample, *j) - 1;
 	l = (*j) - 1;
 	heck = 0;
-	if (is_quote(sh->input, *i, '\"') == 1)
+	if (is_quote(sh->in, *i, '\"') == 1)
 	{
 		while (++l < k)
 		{
-			if ((*sample)[l + 1] != '$' && ((*sample)[l] == '\\' && ((*sample)[l + 1] == '\"' ||
+			if ((*sample)[l + 1] != '$' && ((*sample)[l] == '\\'
+			 && ((*sample)[l + 1] == '\"' ||
 				(*sample)[l + 1] == '\\') && k--))
 				skim_str(*sample, l - 1, i);
-			else if ((*sample)[l] == '$' && l > 0 && (*sample)[l - 1] == '\\' && k--)
+			else if ((*sample)[l] == '$' && l > 0
+			 && (*sample)[l - 1] == '\\' && k--)
 				skim_str(*sample, l - 2, i);
 			else if ((*sample)[l] == '$' && normed_char((*sample)[l + 1]) == 0)
 			{
@@ -115,17 +117,17 @@ char	*sample_str(t_sh *sh, int *i, char *sample)
 	int j;
 	int r;
 
-	if (!sh->input[*i])
+	if (!sh->in[*i])
 		return (NULL);
-	end = find_string_end(sh->input, *i);
-	if (!(sample = ft_substr(sh->input, *i, (end - *i))))
+	end = find_string_end(sh->in, *i);
+	if (!(sample = ft_substr(sh->in, *i, (end - *i))))
 		return (NULL);
 	j = -1;
 	while (sample[++j])
 	{
 		if (sample[j] == '\\' && sample[j + 1] != '$')
 			skim_str(sample, j - 1, i);
-		else if (is_quote(sh->input, *i, 0) == 1)
+		else if (is_quote(sh->in, *i, 0) == 1)
 		{
 			if (sample_quote_cond(sh, i, &sample, &j) == -1)
 				return (char_free_str(sample));
@@ -155,9 +157,9 @@ char	*sample_str(t_sh *sh, int *i, char *sample)
 **First check for lonely quote, if so return error
 **enter loop (after passing first spaces), make a
 **sample from the first string we can extract from
-**input. It is already parsed and clean.
+**in. It is already parsed and clean.
 **We strncmp it with the cmds, init an object if
-**strcmp is positive, and send obj and input to
+**strcmp is positive, and send obj and in to
 **the appropriate function
 */
 
@@ -165,10 +167,10 @@ void	init_pipe(t_sh *sh, int i)
 {
 	int	end;
 
-	if (sh->input[i])
+	if (sh->in[i])
 	{
-		end = find_end(sh->input, i);
-		if ((--end >= 0 && sh->input[end] == '|'))
+		end = find_end(sh->in, i);
+		if ((--end >= 0 && sh->in[end] == '|'))
 			sh->pip->lever = 1;
 		else
 		{
@@ -189,59 +191,59 @@ void	pipe_checks(t_sh *sh, int *i)
 {
 	int status;
 
-	if (sh->pip->lever == 1) // ROUND 2 : WE HAVE A PIPE BEFORE CMD
+	if (sh->pip->lever == 1)
 	{
-		sh->pip->count++;// ADDING NEXT FORK
-		if ((sh->pip->pid = fork()) == -1) // START CHILD PROCESS
+		sh->pip->count++;
+		if ((sh->pip->pid = fork()) == -1)
 		{
 			ft_dprintf(2, "fork error\n");
 			exit(EXIT_FAILURE);
 		}
-		if (sh->pip->pid == 0) // CHILD PROCESS
+		if (sh->pip->pid == 0)
 		{
-			sh->obj->redir->cmd_output = 1; // REVERTING TO REGULAR EXIT INSTEAD OF sh->pip->PIPEFD[1]
-			close(sh->pip->pipefd[1]); // CLOSE UNUSED WRITE END
-			dup2(sh->pip->pipefd[0], 0); // DUP PIPE INPUT TO 0
-			sh->pip->forked = 2; // JUST TO KNOW THIS PROCESS IS FORKED, DUNNO IF I NEED IT OR NOT IN THE END I AM JUST CONFUSED MAN
-			sh->pip->type = 1; // TO KNOW WE'RE DEALING WITH A CHILD
+			sh->obj->redir->cmd_output = 1;
+			close(sh->pip->pipefd[1]);
+			dup2(sh->pip->pipefd[0], 0);
+			sh->pip->forked = 2;
+			sh->pip->type = 1;
 		}
 		else // PARENT PROCESS
 		{
-			close(sh->pip->pipefd[0]); // CLOSE UNUSED READ END
-			dup2(sh->pip->pipefd[1], 1); // DUP PIPE OUTPUT TO 1
+			close(sh->pip->pipefd[0]);
+			dup2(sh->pip->pipefd[1], 1);
 			status = 0;
-			wait(&status); // WAIT FOR CHILD EXIT SIGNAL
-			close(sh->pip->pipefd[1]); // ONCE CHILD IS DEAD, CLOSING PIPE OUTPUT
-			sh->pip->count--; // ONE LESS FORK!
+			wait(&status);
+			close(sh->pip->pipefd[1]);
+			sh->pip->count--;
 			exit(EXIT_SUCCESS);
 		}
 	}
-	init_pipe(sh, *i); // ROUND ONE, CHECK IF PIPE AFTER CMD AND INIT VALUES
-	if (sh->pip->lever == 1) // PIPE FOUND AFTER CMD
+	init_pipe(sh, *i);
+	if (sh->pip->lever == 1)
 	{
-		if (sh->pip->count == 0)// IF FIRST CMD OF PIPELINE, WE NEED A FIRST FORK
+		if (sh->pip->count == 0)
 		{
-			sh->pip->count++; // ADDING NEXT FORK
-			if ((sh->pip->pid = fork()) == -1) // START 1ST CHILD PROCESS
+			sh->pip->count++;
+			if ((sh->pip->pid = fork()) == -1)
 			{
 				ft_dprintf(2, "fork error\n");
 				exit(EXIT_FAILURE);
 			}
 			if (sh->pip->pid != 0)
 			{
-				wait(&status);// MINISHELL WAITS HERE
-				*i = pipeline_end(sh->input, *i);// MINISHELL JUMPS AFTER PIPELINE
+				wait(&status);
+				*i = pipeline_end(sh->in, *i);
 				sh->pip->type = 0;
 				return ;
 			}
 			sh->pip->type = 2;
 		}
-		if (pipe(sh->pip->pipefd) == -1) // OPEN PIPE
+		if (pipe(sh->pip->pipefd) == -1)
 		{
 			ft_dprintf(2, "pipe error\n");
 			exit(EXIT_FAILURE);
 		}
-		sh->obj->redir->cmd_output = sh->pip->pipefd[1]; // CAN'T DUP BEFORE FORKING, SO THIS IS COMPULSORY
+		sh->obj->redir->cmd_output = sh->pip->pipefd[1];
 	}
 }
 
@@ -253,15 +255,15 @@ int		general_parser(t_sh *sh)
 	int			stock_i;
 
 
-	if ((lonely_quote(sh->input) == -1) ||
-		(last_backslash(sh->input) == -1))
+	if ((lonely_quote(sh->in) == -1) ||
+		(last_backslash(sh->in) == -1))
 	{
 		ft_putstr_fd("bash: multi-line comments not supported\n", 2);
 		return (0);
 	}
 	i = 0;
-	i = pass_spaces(sh->input, i);
-	while (sh->input[i])
+	i = pass_spaces(sh->in, i);
+	while (sh->in[i])
 	{
 		ft_dprintf(2, "input[%d][%c]\n", i, sh->input[i]);
 		if (!(sh->obj = obj_new(sh->env)))
@@ -279,7 +281,7 @@ int		general_parser(t_sh *sh)
 			return (free_obj(sh->obj));
 		}
 		pipe_checks(sh, &i);
-		if (!sh->input[i])
+		if (!sh->in[i])
 		{
 			free_obj(sh->obj);
 			continue ;
@@ -315,10 +317,10 @@ int		general_parser(t_sh *sh)
 				print_result(sh, 0, NULL);
 			}
 		}
-		i = find_end(sh->input, i);
+		i = find_end(sh->in, i);
 		if (sh->obj)
 			free_obj(sh->obj);
-		if (sh->pip->type == 3)// is the last cmd in the pipeline
+		if (sh->pip->type == 3)
 		{
 			close(sh->pip->pipefd[0]);
 			exit(EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	print_env(t_env *env, int fd)
 
 /*
 ** conversion from char** to t_env*
-** & check if input isn't corrupted
+** & check if in isn't corrupted
 */
 
 t_env	*init_env(char **env, int in)

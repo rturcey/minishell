@@ -6,14 +6,14 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 10:10:47 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 11:28:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-**Cmd array init and strncmp with sample from input
+**Cmd array init and strncmp with sample from in
 **return appropriate index (corresponding to cmd function)
 */
 
@@ -60,7 +60,7 @@ int			parse_cmds(t_sh *sh, int *i)
 	parse_cmd[6] = parse_exit;
 	if ((ret = parse_cmd[sh->obj->type](sh, i)) == -1)
 	{
-		while (is_end(sh->input, *i) == 0)
+		while (is_end(sh->in, *i) == 0)
 			(*i)++;
 		return (-1);
 	}
@@ -69,14 +69,15 @@ int			parse_cmds(t_sh *sh, int *i)
 
 void		pass_option(t_sh *sh, int *i)
 {
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
-		if (ft_strncmp("-n", &sh->input[*i], 2) == 0
-			&& (is_end(sh->input, *i + 2) == 1 || is_space(sh->input, *i + 2) == 1)
+		if (ft_strncmp("-n", &sh->in[*i], 2) == 0
+			&& (is_end(sh->in, *i + 2) == 1
+			|| is_space(sh->in, *i + 2) == 1)
 			&& ((*i) += 2))
 			sh->obj->option = 1;
 		else
 			return ;
-		*i = pass_spaces(sh->input, *i);
+		*i = pass_spaces(sh->in, *i);
 	}
 }

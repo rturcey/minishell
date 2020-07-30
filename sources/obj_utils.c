@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_redir		*redir_new(void)
 
 	if (!(new = malloc(sizeof(t_redir))))
 		return (NULL);
-	new->cmd_input = 0;
+	new->cmd_in = 0;
 	new->cmd_output = 1;
 	new->err_output = 2;
 	return (new);

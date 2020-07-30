@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 11:24:58 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,25 @@ static int		check_vars(t_sh *sh, int *i)
 	char	*s;
 
 	s = NULL;
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
-		*i = pass_spaces(sh->input, *i);
+		*i = pass_spaces(sh->in, *i);
 		j = *i;
-		while (is_end(sh->input, j) == 0 && is_space(sh->input, j) == 0
-			&& sh->input[j] != '=')
+		while (is_end(sh->in, j) == 0 && is_space(sh->in, j) == 0
+			&& sh->in[j] != '=')
 			j++;
-		if (sh->input[j] != '=')
+		if (sh->in[j] != '=')
 			return (-1);
 		*i = j + 1;
-		*i = pass_spaces(sh->input, *i);
-		if (is_end(sh->input, *i) != 0)
+		*i = pass_spaces(sh->in, *i);
+		if (is_end(sh->in, *i) != 0)
 			return (0);
 		if (*i != j + 1)
 			return (-1);
 		if (!(s = sample_str(sh, i, s)))
 			return (-1);
 		free(s);
-		*i = pass_spaces(sh->input, *i);
+		*i = pass_spaces(sh->in, *i);
 	}
 	return (0);
 }
@@ -119,9 +119,9 @@ int				parse_var(t_sh *sh, int *i, int len)
 
 	if (check_vars(sh, i) == -1)
 		return (0);
-	while (is_end(sh->input, len) == 0)
+	while (is_end(sh->in, len) == 0)
 		len++;
-	if (!(to_split = ft_substr(sh->input, 0, len)))
+	if (!(to_split = ft_substr(sh->in, 0, len)))
 		return (-1);
 	if (!(env_new = ft_split(to_split, ' ')))
 		return (free_str(to_split));

@@ -6,11 +6,34 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 11:27:09 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:07:52 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		remove_home_path(char **path, char *home)
+{
+	size_t	i;
+	size_t	j;
+	char	*tmp;
+
+	if (!home)
+		return ;
+	i = ft_strlen(home);
+	if (ft_strncmp(*path, home, i) != 0)
+		return ;
+	if (!(tmp = malloc(ft_strlen(*path) - i + 2)))
+		return ;
+	tmp[0] = '~';
+	i--;
+	j = 0;
+	while (++i <= ft_strlen(*path))
+		tmp[++j] = (*path)[i];
+	tmp[j] = '\0';
+	free(*path);
+	*path = tmp;
+}
 
 static int	check_permissions(t_stat st)
 {

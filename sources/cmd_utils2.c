@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/29 11:23:51 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int		parse_pwd(t_sh *sh, int *i)
 	int		r;
 
 	workdir = NULL;
-	while (sh->input[*i] && is_separator(sh->input, *i) == 0)
+	while (sh->in[*i] && is_separator(sh->in, *i) == 0)
 	{
 		if ((r = find_redir(sh, i) == 0))
 		{
-			while (*i < (int)ft_strlen(sh->input)
-			 && (is_separator(sh->input, *i) == 0))
+			while (*i < (int)ft_strlen(sh->in)
+			&& (is_separator(sh->in, *i) == 0))
 			{
 				if ((r = find_redir(sh, i) == 0))
 					(*i)++;
@@ -47,7 +47,7 @@ int		parse_export(t_sh *sh, int *i)
 {
 	char	*sample;
 
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
 		if (redir_loop(sh, i) == -1)
 			return (-1);
@@ -68,7 +68,7 @@ int		parse_unset(t_sh *sh, int *i)
 	char	*sample;
 
 	tmp = ft_strdup("");
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
 		if (redir_loop(sh, i) == -1)
 			return (free_str(tmp));
@@ -91,11 +91,11 @@ int		parse_env(t_sh *sh, int *i)
 {
 	int		r;
 
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
 		if ((r = find_redir(sh, i)) == 0)
 		{
-			while (*i < (int)ft_strlen(sh->input))
+			while (*i < (int)ft_strlen(sh->in))
 			{
 				if ((r = find_redir(sh, i)) == 0)
 					(*i)++;
@@ -120,14 +120,14 @@ int		parse_exit(t_sh *sh, int *i)
 
 	s = NULL;
 	r = 0;
-	while (sh->input[*i])
+	while (sh->in[*i])
 	{
 		if (redir_loop(sh, i) == -1)
 			return (-1);
-		if (is_end(sh->input, *i) == 1)
+		if (is_end(sh->in, *i) == 1)
 			break ;
 		if (s != NULL && ((ft_numstr(s) != 1) || (r = 1)))
-			*i = find_string_end(sh->input, *i);
+			*i = find_string_end(sh->in, *i);
 		else if (s == NULL && !(s = sample_str(sh, i, s)))
 			return (-1);
 	}
@@ -137,7 +137,7 @@ int		parse_exit(t_sh *sh, int *i)
 	else if (s != NULL && ft_numstr(s) == 1 && chk_ll(s) == 0 &&
 		(r = ft_atoi(s)))
 		sh->err = (r < 0 || r > 255) ? r % 256 : r;
-	else if (s != NULL && (ft_numstr(s) != 1 || chk_ll(s) != 0) && (sh->err = 2))
+	else if (s && (ft_numstr(s) != 1 || chk_ll(s) != 0) && (sh->err = 2))
 		maj_err(sh, ft_sprintf("exit: %s: numeric argument required\n", s), 2);
 	return (print_result(sh, sh->err, s));
 }

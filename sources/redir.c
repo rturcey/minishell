@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/29 11:24:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:41 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static int		redir_norm(int kind, t_redir *redir, char *path)
 	}
 	if (kind == 3)
 	{
-		if (redir->cmd_input != 0)
-			close(redir->cmd_input);
-		redir->cmd_input = open(path, O_RDONLY, 0644);
-		return (redir->cmd_input);
+		if (redir->cmd_in != 0)
+			close(redir->cmd_in);
+		redir->cmd_in = open(path, O_RDONLY, 0644);
+		return (redir->cmd_in);
 	}
 	return (redir->cmd_output);
 }
@@ -61,7 +61,7 @@ static int		parse_redir(t_sh *sh, int *s_fd, int *i)
 	path = NULL;
 	if (s_fd[1] == 2)
 		(*i)++;
-	*i = pass_spaces(sh->input, *i);
+	*i = pass_spaces(sh->in, *i);
 	path = sample_str(sh, i, path);
 	if (s_fd[0] == 1)
 		ret = redir_norm(s_fd[1], sh->obj->redir, path);
@@ -73,7 +73,7 @@ static int		parse_redir(t_sh *sh, int *s_fd, int *i)
 		return (print_result(sh, -1, path));
 	}
 	free(path);
-	*i = pass_spaces(sh->input, *i);
+	*i = pass_spaces(sh->in, *i);
 	return (1);
 }
 
@@ -83,18 +83,17 @@ int				find_redir(t_sh *sh, int *i)
 	int		s_fd[2];
 
 	s_fd[0] = 1;
-	*i = pass_spaces(sh->input, *i);
-	if ((s_fd[1] = is_redir(sh->input, *i)) == 0
-	 && ft_isdigit(sh->input[*i]) == 0)
+	*i = pass_spaces(sh->in, *i);
+	if ((s_fd[1] = is_redir(sh->in, *i)) == 0 && ft_isdigit(sh->in[*i]) == 0)
 		return (0);
-	if (ft_isdigit(sh->input[*i]) != 0)
+	if (ft_isdigit(sh->in[*i]) != 0)
 	{
-		if ((s_fd[0] = ft_atoi(&sh->input[*i])) > 0)
+		if ((s_fd[0] = ft_atoi(&sh->in[*i])) > 0)
 		{
 			j = *i;
-			while (ft_isdigit(sh->input[*i]) != 0)
+			while (ft_isdigit(sh->in[*i]) != 0)
 				(*i)++;
-			if ((s_fd[1] = is_redir(sh->input, *i)) == 0)
+			if ((s_fd[1] = is_redir(sh->in, *i)) == 0)
 			{
 				*i = j;
 				return (0);

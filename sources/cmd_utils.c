@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/29 11:22:33 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	echo_loop(char **result, int *i, t_sh *sh)
 
 	l = 0;
 	sample = NULL;
-	if (ft_strncmp(&sh->input[*i], "\"\"", 2) == 0)
+	if (ft_strncmp(&sh->in[*i], "\"\"", 2) == 0)
 		l = 1;
 	if (!(sample = sample_str(sh, i, sample)))
 		return (free_str(*result));
@@ -43,11 +43,11 @@ int			parse_echo(t_sh *sh, int *i)
 	pass_option(sh, i);
 	if (!(result = ft_strdup("")))
 		return (-1);
-	while (is_end(sh->input, *i) == 0)
+	while (is_end(sh->in, *i) == 0)
 	{
 		if (redir_loop(sh, i) == -1)
 			return (free_str(result));
-		if (is_end(sh->input, *i) == 1)
+		if (is_end(sh->in, *i) == 1)
 			break ;
 		if (echo_loop(&result, i, sh) == -1)
 			return (-1);
@@ -114,14 +114,14 @@ int			parse_cd(t_sh *sh, int *i)
 
 	path = NULL;
 	ret = 0;
-	while (sh->input[*i])
+	while (sh->in[*i])
 	{
 		if (redir_loop(sh, i) == -1)
 			return (-1);
-		if (is_end(sh->input, *i) == 1)
+		if (is_end(sh->in, *i) == 1)
 			break ;
 		if ((path != NULL) && ret++)
-			*i = find_string_end(sh->input, *i);
+			*i = find_string_end(sh->in, *i);
 		else if ((path == NULL) && !(path = sample_str(sh, i, path)))
 			return (-1);
 	}

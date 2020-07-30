@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/21 12:48:37 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ int		last_backslash(char *str)
 	return (0);
 }
 
-int		find_string_end(char *input, int i)
+int		find_string_end(char *in, int i)
 {
-	while ((is_end(input, i) == 0) && is_space(input, i) == 0)
+	while ((is_end(in, i) == 0) && is_space(in, i) == 0)
 	{
-		if (is_quote(input, i, 0))
+		if (is_quote(in, i, 0))
 		{
-			if ((i = get_next_quote(input, i)) == -1)
+			if ((i = get_next_quote(in, i)) == -1)
 				return (-1);
 		}
 		i++;
@@ -75,26 +75,26 @@ int		find_string_end(char *input, int i)
 	return (i);
 }
 
-int		count_strings(char *input, int i)
+int		count_strings(char *in, int i)
 {
 	int count;
 
 	count = 0;
-	i = pass_spaces(input, i);
-	while (is_end(input, i) == 0)
+	i = pass_spaces(in, i);
+	while (is_end(in, i) == 0)
 	{
 		count++;
-		i = find_string_end(input, i);
-		i = pass_spaces(input, i);
+		i = find_string_end(in, i);
+		i = pass_spaces(in, i);
 	}
 	return (count);
 }
 
-int		find_end(char *input, int i)
+int		find_end(char *in, int i)
 {
-	while (input[i] && is_end(input, i) != 1)
+	while (in[i] && is_end(in, i) != 1)
 		i++;
-	if (input[i] && is_separator(input, i) == 1)
+	if (in[i] && is_separator(in, i) == 1)
 		i++;
 	return (i);
 }
