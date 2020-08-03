@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 10:04:08 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	clear_sh(t_sh *sh)
 {
 	if (sh->env)
 		env_clear(sh->env);
+	if (sh->obj)
+		free_obj(sh->obj);
 	free(sh->pip);
 	free(sh);
 }
@@ -88,6 +90,7 @@ int			main(int argc, char **argv, char **env)
 	{
 		sh->pip->count = 0;
 		sh->pip->lever = 0;
+		sh->pip->type = 0;
 		prompt(lstenv);
 		get_next_line(0, &line);
 		sh->in = line;

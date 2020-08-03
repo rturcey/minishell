@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 11:09:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,15 @@ typedef struct		s_sh
 	char			*in;
 	int				lev;
 	int				err;
+	int				*tmp;
+	int				*temp;
 }					t_sh;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
 int					general_parser(t_sh *sh);
 void				remove_home_path(char **path, char *home);
-void				skim_str(char *sample, int k, int *i);
+int					skim_str(char *sample, int k, int *i);
 t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);

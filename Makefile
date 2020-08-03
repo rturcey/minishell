@@ -4,7 +4,7 @@ SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
 				./sources/string_utils.c ./sources/string_utils2.c ./sources/redir.c \
 				./sources/redir_utils.c ./sources/redir_err.c ./sources/parse_var.c \
 				./sources/env_utils3.c ./sources/err_utils.c ./sources/exec_utils.c \
-				./sources/check_path.c ./sources/cmd_utils3.c
+				./sources/check_path.c ./sources/cmd_utils3.c ./sources/sample_str.c
 
 INC_DIR		= ./includes/
 

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/30 10:16:46 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 10:08:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,125 +43,6 @@ int		pipeline_end(char *in, int i)
 		pipeline_end(in, i);
 	return (i);
 }
-
-/*
-**Making a clean string, unnecessary quotes removed
-*/
-
-void	skim_str(char *sample, int k, int *i)
-{
-	while (sample[++k] && sample[k + 1])
-		sample[k] = sample[k + 1];
-	while (sample[k])
-		sample[k++] = '\0';
-	(*i)++;
-}
-
-int		sample_quote_cond(t_sh *sh, int *i, char **sample, int *j)
-{
-	int k;
-	int l;
-	int	r;
-	int check;
-	int heck;
-
-	k = get_next_quote(*sample, *j) - 1;
-	l = (*j) - 1;
-	heck = 0;
-	if (is_quote(sh->in, *i, '\"') == 1)
-	{
-		while (++l < k)
-		{
-			if ((*sample)[l + 1] != '$' && ((*sample)[l] == '\\'
-			 && ((*sample)[l + 1] == '\"' ||
-				(*sample)[l + 1] == '\\') && k--))
-				skim_str(*sample, l - 1, i);
-			else if ((*sample)[l] == '$' && l > 0
-			 && (*sample)[l - 1] == '\\' && k--)
-				skim_str(*sample, l - 2, i);
-			else if ((*sample)[l] == '$' && normed_char((*sample)[l + 1]) == 0)
-			{
-				if ((*sample)[l + 1] && (*sample)[l + 1] == '?')
-				{
-					if (parse_g_err(sh, sample, &l, i) == -1)
-						return (-1);
-				}
-				else if ((r = parse_sample_var(sample, &l, sh->env, i)) != -3)
-				{
-					if (r == -1)
-						return (-1);
-					heck = 1;
-					if (r == -2)
-						(*j)--;
-				}
-				k = get_next_quote(*sample, *j) - 1;
-			}
-		}
-	}
-	l = k - 1;
-	check = -1;
-	while (++check != 2)
-	{
-		skim_str(*sample, k, i);
-		k = (*j) - 1;
-	}
-	if (heck == 0)
-		(*i) += l - (*j);
-	(*j) = l;
-	return (0);
-}
-
-char	*sample_str(t_sh *sh, int *i, char *sample)
-{
-	int end;
-	int j;
-	int r;
-
-	if (!sh->in[*i])
-		return (NULL);
-	end = find_string_end(sh->in, *i);
-	if (!(sample = ft_substr(sh->in, *i, (end - *i))))
-		return (NULL);
-	j = -1;
-	while (sample[++j])
-	{
-		if (sample[j] == '\\' && sample[j + 1] != '$')
-			skim_str(sample, j - 1, i);
-		else if (is_quote(sh->in, *i, 0) == 1)
-		{
-			if (sample_quote_cond(sh, i, &sample, &j) == -1)
-				return (char_free_str(sample));
-		}
-		else if ((sample[j] == '$') && sample[j + 1] && (sample[j + 1] == '?') \
-		&& (j == 0 || sample[j - 1] != '\\'))
-		{
-			if (parse_g_err(sh, &sample, &j, i) == -1)
-				return (char_free_str(sample));
-		}
-		else if (sample[j] == '$' && j > 0 && sample[j - 1] == '\\')
-			skim_str(sample, j - 2, i);
-		else if (sample[j] == '$' && normed_char(sample[j + 1]) == 0)
-		{
-			if ((r = parse_sample_var(&sample, &j, sh->env, i)) == -2)
-				j--;
-			else if (r == -1)
-				return (char_free_str(sample));
-		}
-		(*i)++;
-	}
-	*i = end;
-	return (sample);
-}
-
-/*
-**First check for lonely quote, if so return error
-**enter loop (after passing first spaces), make a
-**sample from the first string we can extract from
-**in. It is already parsed and clean.
-**We strncmp it with the cmds, init an object if
-**strcmp is positive, and send obj and in to
-**the appropriate function
-*/
 
 void	init_pipe(t_sh *sh, int i)
 {
@@ -265,7 +146,7 @@ int		general_parser(t_sh *sh)
 	i = pass_spaces(sh->in, i);
 	while (sh->in[i])
 	{
-		ft_dprintf(2, "input[%d][%c]\n", i, sh->input[i]);
+		ft_dprintf(2, "input[%d][%c]\n", i, sh->in[i]);
 		if (!(sh->obj = obj_new(sh->env)))
 			return (-1);
 		if (!(sh->obj->redir = redir_new()))
