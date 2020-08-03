@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 20:45:47 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 11:14:40 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 18:44:21 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char		*ft_printf_strjoin(char *s1, char *s2, int stocklen, int ratlen)
 
 	i = 0;
 	j = 0;
-	if (!(new = ft_malloc("char", (ratlen + stocklen + 1))))
+	if (!(new = malloc(sizeof(char) * (ratlen + stocklen + 1))))
 		return (NULL);
 	while (i < ratlen)
 	{
@@ -31,8 +31,8 @@ char		*ft_printf_strjoin(char *s1, char *s2, int stocklen, int ratlen)
 	while (j < stocklen)
 		new[i++] = s2[j++];
 	new[i] = '\0';
-	ft_free(s1);
-	ft_free(s2);
+	free(s1);
+	free(s2);
 	return (new);
 }
 

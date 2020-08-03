@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:47:53 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/18 12:19:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 18:50:19 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*replace_vals(char *cpyarg, int star, va_list ap, int k)
 	i = 0;
 	j = 0;
 	val = ft_itoa(va_arg(ap, int));
-	if (!(new = ft_malloc("char", (ft_pstrlen(cpyarg) + ft_pstrlen(val)
+	if (!(new = malloc(sizeof(char) * (ft_pstrlen(cpyarg) + ft_pstrlen(val)
 	+ 1))))
 		return (NULL);
 	while (cpyarg[j] && j < star)
@@ -58,8 +58,8 @@ char	*replace_vals(char *cpyarg, int star, va_list ap, int k)
 	while (cpyarg[j])
 		new[i++] = cpyarg[j++];
 	new[i] = '\0';
-	ft_free(cpyarg);
-	ft_free(val);
+	free(cpyarg);
+	free(val);
 	return (new);
 }
 
@@ -102,7 +102,7 @@ char	**fill_tab(char **stock, char **cpyarg, va_list ap, int i)
 		if ((*cpyarg)[i] && (*cpyarg)[i] != '%')
 		{
 			k = 0;
-			if (!(stock[j] = ft_malloc("char", (cstrlen(*cpyarg, i) + 3))))
+			if (!(stock[j] = malloc(sizeof(char) * (cstrlen(*cpyarg, i) + 3))))
 				return (NULL);
 			stock[j][k++] = 'R';
 			stock[j][k++] = 1;
@@ -137,7 +137,7 @@ int		ft_printf(const char *arg, ...)
 	i = 0;
 	if (stock != NULL)
 		fill_tab(stock, &cpyarg, ap, i);
-	ft_free(cpyarg);
+	free(cpyarg);
 	va_end(ap);
 	return (go_print(stock));
 }

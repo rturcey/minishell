@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 16:13:43 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/15 14:24:45 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:44:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char		*init_tab_itoa(int quot, int n, int minus)
 		j *= -1;
 	tab = NULL;
 	i = 0;
-	if (!(tab = ft_malloc("char", (quot + 2))))
+	if (!(tab = malloc(sizeof(char) * (quot + 2))))
 		return (NULL);
 	while (j > 9)
 	{

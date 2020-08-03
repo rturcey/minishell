@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 16:47:31 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/16 12:03:27 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:43:41 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,9 @@
 # include <stdlib.h>
 # include <stdarg.h>
 
-char		*g_mallocs[500];
-int			g_malnb;
-int			g_freenb;
-
 int			ft_printf(const char *arg, ...);
 int			ft_dprintf(int fd, const char *arg, ...);
 char		*ft_sprintf(const char *arg, ...);
-
-char		*ft_malloc(char *type, int size);
-void		ft_free(char *str);
 
 int			eligible_for_empty_str(char *arg, int conv, int precision,
 	char *ret);

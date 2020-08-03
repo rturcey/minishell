@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 20:03:24 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/15 14:25:25 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:48:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_putlnbr_base(unsigned long long lnbr, char d, char *str)
 		i = i * (unsigned long long)ft_pstrlen(base_are_belong(d));
 		size++;
 	}
-	if (!(str = ft_malloc("char", (size + 1))))
+	if (!(str = malloc(sizeof(char) * (size + 1))))
 		return (NULL);
 	while (i > 0)
 	{
@@ -62,7 +62,7 @@ char	*convert_addr(char *ret, va_list ap)
 		return (null_str(ret));
 	else
 	{
-		if (!(ret = ft_malloc("char", (ft_pstrlen(addr) + 5))))
+		if (!(ret = malloc(sizeof(char) * (ft_pstrlen(addr) + 5))))
 			return (NULL);
 		i = -1;
 		j = 0;
@@ -74,7 +74,7 @@ char	*convert_addr(char *ret, va_list ap)
 			ret[j++] = addr[i];
 		ret[j] = '\0';
 	}
-	ft_free(addr);
+	free(addr);
 	return (ret);
 }
 
@@ -90,20 +90,20 @@ char	*convert_unsigned_hexa(char *ret, va_list ap, char d)
 		return (null_str(ret));
 	else
 	{
-		if (!(ret = ft_malloc("char", (ft_pstrlen(str) + 3))))
+		if (!(ret = malloc(sizeof(char) * (ft_pstrlen(str) + 3))))
 			return (NULL);
 		ret[0] = 'R';
 		ret[1] = '1';
 		ret[2] = '\0';
 		ft_strlcat(ret, str, (ft_pstrlen(str) + 3));
-		ft_free(str);
+		free(str);
 	}
 	return (ret);
 }
 
 char	*convert_percent(char *ret, int *i)
 {
-	if (!(ret = ft_malloc("char", 4)))
+	if (!(ret = malloc(sizeof(char) * 4)))
 		return (NULL);
 	ret[0] = 'R';
 	ret[1] = '1';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/03 10:08:46 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 18:54:02 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	pipe_checks(t_sh *sh, int *i)
 			close(sh->pip->pipefd[0]);
 			dup2(sh->pip->pipefd[1], 1);
 			status = 0;
-			wait(&status);
+			//wait(&status);
+			waitpid(-1, &status, WUNTRACED);
 			close(sh->pip->pipefd[1]);
 			sh->pip->count--;
 			exit(EXIT_SUCCESS);
@@ -146,7 +147,7 @@ int		general_parser(t_sh *sh)
 	i = pass_spaces(sh->in, i);
 	while (sh->in[i])
 	{
-		ft_dprintf(2, "input[%d][%c]\n", i, sh->in[i]);
+		//ft_dprintf(2, "input[%d][%c]\n", i, sh->in[i]);
 		if (!(sh->obj = obj_new(sh->env)))
 			return (-1);
 		if (!(sh->obj->redir = redir_new()))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:47:53 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/07 12:22:09 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 18:53:27 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ char	*go_sprint(char **result, char **stock)
 	free(stock);
 	*result = ft_strdup(rat);
 	free(rat);
-	g_malnb = 0;
-	g_freenb = 0;
 	return (*result);
 }
 
@@ -59,7 +57,7 @@ char	*ft_sprintf(const char *arg, ...)
 	i = 0;
 	if (stock != NULL)
 		fill_tab(stock, &cpyarg, ap, i);
-	ft_free(cpyarg);
+	free(cpyarg);
 	va_end(ap);
 	return (go_sprint(&result, stock));
 }

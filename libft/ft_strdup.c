@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:48:43 by esoulard          #+#    #+#             */
-/*   Updated: 2019/11/10 15:27:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:38:04 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strdup(const char *s1)
 	len = 0;
 	while (s1[len])
 		len++;
-	if (!(cpy = ft_malloc("char", (len + 1))))
+	if (!(cpy = malloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	i = 0;
 	while (s1[i])

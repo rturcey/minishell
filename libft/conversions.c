@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 20:01:34 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/15 14:25:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:47:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*null_str(char *ret)
 {
-	if (!(ret = ft_malloc("char", 9)))
+	if (!(ret = malloc(sizeof(char) * 9)))
 		return (NULL);
 	ret = ft_memcpy(ret, "R1(null)", 9);
 	return (ret);
@@ -25,7 +25,7 @@ char	*convert_char(char *ret, va_list ap)
 	char c;
 
 	c = va_arg(ap, int);
-	if (!(ret = ft_malloc("char", 4)))
+	if (!(ret = malloc(sizeof(char) * 4)))
 		return (NULL);
 	ret[0] = 'C';
 	if (c == 0)
@@ -49,7 +49,7 @@ char	*convert_str(char *ret, va_list ap)
 		return (null_str(ret));
 	else
 	{
-		if (!(ret = ft_malloc("char", (ft_pstrlen(str) + 3))))
+		if (!(ret = malloc(sizeof(char) * (ft_pstrlen(str) + 3))))
 			return (NULL);
 		ret[0] = 'R';
 		ret[1] = '1';
@@ -68,13 +68,13 @@ char	*convert_signed_int(char *ret, va_list ap)
 		return (null_str(ret));
 	else
 	{
-		if (!(ret = ft_malloc("char", (ft_pstrlen(str) + 3))))
+		if (!(ret = malloc(sizeof(char) * (ft_pstrlen(str) + 3))))
 			return (NULL);
 		ret[0] = 'R';
 		ret[1] = '1';
 		ret[2] = '\0';
 		ft_strlcat(ret, str, (ft_pstrlen(str) + 3));
-		ft_free(str);
+		free(str);
 	}
 	return (ret);
 }
@@ -88,13 +88,13 @@ char	*convert_unsigned_int(char *ret, va_list ap)
 		return (null_str(ret));
 	else
 	{
-		if (!(ret = ft_malloc("char", (ft_pstrlen(str) + 3))))
+		if (!(ret = malloc(sizeof(char) * (ft_pstrlen(str) + 3))))
 			return (NULL);
 		ret[0] = 'R';
 		ret[1] = '1';
 		ret[2] = '\0';
 		ft_strlcat(ret, str, (ft_pstrlen(str) + 3));
-		ft_free(str);
+		free(str);
 	}
 	return (ret);
 }

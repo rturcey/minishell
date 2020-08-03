@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 20:05:42 by esoulard          #+#    #+#             */
-/*   Updated: 2020/01/16 11:39:24 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:40:22 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_replace_replaceable(char *str, int *stocklen, int i)
 		newstr = ft_substr(str, 2, actual_len(str));
 	else if (str[0] == 'C')
 	{
-		if (!(newstr = ft_malloc("char", (actual_len(str) + 1))))
+		if (!(newstr = malloc(sizeof(char) * (actual_len(str) + 1))))
 			return (NULL);
 		j = 0;
 		while (j <= *stocklen)
@@ -57,7 +57,7 @@ char	*ft_replace_replaceable(char *str, int *stocklen, int i)
 		}
 		newstr[j] = '\0';
 	}
-	ft_free(str);
+	free(str);
 	return (newstr);
 }
 
@@ -84,9 +84,7 @@ int		go_print(char **stock)
 	}
 	write(1, rat, ratlen);
 	free(stock);
-	ft_free(rat);
-	g_malnb = 0;
-	g_freenb = 0;
+	free(rat);
 	return (len);
 }
 

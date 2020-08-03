@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 19:50:32 by esoulard          #+#    #+#             */
-/*   Updated: 2019/11/10 15:28:42 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:50:50 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,17 @@ char	*damn_large_precision(char *arg, int i, char *ret, int precision)
 		precision += 2;
 	if (arg[i] == 'p')
 	{
-		if (!(newret = ft_malloc("char", (precision + 5))))
+		if (!(newret = malloc(sizeof(char) * (precision + 5))))
 			return (NULL);
 		kill_that_precision(newret, ret, precision, 'p');
 	}
 	else
 	{
-		if (!(newret = ft_malloc("char", (precision + 3))))
+		if (!(newret = malloc(sizeof(char) * (precision + 3))))
 			return (NULL);
 		kill_that_precision(newret, ret, precision, 'r');
 	}
-	ft_free(ret);
+	free(ret);
 	return (newret);
 }
 
@@ -98,12 +98,12 @@ char	*make_empty_string(char *newret, char *ret, char type)
 	i = 0;
 	if (type == 'p')
 	{
-		if (!(newret = ft_malloc("char", 5)))
+		if (!(newret = malloc(sizeof(char) * 5)))
 			return (NULL);
 	}
 	else
 	{
-		if (!(newret = ft_malloc("char", 3)))
+		if (!(newret = malloc(sizeof(char) * 3)))
 			return (NULL);
 	}
 	newret[i++] = 'R';
@@ -114,7 +114,7 @@ char	*make_empty_string(char *newret, char *ret, char type)
 		newret[i++] = 'x';
 	}
 	newret[i++] = '\0';
-	ft_free(ret);
+	free(ret);
 	return (newret);
 }
 

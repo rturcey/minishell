@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/03 10:04:08 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/03 20:45:04 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,17 @@ int			init_main(t_env **lstenv, t_sh **sh, char **env)
 	return (0);
 }
 
+void		sighandler(int num)
+{
+	if (num == SIGINT)
+	{
+		ft_printf("\n");
+		//prompt(lstenv);
+	}
+	if (num == SIGQUIT)
+		ft_dprintf(2, "\0");
+}
+
 int			main(int argc, char **argv, char **env)
 {
 	char		*line;
@@ -92,6 +103,8 @@ int			main(int argc, char **argv, char **env)
 		sh->pip->lever = 0;
 		sh->pip->type = 0;
 		prompt(lstenv);
+		signal(SIGQUIT, sighandler);
+		signal(SIGINT, sighandler);
 		get_next_line(0, &line);
 		sh->in = line;
 		ret = general_parser(sh);

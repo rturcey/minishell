@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:47:53 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 14:34:43 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/03 18:51:29 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ int		go_dprint(int fd, char **stock)
 	}
 	ft_putstr_fd(rat, fd);
 	free(stock);
-	ft_free(rat);
-	g_malnb = 0;
-	g_freenb = 0;
+	free(rat);
 	return (len);
 }
 
@@ -58,7 +56,7 @@ int		ft_dprintf(int fd, const char *arg, ...)
 	i = 0;
 	if (stock != NULL)
 		fill_tab(stock, &cpyarg, ap, i);
-	ft_free(cpyarg);
+	free(cpyarg);
 	va_end(ap);
 	return (go_dprint(fd, stock));
 }
