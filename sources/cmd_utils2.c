@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/17 12:49:45 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int		parse_export(t_sh *sh, int *i)
 			maj_err(sh, ft_sprintf(\
 			"export: %s : not a valid identifier\n", sample), 1);
 		free(sample);
+		*i = pass_spaces(sh->in, *i);
 	}
 	return (print_result(sh, 0, NULL));
 }
@@ -91,6 +92,7 @@ int		parse_env(t_sh *sh, int *i)
 {
 	int		r;
 
+	*i = pass_spaces(sh->in, *i);
 	while (is_end(sh->in, *i) == 0)
 	{
 		if ((r = find_redir(sh, i)) == 0)

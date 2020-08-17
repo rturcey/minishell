@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/17 14:32:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ static int		check_vars(t_sh *sh, int *i)
 		*i = pass_spaces(sh->in, *i);
 		j = *i;
 		while (is_end(sh->in, j) == 0 && is_space(sh->in, j) == 0
-			&& sh->in[j] != '=')
+			&& sh->in[j] != '=' && sh->in[j] != '+')
 			j++;
-		if (sh->in[j] != '=')
+		if (sh->in[j] != '=' && pluseq(sh->in, j) == 0)
 			return (-1);
+		if (pluseq(sh->in, j) == 1)
+			j++;
 		*i = j + 1;
 		*i = pass_spaces(sh->in, *i);
 		if (is_end(sh->in, *i) != 0)
@@ -101,10 +103,19 @@ static int		check_var_inside(t_env *w, t_env *env)
 
 static void		add_multiple_var(t_env *w, t_env *env)
 {
+	t_env	*tmp;
+
 	while (w)
 	{
-		if (find_env_entry(w->key, env))
+		if ((tmp = find_env_entry(w->key, env)))
+		{
 			w->in = 1;
+			if (w->pluseq == 1)
+			{
+				if (!(w->val = ft_strjoin_bth(ft_strdup(tmp->val), w->val)))
+					return ;
+			}
+		}
 		add_var(w, env);
 		w = w->next;
 	}

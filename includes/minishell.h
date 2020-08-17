@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/03 11:09:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/17 14:23:09 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct		s_env
 	char			*val;
 	int				in;
 	struct s_env	*next;
+	int				pluseq;
 }					t_env;
 
 typedef struct		s_arg
@@ -150,5 +151,7 @@ int					replace_pwd(t_env *env, char **path);
 int					check_path(t_sh *sh, char **path);
 void				pass_option(t_sh *sh, int *i);
 int					normed_char(char c);
+int					pluseq(char *sample, int i);
+int					repluseq(char *sample, int i, t_env *env, int in);
 
 #endif

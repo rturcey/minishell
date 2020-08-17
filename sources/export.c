@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/05/20 15:30:15 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/17 14:17:44 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,40 @@ int				unset_var(char **elt, t_env *env)
 	return (0);
 }
 
+int				pluseq(char *sample, int i)
+{
+	if (sample[i] == '+' && sample[i + 1] && sample[i + 1] == '=')
+		return (1);
+	return (0);
+}
+
+int				repluseq(char *sample, int i, t_env *env, int in)
+{
+	char	*key;
+	char	*val;
+	t_env	*elt;
+
+	if (ft_isalnum(sample[i + 2]) == 0)
+		return (-1);
+	if (!(key = ft_substr(sample, 0, i)))
+		return (-2);
+	i += 2;
+	if (!(val = ft_strdup(&sample[i])))
+		return (-2);
+	if (!(elt = find_env_entry(key, env)))
+	{
+		if (!(elt = env_new(in)))
+			return (-2);
+		elt->key = key;
+		elt->val = val;
+		export_var(elt, env);
+		del_var(elt);
+	}
+	else if (!(elt->val = ft_strjoin_bth(elt->val, val)))
+		return (-2);
+	return (0);
+}
+
 int				sample_export(char *sample, t_env *env)
 {
 	int		i;
@@ -29,15 +63,19 @@ int				sample_export(char *sample, t_env *env)
 	t_env	*tmp;
 
 	i = -1;
-	while (sample[++i] && sample[i] != '=')
-	{
-		if (is_space(sample, i) != 0)
-			return (-1);
-	}
+	if (ft_isdigit(sample[0]) == 1)
+		return (-1);
+	while (sample[++i] && sample[i] != '=' && sample[i] != '+')
+		if (normed_char(sample[i]) != 0)
+				return (-1);
+	if (sample[i] == '+' && pluseq(sample, i) == 0)
+		return (-1);
 	if (i == 0)
 		return (-1);
 	if (!sample[i] && (tmp = find_env_entry(sample, env)))
 		tmp->in = 1;
+	else if (pluseq(sample, i) == 1)
+		return (repluseq(sample, i, env, 1));
 	else if (sample[i] == '=')
 	{
 		if (!(new = env_new(1)))
