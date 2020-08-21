@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/17 14:23:09 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/21 16:28:21 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct		s_sh
 	int				*tmp;
 	int				*temp;
 }					t_sh;
+
+t_env				*lstenv;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 

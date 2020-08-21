@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/03 20:45:04 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/21 16:27:35 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,23 @@ int			init_main(t_env **lstenv, t_sh **sh, char **env)
 }
 
 void		sighandler(int num)
-{
+{	
 	if (num == SIGINT)
 	{
-		ft_printf("\n");
-		//prompt(lstenv);
+		ft_dprintf(2, "\n");
+		prompt(lstenv);
 	}
-	if (num == SIGQUIT)
-		ft_dprintf(2, "\0");
+	else if (num == SIGQUIT)
+	{
+		ft_dprintf(2, "\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		//ft_dprintf(2, "sighandler sigquit\n");
+	}
 }
 
 int			main(int argc, char **argv, char **env)
 {
 	char		*line;
-	t_env		*lstenv;
+	// t_env		*lstenv;
 	int			ret;
 	t_sh		*sh;
 
@@ -103,14 +106,20 @@ int			main(int argc, char **argv, char **env)
 		sh->pip->lever = 0;
 		sh->pip->type = 0;
 		prompt(lstenv);
-		signal(SIGQUIT, sighandler);
 		signal(SIGINT, sighandler);
-		get_next_line(0, &line);
+		signal(SIGQUIT, sighandler);
+		if (get_next_line(0, &line) <= 0)
+		{
+			if (line)
+				free(line);
+			line = ft_strdup("exit\n");
+		}		
 		sh->in = line;
 		ret = general_parser(sh);
 		free(line);
 		if (ret != 0)
 			break ;
+		//ft_dprintf(2, "end of main loop\n");	
 	}
 	ret = sh->err;
 	clear_sh(sh);
