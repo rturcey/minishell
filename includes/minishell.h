@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/21 16:28:21 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/29 12:19:43 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,5 +155,6 @@ void				pass_option(t_sh *sh, int *i);
 int					normed_char(char c);
 int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
+int					parse_syntax(t_sh *sh, int i);
 
 #endif

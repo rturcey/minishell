@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 12:47:40 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/29 13:13:33 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ static int		redir_error(t_redir *redir, char *in, int *i, int j)
 			return (-1);
 		sym[0] = in[j];
 	}
-	ft_dprintf(redir->err_output, \
-	"bash: erreur de syntaxe près du symbole inattendu « %s »\n", sym);
+	ft_dprintf(redir->err_output, "bash: parse error near %s\n", sym);
 	free(sym);
 	return (-1);
 }

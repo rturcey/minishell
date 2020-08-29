@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/21 16:27:35 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/29 10:32:51 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_sh	*init_sh(t_env *env)
 	sh->env = env;
 	sh->lev = 1;
 	sh->err = 0;
+	sh->obj = NULL;
 	return (sh);
 }
 
@@ -76,7 +77,7 @@ int			init_main(t_env **lstenv, t_sh **sh, char **env)
 }
 
 void		sighandler(int num)
-{	
+{
 	if (num == SIGINT)
 	{
 		ft_dprintf(2, "\n");
@@ -113,13 +114,13 @@ int			main(int argc, char **argv, char **env)
 			if (line)
 				free(line);
 			line = ft_strdup("exit\n");
-		}		
+		}
 		sh->in = line;
 		ret = general_parser(sh);
 		free(line);
 		if (ret != 0)
 			break ;
-		//ft_dprintf(2, "end of main loop\n");	
+		//ft_dprintf(2, "end of main loop\n");
 	}
 	ret = sh->err;
 	clear_sh(sh);

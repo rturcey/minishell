@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/03 18:54:02 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/29 13:13:17 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,14 @@ int		general_parser(t_sh *sh)
 		return (0);
 	}
 	i = 0;
-	i = pass_spaces(sh->in, i);
+	j = 0;
 	while (sh->in[i])
 	{
-		//ft_dprintf(2, "input[%d][%c]\n", i, sh->in[i]);
+		i = pass_spaces(sh->in, i);
+		if ((j = parse_syntax(sh, i)) == -1)
+			return (0);
+		else if (j == -2)
+			return (-1);
 		if (!(sh->obj = obj_new(sh->env)))
 			return (-1);
 		if (!(sh->obj->redir = redir_new()))
