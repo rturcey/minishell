@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/03 11:08:42 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/30 10:02:05 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ char		*sample_str(t_sh *sh, int *i, char *s)
 	{
 		if (!sample_loop(sh, i, &s, &j))
 			return (NULL);
-		(*i)++;
+		if (sh->in[*i])
+			(*i)++;
 	}
 	*i = end;
 	return (s);

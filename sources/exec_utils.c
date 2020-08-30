@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/08/29 11:06:01 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/30 11:52:12 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int		try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	else if ((status = 0) == 0)
 	{
 		wait(&status);
-		sh->err = status;
+		if (WIFEXITED(status))
+			sh->err = WEXITSTATUS(status);
 	}
 	return (0);
 }

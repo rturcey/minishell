@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/29 11:25:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/30 10:00:42 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int		parse_g_err(t_sh *sh, char **sample, int *l, int *i)
 	if (!(end = ft_substr(*sample, *l, ft_strlen(*sample))))
 		return (free_two_str(val, begin));
 	free(*sample);
-	*i += ft_strlen(val) - 1;
 	if (!(*sample = ft_strjoin_bth(begin, val)))
 	{
 		free(end);

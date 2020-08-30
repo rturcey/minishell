@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/29 13:13:17 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/30 12:19:23 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,11 @@ void	pipe_checks(t_sh *sh, int *i)
 			status = 0;
 			//wait(&status);
 			waitpid(-1, &status, WUNTRACED);
+			if (WIFEXITED(status))
+				sh->err = WEXITSTATUS(status);
 			close(sh->pip->pipefd[1]);
 			sh->pip->count--;
-			exit(EXIT_SUCCESS);
+			exit(sh->err);
 		}
 	}
 	init_pipe(sh, *i);
@@ -114,6 +116,8 @@ void	pipe_checks(t_sh *sh, int *i)
 			if (sh->pip->pid != 0)
 			{
 				wait(&status);
+				if (WIFEXITED(status))
+					sh->err = WEXITSTATUS(status);
 				*i = pipeline_end(sh->in, *i);
 				sh->pip->type = 0;
 				return ;
@@ -135,7 +139,6 @@ int		general_parser(t_sh *sh)
 	int			i;
 	int			j;
 	int			stock_i;
-
 
 	if ((lonely_quote(sh->in) == -1) ||
 		(last_backslash(sh->in) == -1))
@@ -209,7 +212,7 @@ int		general_parser(t_sh *sh)
 		if (sh->pip->type == 3)
 		{
 			close(sh->pip->pipefd[0]);
-			exit(EXIT_SUCCESS);
+			exit(sh->err);
 		}
 	}
 	return (0);

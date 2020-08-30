@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/06 11:19:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/08/30 09:38:47 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		pass_spaces(char *str, int i)
 
 int		is_quote2(char *str, int i, char quote, int count)
 {
-	if (str[i] == quote)
+	if (str[i] && str[i] == quote)
 	{
 		if ((i > 0) && (str[i - 1] == '\\'))
 		{
@@ -42,7 +42,7 @@ int		is_quote(char *str, int i, char quote)
 	count = 0;
 	if (quote == 0)
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
 		{
 			if ((i > 0) && (str[i - 1] == '\\'))
 			{
