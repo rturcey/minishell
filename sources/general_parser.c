@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/30 12:19:23 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/31 10:47:41 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int		pipeline_end(char *in, int i)
 	}
 	if (in[i] && i > 0 && in[i - 1] == '\\')
 		pipeline_end(in, i);
+	if (in[i] == ';')
+		++i;
 	return (i);
 }
 
@@ -199,7 +201,7 @@ int		general_parser(t_sh *sh)
 			free(sample);
 			if ((j = parse_exec(sh, &i)) == -1)
 				return (free_obj(sh->obj));
-			else if (j == -2)
+			else if (sh->in[i] && j == -2)
 			{
 				maj_err(sh, ft_sprintf("%s: command not found\n", \
 				sh->obj->obj), 127);
@@ -211,6 +213,7 @@ int		general_parser(t_sh *sh)
 			free_obj(sh->obj);
 		if (sh->pip->type == 3)
 		{
+			sh->pip->type = 0;
 			close(sh->pip->pipefd[0]);
 			exit(sh->err);
 		}

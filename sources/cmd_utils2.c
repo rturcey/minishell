@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/08/17 12:49:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/31 12:56:53 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,18 @@ int		parse_pwd(t_sh *sh, int *i)
 int		parse_export(t_sh *sh, int *i)
 {
 	char	*sample;
+	int		ret;
 
+	*i = pass_spaces(sh->in, *i);
+	if (is_end(sh->in, *i) == 1)
+		export_solo(sh);
 	while (is_end(sh->in, *i) == 0)
 	{
 		if (redir_loop(sh, i) == -1)
 			return (-1);
 		if (!(sample = sample_str(sh, i, sample)))
 			return (free_str(sample));
-		if (sample_export(sample, sh->env) == -1)
+		if ((ret = sample_export(sample, sh->env)) == -1)
 			maj_err(sh, ft_sprintf(\
 			"export: %s : not a valid identifier\n", sample), 1);
 		free(sample);

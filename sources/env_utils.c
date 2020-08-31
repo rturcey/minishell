@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/17 14:27:25 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/31 13:15:18 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ int		split_env(char *line, t_env *elt)
 	j = -1;
 	while (line[i] && line[i] != '=' && line[i] != '+')
 		i++;
-	if (!line[i])
-		return (-1);
-	if (line[i] == '+' && pluseq(line, i) == 0)
+	if (line[i] && line[i] == '+' && pluseq(line, i) == 0)
 		return (-1);
 	if (!(elt->key = malloc(i + 1)))
 		return (-1);
@@ -54,6 +52,8 @@ int		split_env(char *line, t_env *elt)
 	elt->key[j] = '\0';
 	if (pluseq(line, i) == 1 && (elt->pluseq = 1))
 		i++;
+	if (!line[i])
+		i--;
 	if (!(elt->val = ft_strdup(&line[i + 1])))
 		return (-1);
 	return (0);

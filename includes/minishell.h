@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/29 12:19:43 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/08/31 12:09:52 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,6 @@ int					normed_char(char c);
 int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
 int					parse_syntax(t_sh *sh, int i);
+void				export_solo(t_sh *sh);
 
 #endif
