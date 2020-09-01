@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/31 13:24:50 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 10:19:08 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,23 @@ int				unset_var(char **elt, t_env *env)
 	return (0);
 }
 
+static int		process_export(char *sample, t_env *env)
+{
+	t_env	*new;
+
+	if (!(new = env_new(1)))
+		return (-2);
+	if (split_env(sample, new) == -1)
+		return (-1);
+	export_var(new, env);
+	del_var(new);
+	return (0);
+}
+
 int				sample_export(char *sample, t_env *env)
 {
 	int		i;
-	t_env	*new;
+	int		ret;
 	t_env	*tmp;
 
 	i = -1;
@@ -42,12 +55,8 @@ int				sample_export(char *sample, t_env *env)
 		return (repluseq(sample, i, env, 1));
 	else
 	{
-		if (!(new = env_new(1)))
-			return (-2);
-		if (split_env(sample, new) == -1)
-			return (-1);
-		export_var(new, env);
-		del_var(new);
+		if ((ret = process_export(sample, env)) < 0)
+			return (ret);
 	}
 	return (0);
 }

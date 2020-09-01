@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/31 10:47:41 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 11:06:20 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **further cmd parsing
 */
 
-int		is_separator(char *str, int i)
+int			is_separator(char *str, int i)
 {
 	if (str[i] == ';' || str[i] == '|')
 	{
@@ -28,119 +28,89 @@ int		is_separator(char *str, int i)
 	return (0);
 }
 
-int		pipeline_end(char *in, int i)
+static int	first_checks(t_sh *sh, int *i)
 {
-	while (in[i] && in[i] != ';')
+	int		j;
+
+	*i = pass_spaces(sh->in, *i);
+	if ((j = parse_syntax(sh, *i)) == -1)
+		return (0);
+	else if (j == -2)
+		return (-1);
+	if (!(sh->obj = obj_new(sh->env)))
+		return (-1);
+	if (!(sh->obj->redir = redir_new()))
+		return (free_obj(sh->obj));
+	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
+	&& (sh->err = 2))
+		return (0);
+	if ((redir_loop(sh, i) == -1) && (sh->err = 2))
+		return (-1);
+	if (parse_var(sh, i, 0) == -1)
 	{
-		if (is_quote(in, i, 0))
-		{
-			if ((i = get_next_quote(in, i)) == -1)
-				return (-1);
-		}
-		i++;
+		return (free_obj(sh->obj));
 	}
-	if (in[i] && i > 0 && in[i - 1] == '\\')
-		pipeline_end(in, i);
-	if (in[i] == ';')
-		++i;
-	return (i);
+	pipe_checks(sh, i);
+	return (1);
 }
 
-void	init_pipe(t_sh *sh, int i)
+static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 {
-	int	end;
+	int		j;
 
-	if (sh->in[i])
+	if ((j = is_cmd(sample)) != -1)
 	{
-		end = find_end(sh->in, i);
-		if ((--end >= 0 && sh->in[end] == '|'))
-			sh->pip->lever = 1;
-		else
-		{
-			sh->pip->lever = 0;
-			if (sh->pip->count > 0)
-				sh->pip->type = 3;
-		}
+		if (!(init_obj(sh->obj, sample, j)))
+			return (free_obj(sh->obj));
+		if ((j = parse_cmds(sh, i)) == -1 && free_obj(sh->obj) == -1
+		&& free_str(sample) == -1)
+			return (0);
+		if (free_str(sample) == -1 && set_g_err(sh) == 1)
+			return (-1);
 	}
 	else
 	{
-		sh->pip->lever = 0;
-		if (sh->pip->count > 0)
-			sh->pip->type = 3;
+		*i = stock;
+		if (free_str(sample) == -1 && (j = parse_exec(sh, i)) == -1)
+			return (free_obj(sh->obj));
+		else if (sh->in[*i] && j == -2)
+		{
+			maj_err(sh, ft_sprintf("%s: command not found\n", \
+			sh->obj->obj), 127);
+			print_result(sh, 0, NULL);
+		}
 	}
+	return (1);
 }
 
-void	pipe_checks(t_sh *sh, int *i)
+static int	general_loop(t_sh *sh, int *i)
 {
-	int status;
+	int		j;
+	int		stock;
+	char	*sample;
 
-	if (sh->pip->lever == 1)
+	sample = NULL;
+	stock = *i;
+	if ((sample = sample_str(sh, i, sample)) == NULL)
+		return (-1);
+	if ((j = parse_sample(sh, i, stock, sample)) != 1)
+		return (j);
+	*i = find_end(sh->in, *i);
+	if (sh->obj)
+		free_obj(sh->obj);
+	if (sh->pip->type == 3)
 	{
-		sh->pip->count++;
-		if ((sh->pip->pid = fork()) == -1)
-		{
-			ft_dprintf(2, "fork error\n");
-			exit(EXIT_FAILURE);
-		}
-		if (sh->pip->pid == 0)
-		{
-			sh->obj->redir->cmd_output = 1;
-			close(sh->pip->pipefd[1]);
-			dup2(sh->pip->pipefd[0], 0);
-			sh->pip->forked = 2;
-			sh->pip->type = 1;
-		}
-		else // PARENT PROCESS
-		{
-			close(sh->pip->pipefd[0]);
-			dup2(sh->pip->pipefd[1], 1);
-			status = 0;
-			//wait(&status);
-			waitpid(-1, &status, WUNTRACED);
-			if (WIFEXITED(status))
-				sh->err = WEXITSTATUS(status);
-			close(sh->pip->pipefd[1]);
-			sh->pip->count--;
-			exit(sh->err);
-		}
+		sh->pip->type = 0;
+		close(sh->pip->pipefd[0]);
+		exit(sh->err);
 	}
-	init_pipe(sh, *i);
-	if (sh->pip->lever == 1)
-	{
-		if (sh->pip->count == 0)
-		{
-			sh->pip->count++;
-			if ((sh->pip->pid = fork()) == -1)
-			{
-				ft_dprintf(2, "fork error\n");
-				exit(EXIT_FAILURE);
-			}
-			if (sh->pip->pid != 0)
-			{
-				wait(&status);
-				if (WIFEXITED(status))
-					sh->err = WEXITSTATUS(status);
-				*i = pipeline_end(sh->in, *i);
-				sh->pip->type = 0;
-				return ;
-			}
-			sh->pip->type = 2;
-		}
-		if (pipe(sh->pip->pipefd) == -1)
-		{
-			ft_dprintf(2, "pipe error\n");
-			exit(EXIT_FAILURE);
-		}
-		sh->obj->redir->cmd_output = sh->pip->pipefd[1];
-	}
+	return (1);
 }
 
-int		general_parser(t_sh *sh)
+int			general_parser(t_sh *sh)
 {
-	char		*sample;
 	int			i;
 	int			j;
-	int			stock_i;
 
 	if ((lonely_quote(sh->in) == -1) ||
 		(last_backslash(sh->in) == -1))
@@ -152,71 +122,15 @@ int		general_parser(t_sh *sh)
 	j = 0;
 	while (sh->in[i])
 	{
-		i = pass_spaces(sh->in, i);
-		if ((j = parse_syntax(sh, i)) == -1)
-			return (0);
-		else if (j == -2)
-			return (-1);
-		if (!(sh->obj = obj_new(sh->env)))
-			return (-1);
-		if (!(sh->obj->redir = redir_new()))
-			return (free_obj(sh->obj));
-		sample = NULL;
-		if ((sh->lev-- == 1) && (find_redir_err(sh, &i) == -1)
-			&& (sh->err = 2))
-				return (0);
-		if ((redir_loop(sh, &i) == -1) && (sh->err = 2))
-			return (-1);
-		if (parse_var(sh, &i, 0) == -1)
-		{
-			return (free_obj(sh->obj));
-		}
-		pipe_checks(sh, &i);
+		if ((j = first_checks(sh, &i)) != 1)
+			return (j);
 		if (!sh->in[i])
 		{
 			free_obj(sh->obj);
 			continue ;
 		}
-		stock_i = i;
-		if ((sample = sample_str(sh, &i, sample)) == NULL)
-			return (-1);
-		if ((j = is_cmd(sample)) != -1)
-		{
-			init_obj(sh->obj, sample, j);
-			if (sh->obj->obj == NULL)
-				return (free_obj(sh->obj));
-			if ((j = parse_cmds(sh, &i)) == -1)
-			{
-				free_obj(sh->obj);
-				free_str(sample);
-				return (0);
-			}
-			if (set_g_err(sh) == 1)
-				return (free_str(sample));
-			free(sample);
-		}
-		else
-		{
-			i = stock_i;
-			free(sample);
-			if ((j = parse_exec(sh, &i)) == -1)
-				return (free_obj(sh->obj));
-			else if (sh->in[i] && j == -2)
-			{
-				maj_err(sh, ft_sprintf("%s: command not found\n", \
-				sh->obj->obj), 127);
-				print_result(sh, 0, NULL);
-			}
-		}
-		i = find_end(sh->in, i);
-		if (sh->obj)
-			free_obj(sh->obj);
-		if (sh->pip->type == 3)
-		{
-			sh->pip->type = 0;
-			close(sh->pip->pipefd[0]);
-			exit(sh->err);
-		}
+		if ((j = general_loop(sh, &i)) != 1)
+			return (j);
 	}
 	return (0);
 }

@@ -6,39 +6,11 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/29 10:32:51 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 11:13:37 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_sh	*init_sh(t_env *env)
-{
-	t_sh	*sh;
-
-	if (!(sh = malloc(sizeof(t_sh))))
-		return (NULL);
-	if (!(sh->pip = malloc(sizeof(t_pipe))))
-	{
-		free(sh);
-		return (NULL);
-	}
-	sh->env = env;
-	sh->lev = 1;
-	sh->err = 0;
-	sh->obj = NULL;
-	return (sh);
-}
-
-static void	clear_sh(t_sh *sh)
-{
-	if (sh->env)
-		env_clear(sh->env);
-	if (sh->obj)
-		free_obj(sh->obj);
-	free(sh->pip);
-	free(sh);
-}
 
 static void	prompt(t_env *env)
 {
@@ -61,66 +33,54 @@ static void	prompt(t_env *env)
 	close(fd);
 }
 
-int			init_main(t_env **lstenv, t_sh **sh, char **env)
-{
-	if (!(*lstenv = init_env(env, 1)))
-	{
-		ft_putstr_fd("couldn't clone the environment", 2);
-		return (-1);
-	}
-	if (!(*sh = init_sh(*lstenv)))
-	{
-		env_clear(*lstenv);
-		return (-1);
-	}
-	return (0);
-}
-
 void		sighandler(int num)
 {
 	if (num == SIGINT)
 	{
 		ft_dprintf(2, "\n");
-		prompt(lstenv);
+		prompt(g_lstenv);
 	}
 	else if (num == SIGQUIT)
 	{
 		ft_dprintf(2, "\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-		//ft_dprintf(2, "sighandler sigquit\n");
 	}
+}
+
+static void	routine(t_sh *sh, char **line)
+{
+	sh->pip->count = 0;
+	sh->pip->lever = 0;
+	sh->pip->type = 0;
+	prompt(g_lstenv);
+	signal(SIGINT, sighandler);
+	signal(SIGQUIT, sighandler);
+	if (get_next_line(0, line) <= 0)
+	{
+		if (*line)
+			free(*line);
+		*line = ft_strdup("exit\n");
+	}
+	sh->in = *line;
 }
 
 int			main(int argc, char **argv, char **env)
 {
 	char		*line;
-	// t_env		*lstenv;
 	int			ret;
 	t_sh		*sh;
 
 	(void)argc;
 	(void)argv;
-	if (init_main(&lstenv, &sh, env) == -1)
+	g_lstenv = NULL;
+	if (init_main(&sh, env) == -1)
 		return (-1);
 	while (1)
 	{
-		sh->pip->count = 0;
-		sh->pip->lever = 0;
-		sh->pip->type = 0;
-		prompt(lstenv);
-		signal(SIGINT, sighandler);
-		signal(SIGQUIT, sighandler);
-		if (get_next_line(0, &line) <= 0)
-		{
-			if (line)
-				free(line);
-			line = ft_strdup("exit\n");
-		}
-		sh->in = line;
+		routine(sh, &line);
 		ret = general_parser(sh);
 		free(line);
 		if (ret != 0)
 			break ;
-		//ft_dprintf(2, "end of main loop\n");
 	}
 	ret = sh->err;
 	clear_sh(sh);

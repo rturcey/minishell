@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/17 14:32:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 10:23:39 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ static int		check_vars(t_sh *sh, int *i)
 			return (-1);
 		if (pluseq(sh->in, j) == 1)
 			j++;
-		*i = j + 1;
-		*i = pass_spaces(sh->in, *i);
+		*i = pass_spaces(sh->in, j + 1);
 		if (is_end(sh->in, *i) != 0)
 			return (0);
-		if (*i != j + 1)
-			return (-1);
-		if (!(s = sample_str(sh, i, s)))
+		if (*i != j + 1 || !(s = sample_str(sh, i, s)))
 			return (-1);
 		free(s);
 		*i = pass_spaces(sh->in, *i);

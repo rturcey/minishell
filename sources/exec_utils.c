@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/08/31 10:01:44 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 10:14:16 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,19 @@
 ** I need to look into forking and processes and stuff.
 */
 
-int		try_exec(char *tmp, char **av, char **env, t_sh *sh)
+static int	dup_exec(t_sh *sh)
+{
+	if (sh->pip->type > 0)
+		if ((dup2(sh->obj->redir->cmd_output, 1) == -1) ||
+		dup2(sh->obj->redir->err_output, 2) == -1)
+			return (-1);
+	if (sh->obj->redir->cmd_in >= 0)
+		if (dup2(sh->obj->redir->cmd_in, 0) == -1)
+			return (-1);
+	return (0);
+}
+
+static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 {
 	pid_t	pid;
 	int		status;
@@ -30,12 +42,8 @@ int		try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	}
 	else if (pid == 0)
 	{
-		if ((dup2(sh->obj->redir->cmd_output, 1) == -1) ||
-			dup2(sh->obj->redir->err_output, 2) == -1)
+		if (dup_exec(sh) == -1)
 			return (-1);
-		if (sh->obj->redir->cmd_in >= 0)
-			if (dup2(sh->obj->redir->cmd_in, 0) == -1)
-				return (-1);
 		execve(tmp, av, env);
 	}
 	else if ((status = 0) == 0)
@@ -51,7 +59,7 @@ int		try_exec(char *tmp, char **av, char **env, t_sh *sh)
 ** Putting potential params for the program in a char **av
 */
 
-char	**conv_av(t_sh *sh, int *i)
+static char	**conv_av(t_sh *sh, int *i)
 {
 	int		j;
 	char	**av;
@@ -75,7 +83,7 @@ char	**conv_av(t_sh *sh, int *i)
 	return (av);
 }
 
-int		add_redirs(t_sh *sh, int *i)
+static int	add_redirs(t_sh *sh, int *i)
 {
 	while (is_end(sh->in, *i) == 0)
 	{
@@ -96,7 +104,7 @@ int		add_redirs(t_sh *sh, int *i)
 ** We return -2 if no program was found, -1 in case of a fatal error.
 */
 
-int		parse_exec(t_sh *sh, int *i)
+int			parse_exec(t_sh *sh, int *i)
 {
 	char	**av;
 	int		r;

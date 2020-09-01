@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 10:54:00 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,12 @@ t_obj		*obj_new(t_env *env)
 **initialize an object, need to add potential redir (see below)
 */
 
-void		init_obj(t_obj *obj, char *sample, int type)
+char		*init_obj(t_obj *obj, char *sample, int type)
 {
 	if (!(obj->obj = ft_strdup(sample)))
-		return ;
+		return (NULL);
 	obj->type = type;
+	return (obj->obj);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/31 12:09:52 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/01 11:11:54 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct		s_sh
 	int				*temp;
 }					t_sh;
 
-t_env				*lstenv;
+t_env				*g_lstenv;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
@@ -110,7 +110,7 @@ void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
 t_obj				*obj_new(t_env *env);
 t_redir				*redir_new(void);
-void				init_obj(t_obj *obj, char *sample, int type);
+char				*init_obj(t_obj *obj, char *sample, int type);
 int					free_obj(t_obj *obj);
 void				*free_redir(t_redir *redir);
 int					parse_exec(t_sh *sh, int *i);
@@ -157,5 +157,8 @@ int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
 int					parse_syntax(t_sh *sh, int i);
 void				export_solo(t_sh *sh);
+void				clear_sh(t_sh *sh);
+int					init_main(t_sh **sh, char **env);
+void				pipe_checks(t_sh *sh, int *i);
 
 #endif
