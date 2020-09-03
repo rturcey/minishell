@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/08/30 09:38:47 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 15:04:29 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,19 @@ int		get_next_quote(char *str, int i)
 			return (-1);
 	}
 	return (i);
+}
+
+int		is_ms(char *exec)
+{
+	int i;
+
+	i = ft_strlen(exec) - 1;
+	while (exec[i] && exec[i] != '/')
+		i--;
+	if (i >= 0 && exec[i] == '/')
+		i++;
+	if (ft_strncmp(&exec[i], "minishell",
+		ft_strlen(&exec[i])) == 0)
+		return (0);
+	return (1);
 }

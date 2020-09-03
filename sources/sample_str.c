@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sample_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/30 10:02:05 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 13:05:23 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 	{
 		if ((*s)[*l + 1] && (*s)[*l + 1] == '?')
 		{
-			if (parse_g_err(sh, s, l, sh->tmp) == -1)
+			if (parse_g_err(s, l, sh->tmp) == -1)
 				return (-1);
 		}
 		else if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) != -3)
@@ -98,7 +98,7 @@ static char	*sample_loop(t_sh *sh, int *i, char **s, int *j)
 	else if (((*s)[*j] == '$') && (*s)[*j + 1] && ((*s)[*j + 1] == '?') \
 	&& (*j == 0 || (*s)[*j - 1] != '\\'))
 	{
-		if (parse_g_err(sh, s, j, i) == -1)
+		if (parse_g_err(s, j, i) == -1)
 			return (char_free_str(*s));
 	}
 	else if ((*s)[*j] == '$' && *j > 0 && (*s)[*j - 1] == '\\')

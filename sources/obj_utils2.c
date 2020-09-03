@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 12:55:39 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	maj_err(t_sh *sh, char *str, int err)
 		sh->obj->error = ft_strjoin_bth(sh->obj->error, str);
 	else
 		free(str);
-	sh->err = err;
+	g_err = err;
 }
 
 void	*free_arg(t_arg *arg)

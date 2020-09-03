@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:26:06 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/01 10:38:25 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 12:56:33 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static void	process_pipe(t_sh *sh)
 		status = 0;
 		waitpid(-1, &status, WUNTRACED);
 		if (WIFEXITED(status))
-			sh->err = WEXITSTATUS(status);
+			g_err = WEXITSTATUS(status);
 		close(sh->pip->pipefd[1]);
 		sh->pip->count--;
-		exit(sh->err);
+		exit(g_err);
 	}
 }
 
@@ -94,11 +94,12 @@ static int	pipe_process2(t_sh *sh, int *i)
 	{
 		wait(&status);
 		if (WIFEXITED(status))
-			sh->err = WEXITSTATUS(status);
+			g_err = WEXITSTATUS(status);
 		*i = pipeline_end(sh->in, *i);
 		sh->pip->type = 0;
 		return (1);
 	}
+	g_forked = 1;
 	sh->pip->type = 2;
 	return (0);
 }
@@ -113,6 +114,7 @@ void		pipe_checks(t_sh *sh, int *i)
 			ft_dprintf(2, "fork error\n");
 			exit(EXIT_FAILURE);
 		}
+		g_forked = 1;
 		process_pipe(sh);
 	}
 	init_pipe(sh, *i);

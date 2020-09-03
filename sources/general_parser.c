@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/01 11:06:20 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 12:53:34 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static int	first_checks(t_sh *sh, int *i)
 	if (!(sh->obj->redir = redir_new()))
 		return (free_obj(sh->obj));
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
-	&& (sh->err = 2))
+	&& (g_err = 2))
 		return (0);
-	if ((redir_loop(sh, i) == -1) && (sh->err = 2))
+	if ((redir_loop(sh, i) == -1) && (g_err = 2))
 		return (-1);
 	if (parse_var(sh, i, 0) == -1)
 	{
@@ -73,7 +73,7 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 		*i = stock;
 		if (free_str(sample) == -1 && (j = parse_exec(sh, i)) == -1)
 			return (free_obj(sh->obj));
-		else if (sh->in[*i] && j == -2)
+		else if (j == -2)
 		{
 			maj_err(sh, ft_sprintf("%s: command not found\n", \
 			sh->obj->obj), 127);
@@ -102,7 +102,7 @@ static int	general_loop(t_sh *sh, int *i)
 	{
 		sh->pip->type = 0;
 		close(sh->pip->pipefd[0]);
-		exit(sh->err);
+		exit(g_err);
 	}
 	return (1);
 }

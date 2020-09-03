@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/01 11:11:54 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 15:02:50 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,19 @@ typedef struct		s_sh
 	t_env			*env;
 	char			*in;
 	int				lev;
-	int				err;
 	int				*tmp;
 	int				*temp;
 }					t_sh;
 
 t_env				*g_lstenv;
+int					g_forked;
+int					g_err;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
+int					is_ms(char *exec);
+void				sighandler(int num);
+void				sighandler_exec(int num);
 int					general_parser(t_sh *sh);
 void				remove_home_path(char **path, char *home);
 int					skim_str(char *sample, int k, int *i);
@@ -147,7 +151,7 @@ int					sample_export(char *sample, t_env *env);
 int					check_var(char *sample);
 int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
 int					set_g_err(t_sh *sh);
-int					parse_g_err(t_sh *sh, char **sample, int *l, int *i);
+int					parse_g_err(char **sample, int *l, int *i);
 int					redir_loop(t_sh *sh, int *i);
 int					replace_pwd(t_env *env, char **path);
 int					check_path(t_sh *sh, char **path);

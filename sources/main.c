@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/01 11:13:37 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 15:08:59 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,24 @@ void		sighandler(int num)
 {
 	if (num == SIGINT)
 	{
-		ft_dprintf(2, "\n");
-		prompt(g_lstenv);
+		if (g_forked == 0)
+		{
+			ft_dprintf(2, "\n");
+			prompt(g_lstenv);
+		}
+		else if (g_forked != 2)
+			ft_dprintf(2, "\n");
+		g_err = 130;
 	}
 	else if (num == SIGQUIT)
 	{
-		ft_dprintf(2, "\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		if (g_forked != 0 && g_forked != 2)
+		{
+			ft_dprintf(2, "Quit: (core dumped)\n");
+			g_err = 131;
+		}
+		else if (g_forked != 2)
+			ft_dprintf(2, "\b\b \b  \b\b");
 	}
 }
 
@@ -54,7 +66,7 @@ static void	routine(t_sh *sh, char **line)
 	prompt(g_lstenv);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
-	if (get_next_line(0, line) <= 0)
+	if (get_next_line(0, line) == 0)
 	{
 		if (*line)
 			free(*line);
@@ -72,6 +84,8 @@ int			main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	g_lstenv = NULL;
+	g_forked = 0;
+	g_err = 0;
 	if (init_main(&sh, env) == -1)
 		return (-1);
 	while (1)
@@ -82,7 +96,7 @@ int			main(int argc, char **argv, char **env)
 		if (ret != 0)
 			break ;
 	}
-	ret = sh->err;
+	ret = g_err;
 	clear_sh(sh);
 	return (ret);
 }

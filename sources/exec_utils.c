@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/01 10:14:16 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 15:08:41 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	int		status;
 
 	pid = -1;
+	g_forked = (is_ms(tmp) == 0) ? 2 : 1;
 	if ((pid = fork()) < 0)
 	{
 		ft_dprintf(2, ft_sprintf("fork: %s\n", strerror(errno)));
@@ -50,7 +51,8 @@ static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	{
 		wait(&status);
 		if (WIFEXITED(status))
-			sh->err = WEXITSTATUS(status);
+			g_err = WEXITSTATUS(status);
+		g_forked = 0;
 	}
 	return (0);
 }

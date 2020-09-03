@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/08/30 10:00:42 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/03 13:04:47 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int		set_g_err(t_sh *sh)
 		"too many"))
 		return (1);
 	if (!(sh->obj->error))
-		sh->err = 0;
+		g_err = 0;
 	return (0);
 }
 
-int		parse_g_err(t_sh *sh, char **sample, int *l, int *i)
+int		parse_g_err(char **sample, int *l, int *i)
 {
 	char	*val;
 	char	*begin;
@@ -33,7 +33,7 @@ int		parse_g_err(t_sh *sh, char **sample, int *l, int *i)
 
 	skim_str(*sample, (*l) - 1, i);
 	skim_str(*sample, (*l) - 1, i);
-	if (!(val = ft_itoa(sh->err)))
+	if (!(val = ft_itoa(g_err)))
 		return (-1);
 	if (!(begin = ft_substr(*sample, 0, (*l))))
 		return (free_str(val));
