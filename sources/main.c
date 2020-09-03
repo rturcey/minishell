@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/03 15:08:59 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/03 16:35:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,18 @@ void		sighandler(int num)
 			ft_dprintf(2, "\n");
 			prompt(g_lstenv);
 		}
-		else if (g_forked != 2)
+		else if (g_forked == 1)
 			ft_dprintf(2, "\n");
 		g_err = 130;
 	}
 	else if (num == SIGQUIT)
 	{
-		if (g_forked != 0 && g_forked != 2)
+		if (g_forked == 1)
 		{
 			ft_dprintf(2, "Quit: (core dumped)\n");
 			g_err = 131;
 		}
-		else if (g_forked != 2)
+		else if (g_forked == 0)
 			ft_dprintf(2, "\b\b \b  \b\b");
 	}
 }
@@ -66,8 +66,9 @@ static void	routine(t_sh *sh, char **line)
 	prompt(g_lstenv);
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
-	if (get_next_line(0, line) == 0)
+	if (get_next_line(0, line) == 0 && g_forked != 3)
 	{
+		ft_dprintf(2, "HERE\n");
 		if (*line)
 			free(*line);
 		*line = ft_strdup("exit\n");

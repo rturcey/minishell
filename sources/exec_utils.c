@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/03 15:08:41 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/03 16:38:43 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	int		status;
 
 	pid = -1;
-	g_forked = (is_ms(tmp) == 0) ? 2 : 1;
+	set_gfork(tmp);
 	if ((pid = fork()) < 0)
 	{
 		ft_dprintf(2, ft_sprintf("fork: %s\n", strerror(errno)));

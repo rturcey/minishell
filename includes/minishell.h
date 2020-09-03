@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/03 15:02:50 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/03 16:37:40 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int					g_err;
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
 int					is_ms(char *exec);
+void				set_gfork(char *tmp);
 void				sighandler(int num);
 void				sighandler_exec(int num);
 int					general_parser(t_sh *sh);

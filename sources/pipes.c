@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:26:06 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/03 12:56:33 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/03 16:06:55 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static int	pipe_process2(t_sh *sh, int *i)
 	int		status;
 
 	sh->pip->count++;
+	g_forked = 3;
 	if ((sh->pip->pid = fork()) == -1)
 	{
 		ft_dprintf(2, "fork error\n");
@@ -97,9 +98,9 @@ static int	pipe_process2(t_sh *sh, int *i)
 			g_err = WEXITSTATUS(status);
 		*i = pipeline_end(sh->in, *i);
 		sh->pip->type = 0;
+		g_forked = 0;
 		return (1);
 	}
-	g_forked = 1;
 	sh->pip->type = 2;
 	return (0);
 }
@@ -109,12 +110,12 @@ void		pipe_checks(t_sh *sh, int *i)
 	if (sh->pip->lever == 1)
 	{
 		sh->pip->count++;
+		g_forked = 3;
 		if ((sh->pip->pid = fork()) == -1)
 		{
 			ft_dprintf(2, "fork error\n");
 			exit(EXIT_FAILURE);
 		}
-		g_forked = 1;
 		process_pipe(sh);
 	}
 	init_pipe(sh, *i);
