@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/03 16:35:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/04 11:19:06 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void	routine(t_sh *sh, char **line)
 	signal(SIGQUIT, sighandler);
 	if (get_next_line(0, line) == 0 && g_forked != 3)
 	{
-		ft_dprintf(2, "HERE\n");
 		if (*line)
 			free(*line);
 		*line = ft_strdup("exit\n");
