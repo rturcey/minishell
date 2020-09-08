@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/03 16:37:40 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/08 14:54:36 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,6 @@ void				export_solo(t_sh *sh);
 void				clear_sh(t_sh *sh);
 int					init_main(t_sh **sh, char **env);
 void				pipe_checks(t_sh *sh, int *i);
+void				parent_handling(t_sh *sh);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/03 16:38:43 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/08 14:49:38 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	}
 	else if ((status = 0) == 0)
 	{
-		wait(&status);
+		if (sh->pip->type != 3 && sh->pip->type != 2)
+			waitpid(pid, &status, WUNTRACED);
 		if (WIFEXITED(status))
 			g_err = WEXITSTATUS(status);
 		g_forked = 0;

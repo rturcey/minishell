@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/01 10:54:00 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/08 14:55:30 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,3 +91,20 @@ char		*init_obj(t_obj *obj, char *sample, int type)
 **puts it in the initialized obj
 **and free stock_redir
 */
+
+void		parent_handling(t_sh *sh)
+{
+	int	status;
+
+	status = 0;
+	close(sh->pip->pipefd[1]);
+	while (!WIFEXITED(status))
+		if (!WIFSIGNALED(status))
+			break ;
+	if (sh->pip->type == 1)
+		wait(&status);
+	if (WIFEXITED(status))
+		g_err = WEXITSTATUS(status);
+	sh->pip->count--;
+	exit(g_err);
+}

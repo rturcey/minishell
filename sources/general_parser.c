@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/04 12:00:50 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/08 14:55:03 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,19 @@ static int	first_checks(t_sh *sh, int *i)
 		return (-1);
 	if (!(sh->obj->redir = redir_new()))
 		return (free_obj(sh->obj));
+	pipe_checks(sh, i);
+	if (sh->pip->type == 4)
+	{
+		sh->pip->type = 1;
+		first_checks(sh, i);
+	}
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
 	&& (g_err = 2))
 		return (0);
 	if ((redir_loop(sh, i) == -1) && (g_err = 2))
 		return (-1);
 	if (parse_var(sh, i, 0) == -1)
-	{
 		return (free_obj(sh->obj));
-	}
-	pipe_checks(sh, i);
 	return (1);
 }
 
@@ -105,6 +108,8 @@ static int	general_loop(t_sh *sh, int *i)
 		close(sh->pip->pipefd[0]);
 		exit(g_err);
 	}
+	if (sh->pip->type == 2 || sh->pip->type == 1)
+		parent_handling(sh);
 	return (1);
 }
 
