@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:26:06 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/08 14:54:38 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/09 16:03:21 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	process_pipe(t_sh *sh, int *i)
 	g_forked = 3;
 	if (sh->pip->pid == 0)
 	{
-		g_err = 0;
 		*i = find_end(sh->in, *i);
 		end = find_end(sh->in, *i);
 		sh->obj->redir->cmd_output = 1;

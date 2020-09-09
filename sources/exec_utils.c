@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/08 14:49:38 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/09 16:20:56 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@
 
 static int	dup_exec(t_sh *sh)
 {
-	if (sh->pip->type > 0)
-		if ((dup2(sh->obj->redir->cmd_output, 1) == -1) ||
-		dup2(sh->obj->redir->err_output, 2) == -1)
-			return (-1);
 	if (sh->obj->redir->cmd_in >= 0)
 		if (dup2(sh->obj->redir->cmd_in, 0) == -1)
 			return (-1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/08 14:55:03 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/09 16:46:41 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	first_checks(t_sh *sh, int *i)
 	int		j;
 
 	*i = pass_spaces(sh->in, *i);
-	if ((j = parse_syntax(sh, *i)) == -1)
+	if ((j = parse_syntax(sh, *i)) == -1 && free_obj(sh->obj) == -1)
 		return (0);
 	else if (j == -2)
 		return (-1);
@@ -42,13 +42,13 @@ static int	first_checks(t_sh *sh, int *i)
 	if (!(sh->obj->redir = redir_new()))
 		return (free_obj(sh->obj));
 	pipe_checks(sh, i);
-	if (sh->pip->type == 4)
+	if (sh->pip->type == 4 && free_obj(sh->obj) == -1)
 	{
 		sh->pip->type = 1;
 		first_checks(sh, i);
 	}
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
-	&& (g_err = 2))
+	&& (g_err = 2) && free_obj(sh->obj) == -1)
 		return (0);
 	if ((redir_loop(sh, i) == -1) && (g_err = 2))
 		return (-1);
