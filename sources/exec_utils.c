@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/09 16:20:56 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/10 10:39:30 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	{
 		if (dup_exec(sh) == -1)
 			return (-1);
-		execve(tmp, av, env);
+		start_exec(tmp, av, env, sh);
 	}
 	else if ((status = 0) == 0)
 	{

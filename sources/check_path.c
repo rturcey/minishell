@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/07/30 10:07:52 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/10 09:16:27 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		remove_home_path(char **path, char *home)
 
 static int	check_permissions(t_stat st)
 {
-	if (st.st_mode & (S_IXUSR | S_IRWXU))
+	if (st.st_mode & (S_IXUSR))
 		return (0);
 	return (1);
 }

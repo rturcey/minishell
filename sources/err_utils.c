@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   err_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/03 13:04:47 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/10 10:10:13 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	start_exec(char *tmp, char **av, char **env, t_sh *sh)
+{
+	execve(tmp, av, env);
+	ft_dprintf(2, "bash: %s: %s\n", sh->obj->obj, strerror(errno));
+	exit(2);
+}
 
 int		set_g_err(t_sh *sh)
 {

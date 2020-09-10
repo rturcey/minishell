@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/09 14:58:03 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/10 09:42:49 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,6 @@ void				clear_sh(t_sh *sh);
 int					init_main(t_sh **sh, char **env);
 void				pipe_checks(t_sh *sh, int *i);
 void				parent_handling(t_sh *sh);
+void				start_exec(char *tmp, char **av, char **env, t_sh *sh);
 
 #endif

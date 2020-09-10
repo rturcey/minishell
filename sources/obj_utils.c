@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/09 16:33:13 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/10 10:39:39 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void		parent_handling(t_sh *sh)
 	int	status;
 
 	status = 0;
+	printf("name = %s, type = %d\n", sh->obj->obj, sh->pip->type);
 	close(sh->pip->pipefd[1]);
 	while (!WIFEXITED(status))
 		if (!WIFSIGNALED(status))

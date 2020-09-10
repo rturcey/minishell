@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/30 10:10:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/10 09:01:26 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,11 @@ static void	err_cd(t_sh *sh, int ret, char *path)
 			return ;
 		maj_err(sh, mg, 0);
 		chdir(path);
+	}
+	if (ret != -2)
+	{
+		free(mg);
+		free(mgb);
 	}
 }
 
