@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/03 12:55:39 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/17 17:39:02 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,6 @@ void	maj_err(t_sh *sh, char *str, int err)
 	g_err = err;
 }
 
-void	*free_arg(t_arg *arg)
-{
-	t_arg	*tmp;
-
-	while (arg)
-	{
-		tmp = arg->next;
-		free(arg->val);
-		free(arg);
-		arg = tmp;
-	}
-	return (NULL);
-}
-
 void	*free_redir(t_redir *redir)
 {
 	if (redir->cmd_in > 0)
@@ -65,20 +51,23 @@ void	*free_redir(t_redir *redir)
 	return (NULL);
 }
 
-int		free_obj(t_obj *obj)
+int		free_obj(t_obj **obj)
 {
-	t_obj	*tmp;
+	t_obj	*prev;
 
-	while (obj)
-	{
-		tmp = obj->next;
-		free(obj->obj);
-		free_arg(obj->args);
-		free_redir(obj->redir);
-		free(obj->error);
-		free(obj->result);
-		free(obj);
-		obj = tmp;
-	}
+	if (!(*obj))
+		return (-1);
+	if (!(*obj)->prev)
+		prev = NULL;
+	else
+		prev = (*obj)->prev;
+	free((*obj)->obj);
+	free_redir((*obj)->redir);
+	free((*obj)->error);
+	free((*obj)->result);
+	free_array((*obj)->args, -1, -1);
+	free_array((*obj)->charenv, -1, -1);
+	free((*obj));
+	*obj = prev;
 	return (-1);
 }

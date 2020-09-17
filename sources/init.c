@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:06:54 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/03 12:54:12 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/17 17:09:39 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ static t_sh	*init_sh(t_env *env)
 
 	if (!(sh = malloc(sizeof(t_sh))))
 		return (NULL);
-	if (!(sh->pip = malloc(sizeof(t_pipe))))
-	{
-		free(sh);
-		return (NULL);
-	}
 	sh->env = env;
 	sh->lev = 1;
 	sh->obj = NULL;
@@ -33,9 +28,8 @@ void		clear_sh(t_sh *sh)
 {
 	if (sh->env)
 		env_clear(sh->env);
-	if (sh->obj)
-		free_obj(sh->obj);
-	free(sh->pip);
+	while (sh->obj)
+		free_obj(&sh->obj);
 	free(sh);
 }
 

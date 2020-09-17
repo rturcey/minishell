@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/10 09:42:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/17 18:12:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 # include <fcntl.h>
 # include "libft.h"
 
-# define YELLOW "\033[1;93m"
-# define CYAN "\033[1;96m"
-# define END  "\033[0m"
+# define YELLOW 	"\033[1;93m"
+# define CYAN 		"\033[1;96m"
+# define END  		"\033[0m"
+# define IS_PIPE	1
 
 typedef struct stat	t_stat;
 
@@ -39,12 +40,6 @@ typedef struct		s_env
 	struct s_env	*next;
 	int				pluseq;
 }					t_env;
-
-typedef struct		s_arg
-{
-	char			*val;
-	struct s_arg	*next;
-}					t_arg;
 
 typedef struct		s_redir
 {
@@ -68,19 +63,20 @@ typedef struct		s_obj
 	char			*obj;
 	int				type;
 	int				option;
-	int				args_count;
-	t_arg			*args;
 	t_redir			*redir;
 	char			*result;
 	char			*error;
-	int				ret;
+	int				pip;
+	char			**args;
 	t_env			*env;
+	char			**charenv;
+	int				tube[2];
 	struct s_obj	*next;
+	struct s_obj	*prev;
 }					t_obj;
 
 typedef struct		s_sh
 {
-	t_pipe			*pip;
 	t_obj			*obj;
 	t_env			*env;
 	char			*in;
@@ -113,10 +109,10 @@ char				**env_to_array(t_env *env);
 int					export_var(t_env *elt, t_env *env);
 void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
-t_obj				*obj_new(t_env *env);
+t_obj				*obj_new(t_env *env, t_obj *prev);
 t_redir				*redir_new(void);
 char				*init_obj(t_obj *obj, char *sample, int type);
-int					free_obj(t_obj *obj);
+int					free_obj(t_obj **obj);
 void				*free_redir(t_redir *redir);
 int					parse_exec(t_sh *sh, int *i);
 int					is_cmd(char *sample);
@@ -167,5 +163,6 @@ int					init_main(t_sh **sh, char **env);
 void				pipe_checks(t_sh *sh, int *i);
 void				parent_handling(t_sh *sh);
 void				start_exec(char *tmp, char **av, char **env, t_sh *sh);
+void				handle_parent(pid_t pid, int lever, t_sh *sh);
 
 #endif

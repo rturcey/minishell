@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/10 10:39:18 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/17 18:12:07 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,22 @@ static int	first_checks(t_sh *sh, int *i)
 	int		j;
 
 	*i = pass_spaces(sh->in, *i);
-	if ((j = parse_syntax(sh, *i)) == -1 && free_obj(sh->obj) == -1)
+	if ((j = parse_syntax(sh, *i)) == -1 && free_obj(&sh->obj) == -1)
 		return (0);
 	else if (j == -2)
 		return (-1);
-	if (!(sh->obj = obj_new(sh->env)))
+	if (!(sh->obj = obj_new(sh->env, sh->obj)))
 		return (-1);
 	if (!(sh->obj->redir = redir_new()))
-		return (free_obj(sh->obj));
+		return (free_obj(&sh->obj));
 	pipe_checks(sh, i);
-	if (sh->pip->type == 4 && free_obj(sh->obj) == -1)
-	{
-		sh->pip->type = 1;
-		first_checks(sh, i);
-	}
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
-	&& (g_err = 2) && free_obj(sh->obj) == -1)
+	&& (g_err = 2) && free_obj(&sh->obj) == -1)
 		return (0);
 	if ((redir_loop(sh, i) == -1) && (g_err = 2))
 		return (-1);
 	if (parse_var(sh, i, 0) == -1)
-		return (free_obj(sh->obj));
+		return (free_obj(&sh->obj));
 	return (1);
 }
 
@@ -64,8 +59,8 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 	if ((j = is_cmd(sample)) != -1)
 	{
 		if (!(init_obj(sh->obj, sample, j)))
-			return (free_obj(sh->obj));
-		if ((j = parse_cmds(sh, i)) == -1 && free_obj(sh->obj) == -1
+			return (free_obj(&sh->obj));
+		if ((j = parse_cmds(sh, i)) == -1 && free_obj(&sh->obj) == -1
 		&& free_str(sample) == -1)
 			return (0);
 		if (free_str(sample) == -1 && set_g_err(sh) == 1)
@@ -75,7 +70,7 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 	{
 		*i = stock;
 		if (free_str(sample) == -1 && (j = parse_exec(sh, i)) == -1)
-			return (free_obj(sh->obj));
+			return (free_obj(&sh->obj));
 		else if (j == -2)
 		{
 			maj_err(sh, ft_sprintf("%s: command not found\n", \
@@ -100,16 +95,6 @@ static int	general_loop(t_sh *sh, int *i)
 	if ((j = parse_sample(sh, i, stock, sample)) != 1)
 		return (j);
 	*i = find_end(sh->in, *i);
-	if (sh->obj)
-		free_obj(sh->obj);
-	if (sh->pip->type == 3)
-	{
-		sh->pip->type = 0;
-		close(sh->pip->pipefd[0]);
-		exit(g_err);
-	}
-	if (sh->pip->type == 2 || sh->pip->type == 1)
-		parent_handling(sh);
 	return (1);
 }
 
@@ -132,7 +117,7 @@ int			general_parser(t_sh *sh)
 			return (j);
 		if (!sh->in[i])
 		{
-			free_obj(sh->obj);
+			free_obj(&sh->obj);
 			continue ;
 		}
 		if ((j = general_loop(sh, &i)) != 1)

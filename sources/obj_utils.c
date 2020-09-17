@@ -6,26 +6,11 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/10 10:39:39 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/17 16:48:55 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-** lstnew for arguments
-*/
-
-t_arg		*arg_new(void)
-{
-	t_arg	*new;
-
-	if (!(new = malloc(sizeof(t_arg))))
-		return (NULL);
-	new->val = NULL;
-	new->next = NULL;
-	return (new);
-}
 
 /*
 ** lstnew for redirection
@@ -48,7 +33,7 @@ t_redir		*redir_new(void)
 **(same as plotted on framapad)
 */
 
-t_obj		*obj_new(t_env *env)
+t_obj		*obj_new(t_env *env, t_obj *prev)
 {
 	t_obj	*new;
 
@@ -57,18 +42,15 @@ t_obj		*obj_new(t_env *env)
 	new->obj = NULL;
 	new->type = 0;
 	new->option = 0;
-	if (!(new->args = arg_new()))
-	{
-		free(new);
-		return (NULL);
-	}
-	new->args_count = 0;
 	new->redir = NULL;
 	new->result = NULL;
-	new->error = NULL;
-	new->ret = 0;
-	new->next = NULL;
 	new->env = env;
+	new->pip = 0;
+	new->args = NULL;
+	new->charenv = NULL;
+	new->error = 0;
+	new->next = NULL;
+	new->prev = prev;
 	return (new);
 }
 
@@ -92,12 +74,12 @@ char		*init_obj(t_obj *obj, char *sample, int type)
 **and free stock_redir
 */
 
-void		parent_handling(t_sh *sh)
+/*void		parent_handling(t_sh *sh)
 {
 	int	status;
 
 	status = 0;
-	printf("name = %s, type = %d\n", sh->obj->obj, sh->pip->type);
+	//ft_dprintf(2, "name = %s, type = %d\n", sh->obj->obj, sh->pip->type);
 	close(sh->pip->pipefd[1]);
 	while (!WIFEXITED(status))
 		if (!WIFSIGNALED(status))
@@ -108,4 +90,4 @@ void		parent_handling(t_sh *sh)
 		g_err = WEXITSTATUS(status);
 	sh->pip->count--;
 	exit(g_err);
-}
+}*/

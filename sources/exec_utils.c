@@ -6,32 +6,46 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/10 10:39:30 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/17 18:12:49 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-** So far, the program launches but minishell crashes when it shuts.
-** I need to look into forking and processes and stuff.
-*/
-
 static int	dup_exec(t_sh *sh)
 {
+	if (sh->obj->pip == IS_PIPE && dup2(sh->obj->tube[1], 1) == -1)
+		return (-1);
+	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE
+	&& dup2(sh->obj->prev->tube[0], 0) == -1)
+		return (-1);
 	if (sh->obj->redir->cmd_in >= 0)
-		if (dup2(sh->obj->redir->cmd_in, 0) == -1)
+	{
+		if(dup2(sh->obj->redir->cmd_in, 0) == -1)
 			return (-1);
+	}
+	if (sh->obj->redir->cmd_output >= 1)
+	{
+		if(dup2(sh->obj->redir->cmd_output, 1) == -1)
+			return (-1);
+	}
 	return (0);
 }
 
-static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
+static int	try_exec(char *tmp, t_sh *sh)
 {
 	pid_t	pid;
-	int		status;
+	int		lever;
 
 	pid = -1;
 	set_gfork(tmp);
+	lever = 0;
+	if (sh->obj->pip == IS_PIPE)
+	{
+		lever = 1;
+		if (pipe(sh->obj->tube) == -1)
+			exit(EXIT_FAILURE);
+	}
 	if ((pid = fork()) < 0)
 	{
 		ft_dprintf(2, ft_sprintf("fork: %s\n", strerror(errno)));
@@ -41,16 +55,10 @@ static int	try_exec(char *tmp, char **av, char **env, t_sh *sh)
 	{
 		if (dup_exec(sh) == -1)
 			return (-1);
-		start_exec(tmp, av, env, sh);
+		start_exec(tmp, sh->obj->args, sh->obj->charenv, sh);
 	}
-	else if ((status = 0) == 0)
-	{
-		if (sh->pip->type != 3 && sh->pip->type != 2)
-			waitpid(pid, &status, WUNTRACED);
-		if (WIFEXITED(status))
-			g_err = WEXITSTATUS(status);
-		g_forked = 0;
-	}
+	else
+		handle_parent(pid, lever, sh);
 	return (0);
 }
 
@@ -105,14 +113,11 @@ static int	add_redirs(t_sh *sh, int *i)
 
 int			parse_exec(t_sh *sh, int *i)
 {
-	char	**av;
 	int		r;
-	char	**b_env;
 	char	*path;
 	int		stock_i;
 
 	path = NULL;
-	av = NULL;
 	if (redir_loop(sh, i) == -1)
 		return (-1);
 	if (!(sh->obj->obj = sample_str(sh, i, sh->obj->obj)))
@@ -122,11 +127,9 @@ int			parse_exec(t_sh *sh, int *i)
 		return (-1);
 	if (((r = check_path(sh, &path)) != 0) || ((r == 0) && !path))
 		return (r);
-	if (!(b_env = env_to_array(sh->env)))
+	if (!(sh->obj->charenv = env_to_array(sh->env))
+	|| !(sh->obj->args = conv_av(sh, &stock_i)) || try_exec(path, sh) == -1)
 		return (free_str(path));
-	if (!(av = conv_av(sh, &stock_i)))
-		return (free_array_and_str(b_env, -1, path));
-	if (try_exec(path, av, b_env, sh) == -1)
-		return (free_two_arr_and_str(av, b_env, path, -1));
-	return (free_two_arr_and_str(av, b_env, path, 0));
+	free(path);
+	return (0);
 }
