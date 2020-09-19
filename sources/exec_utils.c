@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/17 18:12:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/19 09:54:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ static int	dup_exec(t_sh *sh)
 		return (-1);
 	if (sh->obj->redir->cmd_in >= 0)
 	{
-		if(dup2(sh->obj->redir->cmd_in, 0) == -1)
+		if (dup2(sh->obj->redir->cmd_in, 0) == -1)
 			return (-1);
 	}
 	if (sh->obj->redir->cmd_output >= 1)
 	{
-		if(dup2(sh->obj->redir->cmd_output, 1) == -1)
+		if (dup2(sh->obj->redir->cmd_output, 1) == -1)
 			return (-1);
 	}
 	return (0);
 }
 
-static int	try_exec(char *tmp, t_sh *sh)
+int			try_exec(char *tmp, t_sh *sh, int *i)
 {
 	pid_t	pid;
 	int		lever;
@@ -55,7 +55,14 @@ static int	try_exec(char *tmp, t_sh *sh)
 	{
 		if (dup_exec(sh) == -1)
 			return (-1);
-		start_exec(tmp, sh->obj->args, sh->obj->charenv, sh);
+		if (!tmp)
+		{
+			if (parse_cmds(sh, i) == -1)
+				return (-1);
+			exit(g_err);
+		}
+		else
+			start_exec(tmp, sh->obj->args, sh->obj->charenv, sh);
 	}
 	else
 		handle_parent(pid, lever, sh);
@@ -128,7 +135,7 @@ int			parse_exec(t_sh *sh, int *i)
 	if (((r = check_path(sh, &path)) != 0) || ((r == 0) && !path))
 		return (r);
 	if (!(sh->obj->charenv = env_to_array(sh->env))
-	|| !(sh->obj->args = conv_av(sh, &stock_i)) || try_exec(path, sh) == -1)
+	|| !(sh->obj->args = conv_av(sh, &stock_i)) || try_exec(path, sh, 0) == -1)
 		return (free_str(path));
 	free(path);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/03 16:36:41 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/03 16:37:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/19 09:01:47 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	set_gfork(char *tmp)
 {
-	if (g_forked != 3)
+	if (!tmp)
+		g_forked = 1;
+	else if (g_forked != 3)
 		g_forked = (is_ms(tmp) == 0) ? 2 : 1;
 }
 

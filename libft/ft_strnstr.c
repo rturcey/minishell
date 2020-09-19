@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:18:22 by esoulard          #+#    #+#             */
-/*   Updated: 2020/05/08 11:04:00 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/19 09:29:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char	*ft_strstr(const char *haystack, const char *needle)
 	size_t	j;
 	char	*haycast;
 
+	if (!haystack)
+		return (NULL);
 	haycast = (char *)haystack;
 	i = 0;
 	if (!needle[0])

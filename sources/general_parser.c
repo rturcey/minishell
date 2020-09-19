@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/17 18:12:07 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/19 10:16:13 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,15 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 	{
 		if (!(init_obj(sh->obj, sample, j)))
 			return (free_obj(&sh->obj));
-		if ((j = parse_cmds(sh, i)) == -1 && free_obj(&sh->obj) == -1
-		&& free_str(sample) == -1)
+		if (sh->obj->pip == IS_PIPE ||
+		(sh->obj->prev && sh->obj->prev->pip == IS_PIPE))
+		{
+			if ((j = try_exec(NULL, sh, i)) == -1 && free_str(sample) == -1)
+				return (0);
+		}
+		else if ((j = parse_cmds(sh, i)) == -1 && free_str(sample) == -1)
 			return (0);
-		if (free_str(sample) == -1 && set_g_err(sh) == 1)
+		if (set_g_err(sh) == 1 && free_str(sample) == -1)
 			return (-1);
 	}
 	else

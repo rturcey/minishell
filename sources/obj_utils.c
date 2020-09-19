@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/17 16:48:55 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/19 10:15:42 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_obj		*obj_new(t_env *env, t_obj *prev)
 	new->error = 0;
 	new->next = NULL;
 	new->prev = prev;
+	new->lev = 1;
 	return (new);
 }
 
@@ -65,29 +66,3 @@ char		*init_obj(t_obj *obj, char *sample, int type)
 	obj->type = type;
 	return (obj->obj);
 }
-
-/*
-**TO DO
-**if stock_redir != NULL
-**send to a function that parses stock redir and
-**puts it in the initialized obj
-**and free stock_redir
-*/
-
-/*void		parent_handling(t_sh *sh)
-{
-	int	status;
-
-	status = 0;
-	//ft_dprintf(2, "name = %s, type = %d\n", sh->obj->obj, sh->pip->type);
-	close(sh->pip->pipefd[1]);
-	while (!WIFEXITED(status))
-		if (!WIFSIGNALED(status))
-			break ;
-	if (sh->pip->type == 1)
-		wait(&status);
-	if (WIFEXITED(status))
-		g_err = WEXITSTATUS(status);
-	sh->pip->count--;
-	exit(g_err);
-}*/

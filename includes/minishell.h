@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/17 18:12:28 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/19 10:15:25 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ typedef struct		s_obj
 	char			**args;
 	t_env			*env;
 	char			**charenv;
-	int				tube[2];
+	int				tube[2];\
+	int				lev;
 	struct s_obj	*next;
 	struct s_obj	*prev;
 }					t_obj;
@@ -164,5 +165,6 @@ void				pipe_checks(t_sh *sh, int *i);
 void				parent_handling(t_sh *sh);
 void				start_exec(char *tmp, char **av, char **env, t_sh *sh);
 void				handle_parent(pid_t pid, int lever, t_sh *sh);
+int	try_exec(char *tmp, t_sh *sh, int *i);
 
 #endif
