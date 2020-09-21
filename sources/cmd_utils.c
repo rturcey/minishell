@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/10 09:01:26 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/21 20:37:47 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	echo_loop(char **result, int *i, t_sh *sh)
 	if (!(sample = sample_str(sh, i, sample)))
 		return (free_str(*result));
 	if (l == 0 && sample[0] == '\0')
-		free(sample);
+		free_str(sample);
 	else if (!(*result = ft_strjoin_sp(*result, sample)))
 		return (-1);
 	return (0);

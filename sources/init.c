@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:06:54 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/17 17:09:39 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/21 20:11:56 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static t_sh	*init_sh(t_env *env)
 	sh->env = env;
 	sh->lev = 1;
 	sh->obj = NULL;
+	sh->running = NULL;
+	sh->wait = 0;
 	return (sh);
 }
 

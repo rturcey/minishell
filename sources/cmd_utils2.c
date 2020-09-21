@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/03 12:56:57 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/21 20:38:00 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		parse_export(t_sh *sh, int *i)
 		if ((ret = sample_export(sample, sh->env)) == -1)
 			maj_err(sh, ft_sprintf(\
 			"export: %s : not a valid identifier\n", sample), 1);
-		free(sample);
+		free_str(sample);
 		*i = pass_spaces(sh->in, *i);
 	}
 	return (print_result(sh, 0, NULL));

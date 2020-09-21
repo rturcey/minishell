@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/19 10:16:13 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/21 20:46:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ static int	general_loop(t_sh *sh, int *i)
 		return (-1);
 	if ((j = parse_sample(sh, i, stock, sample)) != 1)
 		return (j);
+	// if (sample)
+	// 	free_str(sample);
 	*i = find_end(sh->in, *i);
 	return (1);
 }

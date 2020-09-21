@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/19 10:15:42 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/21 19:17:11 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_obj		*obj_new(t_env *env, t_obj *prev)
 	new->obj = NULL;
 	new->type = 0;
 	new->option = 0;
+	new->type = -1;
 	new->redir = NULL;
 	new->result = NULL;
 	new->env = env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/19 10:15:25 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/21 20:13:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define CYAN 		"\033[1;96m"
 # define END  		"\033[0m"
 # define IS_PIPE	1
+
 
 typedef struct stat	t_stat;
 
@@ -70,8 +71,9 @@ typedef struct		s_obj
 	char			**args;
 	t_env			*env;
 	char			**charenv;
-	int				tube[2];\
+	int				tube[2];
 	int				lev;
+	int wait;
 	struct s_obj	*next;
 	struct s_obj	*prev;
 }					t_obj;
@@ -82,6 +84,8 @@ typedef struct		s_sh
 	t_env			*env;
 	char			*in;
 	int				lev;
+	int 			**running;
+	int 			wait;
 	int				*tmp;
 	int				*temp;
 }					t_sh;
