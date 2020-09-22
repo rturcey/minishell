@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/21 20:50:27 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/22 10:40:00 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ static int	add_redirs(t_sh *sh, int *i)
 
 int			parse_exec(t_sh *sh, int *i)
 {
-	int		r;
 	char	*path;
 	int		stock_i;
 
@@ -132,8 +131,9 @@ int			parse_exec(t_sh *sh, int *i)
 	stock_i = *i;
 	if (add_redirs(sh, i) == -1)
 		return (-1);
-	if (((r = check_path(sh, &path)) != 0) || ((r == 0) && !path))
-		return (r);
+	check_path(sh, &path);
+	if (!path)
+		path = ft_strjoin("./", sh->obj->obj);
 	if (!(sh->obj->charenv = env_to_array(sh->env))
 	|| !(sh->obj->args = conv_av(sh, &stock_i)) || try_exec(path, sh, 0) == -1)
 		return (free_str(path));

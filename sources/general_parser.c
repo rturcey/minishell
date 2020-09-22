@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/21 20:46:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/22 10:51:52 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,25 +63,19 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 		if (sh->obj->pip == IS_PIPE ||
 		(sh->obj->prev && sh->obj->prev->pip == IS_PIPE))
 		{
-			if ((j = try_exec(NULL, sh, i)) == -1 && free_str(sample) == -1)
+			if ((j = try_exec(NULL, sh, i)) == -1)
 				return (0);
 		}
-		else if ((j = parse_cmds(sh, i)) == -1 && free_str(sample) == -1)
+		else if ((j = parse_cmds(sh, i)) == -1)
 			return (0);
-		if (set_g_err(sh) == 1 && free_str(sample) == -1)
+		if (set_g_err(sh) == 1)
 			return (-1);
 	}
 	else
 	{
 		*i = stock;
-		if (free_str(sample) == -1 && (j = parse_exec(sh, i)) == -1)
+		if ((j = parse_exec(sh, i)) == -1)
 			return (free_obj(&sh->obj));
-		else if (j == -2)
-		{
-			maj_err(sh, ft_sprintf("%s: command not found\n", \
-			sh->obj->obj), 127);
-			print_result(sh, 0, NULL);
-		}
 	}
 	return (1);
 }
@@ -95,12 +89,14 @@ static int	general_loop(t_sh *sh, int *i)
 	sample = NULL;
 	stock = *i;
 	*i = pass_spaces(sh->in, *i);
-	if ((sample = sample_str(sh, i, sample)) == NULL)
+	if (!(sample = sample_str(sh, i, sample)))
 		return (-1);
-	if ((j = parse_sample(sh, i, stock, sample)) != 1)
+	if (!sample[0])
+		free_obj(&sh->obj);
+	else if ((j = parse_sample(sh, i, stock, sample)) != 1
+	&& free_str(sample))
 		return (j);
-	// if (sample)
-	// 	free_str(sample);
+	free(sample);
 	*i = find_end(sh->in, *i);
 	return (1);
 }

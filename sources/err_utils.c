@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/19 09:36:12 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/22 10:25:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	start_exec(char *tmp, char **av, char **env, t_sh *sh)
 {
 	execve(tmp, av, env);
-	ft_dprintf(2, "bash: %s: %s\n", sh->obj->obj, strerror(errno));
+	if (errno != 2)
+		ft_dprintf(2, "bash: %s: %s\n", sh->obj->obj, strerror(errno));
+	else
+		ft_dprintf(2, "%s: command not found\n", sh->obj->obj);
 	exit(2);
 }
 
