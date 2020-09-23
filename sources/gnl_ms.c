@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   gnl_ms.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 12:42:15 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/23 13:41:57 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:49:44 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 #include <stdio.h>
 
-char	*give_it_back(char *str, char **line)
+char	*give_it_back_ms(char *str, char **line)
 {
 	int		len;
 	char	*result;
@@ -26,10 +26,11 @@ char	*give_it_back(char *str, char **line)
 	if (str[len] && str[len + 1])
 		result = ft_strdup(&str[len + 1]);
 	free(str);
+	str = NULL;
 	return (result);
 }
 
-int		get_next_line(int fd, char **line)
+int		gnl_ms(int fd, char **line)
 {
 	static char	*s[FOPEN_MAX];
 	char		buffer[31];
@@ -40,9 +41,10 @@ int		get_next_line(int fd, char **line)
 	if (s[fd] == NULL)
 		s[fd] = ft_strdup("");
 	i = 0;
-	while (ft_strchr(s[fd], '\n') || (i = read(fd, buffer, 30)) > 0)
+	while (ft_strchr(s[fd], '\n') || (i = read(fd, buffer, 30)) >= 0)
 	{
-		buffer[i] = '\0';
+		if ((buffer[i] = '\0') == 0 && i == 0 && ft_strlen(s[fd]) == 0)
+			return (0);
 		if (!(s[fd] = ft_gnl_strjoin(s[fd], buffer)))
 			return (-1);
 		if (ft_strchr(s[fd], '\n') && ++i)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/23 10:15:09 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/23 15:37:14 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@
 # define YELLOW 	"\033[1;93m"
 # define CYAN 		"\033[1;96m"
 # define END  		"\033[0m"
+# define IS_MS		0
 # define IS_PIPE	1
+# define IS_EXEC	2
+# define IS_F_MS	3
 
 typedef struct stat	t_stat;
 
@@ -87,6 +90,7 @@ typedef struct		s_sh
 	int				wait;
 	int				*tmp;
 	int				*temp;
+	int				forked;
 }					t_sh;
 
 t_env				*g_lstenv;
@@ -95,8 +99,9 @@ int					g_err;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
+int					gnl_ms(int fd, char **line);
 int					is_ms(char *exec);
-void				set_gfork(char *tmp);
+void				set_gfork(t_sh *sh, char *tmp);
 void				sighandler(int num);
 void				sighandler_exec(int num);
 int					general_parser(t_sh *sh);

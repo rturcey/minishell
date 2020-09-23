@@ -3,21 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   fork_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/03 16:36:41 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/19 09:01:47 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/23 15:38:11 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_gfork(char *tmp)
+void	set_gfork(t_sh *sh, char *tmp)
 {
-	if (!tmp)
-		g_forked = 1;
-	else if (g_forked != 3)
-		g_forked = (is_ms(tmp) == 0) ? 2 : 1;
+	if (sh->obj->pip == IS_PIPE || (sh->obj->prev &&
+		sh->obj->prev->pip == IS_PIPE))
+		g_forked = IS_PIPE;
+	else if (tmp && is_ms(tmp) != 0)
+		g_forked = IS_EXEC;
+	else if (tmp && is_ms(tmp) == 0)
+		g_forked = IS_F_MS;
+	else
+		g_forked = IS_MS;
 }
 
 int		is_ms(char *exec)

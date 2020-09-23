@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/23 09:45:08 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/23 13:38:23 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			try_exec(char *tmp, t_sh *sh, int *i)
 	int		lever;
 
 	pid = -1;
-	set_gfork(tmp);
+	set_gfork(sh, tmp);
 	lever = 0;
 	if (sh->obj->pip == IS_PIPE)
 	{

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/21 16:36:12 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:48:31 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,23 @@ void		sighandler(int num)
 {
 	if (num == SIGINT)
 	{
-		if (g_forked == 0)
+		if (g_forked == IS_MS)
 		{
 			ft_dprintf(2, "\n");
 			prompt(g_lstenv);
 		}
-		else if (g_forked == 1)
+		else if (g_forked != IS_F_MS)
 			ft_dprintf(2, "\n");
 		g_err = 130;
 	}
 	else if (num == SIGQUIT)
 	{
-		if (g_forked == 1)
+		if (g_forked == IS_EXEC)
 		{
 			ft_dprintf(2, "Quit: (core dumped)\n");
 			g_err = 131;
 		}
-		else if (g_forked == 0)
+		else if (g_forked == IS_MS)
 			ft_dprintf(2, "\b\b \b  \b\b");
 	}
 }
@@ -61,9 +61,11 @@ void		sighandler(int num)
 static void	routine(t_sh *sh, char **line)
 {
 	prompt(g_lstenv);
+	g_forked = IS_MS;
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
-	if (get_next_line(0, line) == 0 && g_forked != 3)
+	*line = NULL;
+	if (gnl_ms(0, line) == 0)
 	{
 		if (*line)
 			free(*line);
@@ -81,15 +83,17 @@ int			main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	g_lstenv = NULL;
-	g_forked = 0;
 	g_err = 0;
+	g_forked = IS_MS;
 	if (init_main(&sh, env) == -1)
 		return (-1);
 	while (1)
 	{
 		routine(sh, &line);
-		ret = general_parser(sh);
-		free(line);
+		if (line)
+			ret = general_parser(sh);
+		if (line)
+			free(line);
 		if (ret != 0)
 			break ;
 	}
