@@ -6,13 +6,13 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/22 10:40:00 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/23 09:45:08 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	dup_exec(t_sh *sh)
+int			dup_exec(t_sh *sh)
 {
 	if (sh->obj->pip == IS_PIPE && dup2(sh->obj->tube[1], 1) == -1)
 		return (-1);
@@ -53,16 +53,8 @@ int			try_exec(char *tmp, t_sh *sh, int *i)
 	}
 	else if (pid == 0)
 	{
-		if (dup_exec(sh) == -1)
+		if (start_exec(tmp, sh, i))
 			return (-1);
-		if (!tmp)
-		{
-			if (parse_cmds(sh, i) == -1)
-				return (-1);
-			exit(g_err);
-		}
-		else
-			start_exec(tmp, sh->obj->args, sh->obj->charenv, sh);
 	}
 	else
 		handle_parent(pid, lever, sh);
@@ -131,7 +123,8 @@ int			parse_exec(t_sh *sh, int *i)
 	stock_i = *i;
 	if (add_redirs(sh, i) == -1)
 		return (-1);
-	check_path(sh, &path);
+	if (check_path(sh, &path) == -2)
+		maj_err(sh, ft_sprintf("%s: command not found\n", sh->obj->obj), 127);
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);
 	if (!(sh->obj->charenv = env_to_array(sh->env))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/21 20:13:26 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/23 10:15:09 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # define CYAN 		"\033[1;96m"
 # define END  		"\033[0m"
 # define IS_PIPE	1
-
 
 typedef struct stat	t_stat;
 
@@ -73,7 +72,7 @@ typedef struct		s_obj
 	char			**charenv;
 	int				tube[2];
 	int				lev;
-	int wait;
+	int				wait;
 	struct s_obj	*next;
 	struct s_obj	*prev;
 }					t_obj;
@@ -84,8 +83,8 @@ typedef struct		s_sh
 	t_env			*env;
 	char			*in;
 	int				lev;
-	int 			**running;
-	int 			wait;
+	int				**running;
+	int				wait;
 	int				*tmp;
 	int				*temp;
 }					t_sh;
@@ -166,9 +165,9 @@ void				export_solo(t_sh *sh);
 void				clear_sh(t_sh *sh);
 int					init_main(t_sh **sh, char **env);
 void				pipe_checks(t_sh *sh, int *i);
-void				parent_handling(t_sh *sh);
-void				start_exec(char *tmp, char **av, char **env, t_sh *sh);
+int					start_exec(char *tmp, t_sh *sh, int *i);
 void				handle_parent(pid_t pid, int lever, t_sh *sh);
-int	try_exec(char *tmp, t_sh *sh, int *i);
+int					try_exec(char *tmp, t_sh *sh, int *i);
+int					dup_exec(t_sh *sh);
 
 #endif
