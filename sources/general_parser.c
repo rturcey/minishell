@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/22 10:51:52 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/24 19:10:22 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	first_checks(t_sh *sh, int *i)
 		return (0);
 	else if (j == -2)
 		return (-1);
-	if (!(sh->obj = obj_new(sh->env, sh->obj)))
+	if (!(sh->obj = obj_new(sh->obj)))
 		return (-1);
 	if (!(sh->obj->redir = redir_new()))
 		return (free_obj(&sh->obj));

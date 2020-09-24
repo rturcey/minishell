@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/31 13:15:18 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/24 19:19:02 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	print_env(t_env *env, int fd)
 	while (tmp)
 	{
 		if (tmp->in == 1)
-			dprintf(fd, "%s=%s\n", tmp->key, tmp->val);
+			ft_dprintf(fd, "%s=%s\n", tmp->key, tmp->val);
 		tmp = tmp->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/21 19:17:11 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/24 19:10:13 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_redir		*redir_new(void)
 **(same as plotted on framapad)
 */
 
-t_obj		*obj_new(t_env *env, t_obj *prev)
+t_obj		*obj_new(t_obj *prev)
 {
 	t_obj	*new;
 
@@ -45,14 +45,12 @@ t_obj		*obj_new(t_env *env, t_obj *prev)
 	new->type = -1;
 	new->redir = NULL;
 	new->result = NULL;
-	new->env = env;
 	new->pip = 0;
 	new->args = NULL;
 	new->charenv = NULL;
 	new->error = 0;
 	new->next = NULL;
 	new->prev = prev;
-	new->lev = 1;
 	return (new);
 }
 

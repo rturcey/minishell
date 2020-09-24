@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:20:04 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/31 13:19:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/24 19:19:51 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ static void		print_export(int fd, t_env *env)
 	while (env)
 	{
 		if (env->val[0] && env->key[0] != '_')
-			dprintf(fd, "declare -x %s=\"%s\"\n", env->key, env->val);
+			ft_dprintf(fd, "declare -x %s=\"%s\"\n", env->key, env->val);
 		else if (env->key[0] != '_')
-			dprintf(fd, "declare -x %s\n", env->key);
+			ft_dprintf(fd, "declare -x %s\n", env->key);
 		env = env->next;
 	}
 	free_export(save);
