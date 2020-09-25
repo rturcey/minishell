@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/21 20:37:47 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/25 14:54:30 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,58 +58,33 @@ int			parse_echo(t_sh *sh, int *i)
 	return (print_result(sh, 0, NULL));
 }
 
-int			replace_pwd(t_env *env, char **path)
-{
-	t_env	*pwd;
-	char	*workdir;
-	int		ret;
-
-	pwd = env_new(1);
-	if (!(workdir = ft_calloc(PATH_MAX, 1)))
-		return (-1);
-	ret = 0;
-	if ((getcwd(workdir, PATH_MAX) == NULL) && (ft_strncmp(*path, ".",
-		ft_strlen(*path)) == 0) && (ret = -2))
-	{
-		if (!(workdir = ft_strjoin_slash(find_env_val("PWD", env), ".")))
-			return (-1);
-		free_str(*path);
-		*path = ft_strdup(workdir);
-	}
-	else if (getcwd(workdir, PATH_MAX) == NULL)
-		return (free_str(workdir));
-	if (!(pwd->val = workdir))
-		return (-1);
-	if (!(pwd->key = ft_strdup("PWD")))
-		return (free_str(workdir));
-	add_var(pwd, env);
-	del_var(pwd);
-	return (ret);
-}
-
 static void	err_cd(t_sh *sh, int ret, char *path)
 {
 	char	*mg;
 	char	*mgb;
+	char	*workdir;
+	int		i;
 
 	mg = ft_strdup("cd: error retrieving current directory: getcwd: cannot ");
 	mgb = ft_strdup("access parent directories: No such file or directory\n");
-	if (ret > 0)
+	if ((i = 0) == 0 && ret > 0)
 		maj_err(sh, ft_strdup("cd: too many arguments\n"), 1);
 	else if (chdir(path) == -1)
 		maj_err(sh, ft_sprintf("cd: %s: %s\n", path, strerror(errno)), 1);
-	else if (ret == -2)
+	else if (ret == 0)
 	{
-		if (!(mg = ft_strjoin_bth(mg, mgb)))
+		if (!(workdir = ft_calloc(PATH_MAX, 1)))
 			return ;
-		maj_err(sh, mg, 0);
-		chdir(path);
+		if (getcwd(workdir, PATH_MAX) == NULL && (i = 1) == 1)
+		{
+			if (!(mg = ft_strjoin_bth(mg, mgb)))
+				return ;
+			maj_err(sh, mg, 0);
+		}
+		free_str(workdir);
 	}
-	if (ret != -2)
-	{
-		free(mg);
-		free(mgb);
-	}
+	if (i == 0)
+		free_two_str(mg, mgb);
 }
 
 int			parse_cd(t_sh *sh, int *i)

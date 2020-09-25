@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 10:10:47 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/10 08:58:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/25 14:51:06 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,47 @@ void		pass_option(t_sh *sh, int *i)
 			return ;
 		*i = pass_spaces(sh->in, *i);
 	}
+}
+
+int			replace_pwd2(t_env *env, char **path, char **workdir)
+{
+	char *tmp;
+
+	free(*workdir);
+	if (!(tmp = find_env_val("PWD", env)))
+		return (-1);
+	if (!(*workdir = ft_strjoin_slash(tmp, *path)))
+		return (-1);
+	free_str(tmp);
+	free_str(*path);
+	*path = ft_strdup(*workdir);
+	return (0);
+}
+
+int			replace_pwd(t_env *env, char **path)
+{
+	t_env	*pwd;
+	char	*workdir;
+	int		ret;
+
+	pwd = env_new(1);
+	if (!(workdir = ft_calloc(PATH_MAX, 1)))
+		return (-1);
+	ret = 0;
+	if ((getcwd(workdir, PATH_MAX) == NULL) && (ft_strncmp(*path, ".",
+		ft_strlen(*path)) == 0 || ft_strncmp(*path, "..",
+		ft_strlen(*path)) == 0))
+	{
+		if (replace_pwd2(env, path, &workdir) == -1)
+			return (-1);
+	}
+	else if (getcwd(workdir, PATH_MAX) == NULL)
+		return (free_str(workdir));
+	if (!(pwd->val = workdir))
+		return (-1);
+	if (!(pwd->key = ft_strdup("PWD")))
+		return (free_str(workdir));
+	add_var(pwd, env);
+	del_var(pwd);
+	return (ret);
 }
