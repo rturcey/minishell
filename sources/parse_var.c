@@ -6,22 +6,22 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/01 10:23:39 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/25 09:58:54 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		check_vars(t_sh *sh, int *i)
+static int		check_vars(t_sh *sh, int i)
 {
 	int		j;
 	char	*s;
 
 	s = NULL;
-	while (is_end(sh->in, *i) == 0)
+	while (is_end(sh->in, i) == 0)
 	{
-		*i = pass_spaces(sh->in, *i);
-		j = *i;
+		i = pass_spaces(sh->in, i);
+		j = i;
 		while (is_end(sh->in, j) == 0 && is_space(sh->in, j) == 0
 			&& sh->in[j] != '=' && sh->in[j] != '+')
 			j++;
@@ -29,13 +29,13 @@ static int		check_vars(t_sh *sh, int *i)
 			return (-1);
 		if (pluseq(sh->in, j) == 1)
 			j++;
-		*i = pass_spaces(sh->in, j + 1);
-		if (is_end(sh->in, *i) != 0)
+		i = pass_spaces(sh->in, j + 1);
+		if (is_end(sh->in, i) != 0)
 			return (0);
-		if (*i != j + 1 || !(s = sample_str(sh, i, s)))
+		if (i != j + 1 || !(s = sample_str(sh, &i, s)))
 			return (-1);
 		free(s);
-		*i = pass_spaces(sh->in, *i);
+		i = pass_spaces(sh->in, i);
 	}
 	return (0);
 }
@@ -125,11 +125,11 @@ int				parse_var(t_sh *sh, int *i, int len)
 	t_env	*wagon;
 	t_env	*begin;
 
-	if (check_vars(sh, i) == -1)
+	if (check_vars(sh, *i) == -1)
 		return (0);
 	while (is_end(sh->in, len) == 0)
 		len++;
-	if (!(to_split = ft_substr(sh->in, 0, len)))
+	if (!(to_split = ft_substr(sh->in, *i, *i + len)))
 		return (-1);
 	if (!(env_new = ft_split(to_split, ' ')))
 		return (free_str(to_split));
@@ -140,5 +140,7 @@ int				parse_var(t_sh *sh, int *i, int len)
 		return (free_array_and_str(env_new, -1, to_split) == 2);
 	add_multiple_var(wagon, sh->env);
 	free_array_and_str(env_new, -1, to_split);
+	while (is_end(sh->in, *i) == 0)
+		++(*i);
 	return (env_clear(begin));
 }
