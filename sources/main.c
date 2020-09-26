@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/23 15:48:31 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/26 13:11:55 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,35 @@ void		sighandler(int num)
 	}
 }
 
-static void	routine(t_sh *sh, char **line)
+static int	read_err(int err)
 {
+	g_err = 2;
+	ft_dprintf(2, ft_sprintf("bash: error reading input file:"));
+	ft_dprintf(2, ft_sprintf(" %s\n", strerror(err)));
+	return (-1);
+}
+
+static int	routine(t_sh *sh, char **line)
+{
+	int ret;
+
+	if (read(0, NULL, 0) < 0)
+		return (read_err(errno));
 	prompt(g_lstenv);
 	g_forked = IS_MS;
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	*line = NULL;
-	if (gnl_ms(0, line) == 0)
+	if ((ret = gnl_ms(0, line)) == 0)
 	{
 		if (*line)
 			free(*line);
 		*line = ft_strdup("exit\n");
 	}
+	else if (ret < 0)
+		return (read_err(errno));
 	sh->in = *line;
+	return (0);
 }
 
 int			main(int argc, char **argv, char **env)
@@ -89,7 +104,8 @@ int			main(int argc, char **argv, char **env)
 		return (-1);
 	while (1)
 	{
-		routine(sh, &line);
+		if (routine(sh, &line) < 0)
+			break ;
 		if (line)
 			ret = general_parser(sh);
 		if (line)
