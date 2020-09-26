@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/01 10:19:08 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/26 14:03:27 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				unset_var(char **elt, t_env *env)
+int				unset_var(char **elt, t_sh *sh)
 {
 	int		i;
 
 	i = -1;
 	while (elt[++i])
-		del_from_key(&env, elt[i]);
+		del_from_key(&(sh->env), elt[i]);
 	return (0);
 }
 

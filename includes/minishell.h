@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/24 19:18:29 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/26 14:01:51 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void				export_solo(t_sh *sh);
 int					sample_export(char *sample, t_env *env);
 void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
-int					unset_var(char **elt, t_env *env);
+int					unset_var(char **elt, t_sh *sh);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(t_sh *sh, int *i, int len);
 int					split_env(char *line, t_env *elt);

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/26 13:11:55 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/26 14:05:20 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ static int	routine(t_sh *sh, char **line)
 
 	if (read(0, NULL, 0) < 0)
 		return (read_err(errno));
-	prompt(g_lstenv);
+	prompt(sh->env);
 	g_forked = IS_MS;
+	g_lstenv = sh->env;
 	signal(SIGINT, sighandler);
 	signal(SIGQUIT, sighandler);
 	*line = NULL;
