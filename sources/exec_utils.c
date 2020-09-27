@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/23 13:38:23 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/27 12:29:36 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,10 @@ int			parse_exec(t_sh *sh, int *i)
 	if (add_redirs(sh, i) == -1)
 		return (-1);
 	if (check_path(sh, &path) == -2)
-		maj_err(sh, ft_sprintf("%s: command not found\n", sh->obj->obj), 127);
+	{
+		free(path);
+		return (0);
+	}
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);
 	if (!(sh->obj->charenv = env_to_array(sh->env))

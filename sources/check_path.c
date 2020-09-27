@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/26 12:30:27 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/27 12:32:45 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,13 @@ static int	sample_path(t_sh *sh, char *sample, char **path)
 			maj_err(sh, ft_sprintf("bash: %s: %s\n", sample, \
 			"Permission denied"), 1);
 	}
-	else if (((stat(sample, &st)) != 0) && (ret = -2))
+	else if (((stat(sample, &st)) != 0) && (ret = -2) == -2)
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", sample,
 			strerror(errno)), 1);
-	else
-		maj_err(sh, ft_sprintf("bash: %s : %s\n", sample, \
+	else if ((ret = -2) == -2)
+		maj_err(sh, ft_sprintf("bash: %s: %s\n", sample, \
 		"is a directory"), 1);
-	if (ret != -2)
-		return (print_result(sh, ret, NULL));
-	return (ret);
+	return (print_result(sh, ret, NULL));
 }
 
 static int	loop_path(char *path_str, char **path, char *sample, t_sh *sh)
@@ -123,6 +121,8 @@ int			check_path(t_sh *sh, char **path)
 				return (free_array(path_arr, -1, -1));
 			break ;
 		}
+	if (r == -2)
+		maj_err(sh, ft_sprintf("%s: command not found\n", sh->obj->obj), 127);
 	free_array(path_arr, -1, -1);
 	return (print_result(sh, r, NULL));
 }
