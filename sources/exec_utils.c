@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/27 12:29:36 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/29 12:50:29 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int			parse_exec(t_sh *sh, int *i)
 		return (-1);
 	stock_i = *i;
 	if (add_redirs(sh, i) == -1)
-		return (-1);
+		return (0);
 	if (check_path(sh, &path) == -2)
 	{
 		free(path);
@@ -130,9 +130,11 @@ int			parse_exec(t_sh *sh, int *i)
 	}
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);
-	if (!(sh->obj->charenv = env_to_array(sh->env))
-	|| !(sh->obj->args = conv_av(sh, &stock_i)) || try_exec(path, sh, 0) == -1)
+	if (!(sh->obj->charenv = env_to_array(sh->env)))
 		return (free_str(path));
+	if ((sh->obj->args = conv_av(sh, &stock_i)))
+		if (try_exec(path, sh, 0) == -1)
+			return (free_str(path));
 	free(path);
 	return (0);
 }
