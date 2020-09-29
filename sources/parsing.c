@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 12:00:56 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/24 19:19:28 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/29 12:01:49 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int			parse_syntax(t_sh *sh, int i)
 			return (-2);
 		if (j >= 0 && (g_err = 2))
 		{
-			ft_dprintf(2, "bash: parse error near `%s\'\n", sample);
+			ft_dprintf(2, "bash: syntax error near unexpected token `%s\'\n"\
+			, sample);
 			return (free_str(sample));
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 11:15:08 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/29 11:43:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int					repluseq(char *sample, int i, t_env *env, int in);
 char				**empty_env(void);
 void				*check_empty(int lever, char **env);
 char				*var_path(void);
-void				find_home_user(char *path, char **home, char **user);
+void				find_home_user(char *path, char **home, char **user, t_env *env);
 
 void				pipe_checks(t_sh *sh, int *i);
 void				set_gfork(t_sh *sh, char *tmp);

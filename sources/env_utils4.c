@@ -6,16 +6,17 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 10:32:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 11:19:15 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/29 11:57:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		find_home_user(char *path, char **home, char **user)
+void		find_home_user(char *path, char **home, char **user, t_env *env)
 {
 	int		i;
 	int		j;
+	char	*tmp;
 
 	i = 1;
 	while (path[i] != '/')
@@ -27,6 +28,13 @@ void		find_home_user(char *path, char **home, char **user)
 		exit(EXIT_FAILURE);
 	if (!(*user = ft_substr(path, i + 1, j - i - 1)))
 		exit(EXIT_FAILURE);
+	if (!(tmp = ft_strjoin("HOME=", *home)))
+		exit(EXIT_FAILURE);
+	sample_export(tmp, env);
+	free(tmp);
+	if (!(tmp = ft_strjoin("USER=", *user)))
+		exit(EXIT_FAILURE);
+	sample_export(tmp, env);
 }
 
 void		*check_empty(int lever, char **env)
@@ -41,7 +49,9 @@ char		*var_path(void)
 	char	*line;
 	int		fd;
 	int		ret;
+	char	*new;
 
+	new = NULL;
 	if ((fd = open("/etc/environment", O_RDONLY)) == -1)
 		return (NULL);
 	while ((ret = get_next_line(fd, &line)) >= 0)
@@ -49,7 +59,9 @@ char		*var_path(void)
 		if (ft_strstr(line, "PATH="))
 		{
 			close(fd);
-			return (line);
+			new = ft_substr(line, 6, ft_strlen(line) - 7);
+			free(line);
+			return (new);
 		}
 		else
 			free(line);
