@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 11:49:33 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/29 13:31:06 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ static void	prompt(t_env *env)
 	get_next_line(fd, &host);
 	replace_pwd(env, NULL);
 	path = find_env_val("PWD", env);
-	if (!(home = find_env_val("HOME", env)) || !(user = find_env_val("USER", env)))
+	home = NULL;
+	home = find_env_val("HOME", env);
+	user = NULL;
+	user = find_env_val("USER", env);
+	if (!home || !user)
 		find_home_user(path, &home, &user, env);
 	remove_home_path(&path, home);
 	ft_dprintf(2, "%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, \

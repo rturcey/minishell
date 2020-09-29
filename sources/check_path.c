@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 11:32:35 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/29 13:28:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			check_path(t_sh *sh, char **path)
 	if (ft_strchr(sh->obj->obj, '/'))
 		return (sample_path(sh, sh->obj->obj, path));
 	if (!(val = var_path()))
-		return(-1);
+		return (-1);
 	if (!(path_arr = ft_split(val, ':')))
 		return (free_str(val));
 	free(val);

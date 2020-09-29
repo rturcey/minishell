@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/29 12:47:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/29 13:29:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int		last_backslash(char *str)
 
 int		find_string_end(char *in, int i)
 {
-	while ((is_end(in, i) == 0) && is_space(in, i) == 0)
+	while ((is_end(in, i) == 0) && is_space(in, i) == 0 &&
+		is_redir(in, i) == 0)
 	{
 		if (is_quote(in, i, 0))
 		{
@@ -84,7 +85,7 @@ int		count_strings(char *in, int i)
 	while (is_end(in, i) == 0)
 	{
 		count++;
-		i = find_string_end(in, i);
+		i = find_string_end(in, i) + 1;
 		i = pass_spaces(in, i);
 	}
 	return (count);
