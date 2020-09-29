@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:06:54 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/26 13:46:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/29 10:33:14 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			init_main(t_sh **sh, char **env)
 {
 	if (!(g_lstenv = init_env(env, 1)))
 	{
-		ft_putstr_fd("couldn't clone the environment", 2);
+		ft_putstr_fd("couldn't clone the environment\n", 2);
 		return (-1);
 	}
 	if (!(*sh = init_sh(g_lstenv)))

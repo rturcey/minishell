@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/26 14:01:51 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/29 11:15:08 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,10 @@ int					check_var(char *sample);
 int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
 int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
+char				**empty_env(void);
+void				*check_empty(int lever, char **env);
+char				*var_path(void);
+void				find_home_user(char *path, char **home, char **user);
 
 void				pipe_checks(t_sh *sh, int *i);
 void				set_gfork(t_sh *sh, char *tmp);

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/25 09:40:25 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/29 09:51:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,20 +97,24 @@ t_env	*init_env(char **env, int in)
 	t_env	*lst;
 	t_env	*tmp;
 	int		i;
+	int		lever;
 
 	i = 0;
-	if (!env || !env[0] || !(lst = env_new(in)))
-		return (NULL);
+	lever = 0;
+	if ((!env || !env[0]) && (lever = 1))
+		env = empty_env();
+	if (!(lst = env_new(in)))
+		return (check_empty(lever, env));
 	tmp = lst;
 	if (split_env(env[0], lst) == -1 && env_clear(tmp) == 0)
-		return (NULL);
+		return (check_empty(lever, env));
 	while (env[++i])
 	{
 		if (!(lst->next = env_new(in)) && env_clear(tmp) == 0)
-			return (NULL);
+			return (check_empty(lever, env));
 		lst = lst->next;
 		if (split_env(env[i], lst) == -1 && env_clear(tmp) == 0)
-			return (NULL);
+			return (check_empty(lever, env));
 	}
 	return (tmp);
 }
