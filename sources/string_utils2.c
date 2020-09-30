@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/29 13:29:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:36:06 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ int		count_strings(char *in, int i)
 	while (is_end(in, i) == 0)
 	{
 		count++;
-		i = find_string_end(in, i) + 1;
+		i = find_string_end(in, i);
+		if (in[i])
+			++i;
 		i = pass_spaces(in, i);
 	}
 	return (count);

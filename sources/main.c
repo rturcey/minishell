@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 13:31:06 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:46:14 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@ static void	prompt(t_env *env)
 	char	*home;
 	int		fd;
 
-	fd = open("/etc/hostname", O_RDONLY);
-	get_next_line(fd, &host);
-	replace_pwd(env, NULL);
+	if (!(path = ft_strdup("")))
+		exit(EXIT_FAILURE);
+	replace_pwd(env, &path);
+	free(path);
 	path = find_env_val("PWD", env);
-	home = NULL;
 	home = find_env_val("HOME", env);
-	user = NULL;
 	user = find_env_val("USER", env);
-	if (!home || !user)
+	if ((!home[0] || !user[0]) && free_two_str(home, user))
 		find_home_user(path, &home, &user, env);
 	remove_home_path(&path, home);
+	fd = open("/etc/hostname", O_RDONLY);
+	get_next_line(fd, &host);
 	ft_dprintf(2, "%s%s@%s%s:%s%s%s %s►%s ", YELLOW, user, host, END, \
 	CYAN, path, END, YELLOW, END);
 	free_two_str(user, home);
