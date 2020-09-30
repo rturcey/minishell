@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 13:04:37 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 13:00:31 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,22 @@ int		start_exec(char *tmp, t_sh *sh, int *i)
 		exit(print_result(sh, g_err, NULL));
 	}
 	return (0);
+}
+
+int 	free_shrun_arr(t_sh *sh, int ret)
+{
+	int i;
+
+	if (!(sh->running))
+		return (-1);
+	i = -1;
+	while (++i < sh->running_nb)
+	{
+		free(sh->running[i]);
+		sh->running[i] = NULL;
+	}
+	free(sh->running);
+	sh->running = NULL;
+	sh->running_nb = 0;
+	return (ret);
 }

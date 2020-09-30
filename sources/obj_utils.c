@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:23:39 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/24 19:10:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:14:03 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_obj		*obj_new(t_obj *prev)
 	new->redir = NULL;
 	new->result = NULL;
 	new->pip = 0;
+	new->tube[0] = -1;
+	new->tube[1] = -1;
 	new->args = NULL;
 	new->charenv = NULL;
 	new->error = 0;

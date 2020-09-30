@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_array2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 22:03:52 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/23 10:05:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/30 10:41:48 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,4 @@ char	**char_free_array(char **arr, int max)
 {
 	free_array(arr, max, -1);
 	return (NULL);
-}
-
-int		free_int_arr(int **array, int max, int ret)
-{
-	int i;
-
-	if (!array)
-		return (-1);
-	if (max == -1)
-	{
-		max = 0;
-		while (array[max] != NULL)
-			max++;
-	}
-	i = -1;
-	while (++i < max)
-	{
-		free(array[i]);
-		array[i] = NULL;
-	}
-	free(array);
-	array = NULL;
-	return (ret);
 }

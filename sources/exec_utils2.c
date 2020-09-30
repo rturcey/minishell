@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 14:46:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/25 15:41:11 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 13:41:29 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,23 @@ static void	fill_running(int **new, int i, int pid, t_sh *sh)
 	new[i][0] = pid;
 	new[i][1] = sh->obj->tube[0];
 	new[i][2] = sh->obj->tube[1];
-	new[++i] = NULL;
 	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
 		free(sh->running);
 	sh->running = new;
+	sh->running_nb++;
 	g_forked = 2;
 }
 
 static int	add_running(int pid, t_sh *sh)
 {
 	int **new;
-	int count;
 	int i;
 	int j;
 
-	count = 0;
-	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
-		while (sh->running && sh->running[count])
-			count++;
-	if (!(new = malloc(sizeof(int *) * (count + 2))))
+	if (!(new = malloc(sizeof(int *) * (sh->running_nb + 1))))
 		return (-1);
 	i = -1;
-	while (++i < count)
+	while (++i < sh->running_nb)
 	{
 		if (!(new[i] = malloc(sizeof(int) * 3)))
 			return (-1);
@@ -61,7 +56,7 @@ static int	find_running(t_sh *sh, int pid)
 	i = -1;
 	if (!sh->running)
 		return (-1);
-	while (sh->running[++i])
+	while (++i < sh->running_nb)
 	{
 		if (sh->running[i][0] != pid)
 		{
@@ -80,10 +75,12 @@ static void	close_fds(int lever, t_sh *sh)
 	if (lever == 1)
 	{
 		close(sh->obj->tube[1]);
-		if (sh->obj->pip != IS_PIPE)
+		if (sh->obj->pip != IS_PIPE && sh->obj->prev->tube[0]
+			&& sh->obj->prev->tube[0] != -1)
 			close(sh->obj->prev->tube[0]);
 	}
-	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
+	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE
+		&& sh->obj->prev->tube[0] != -1)
 		close(sh->obj->prev->tube[0]);
 }
 
@@ -100,7 +97,7 @@ void		handle_parent(pid_t pid, int lever, t_sh *sh)
 			find_running(sh, pid);
 		if (WIFEXITED(status))
 			g_err = WEXITSTATUS(status);
-		free_int_arr(sh->running, -1, 0);
+		free_shrun_arr(sh, 0);
 	}
 	else if (sh->wait == 1 || (sh->obj->pip != IS_PIPE
 	&& (!sh->obj->prev || sh->obj->prev->pip != IS_PIPE)))

@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/25 14:54:30 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:21:11 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int			parse_cd(t_sh *sh, int *i)
 		else if ((path == NULL) && !(path = sample_str(sh, i, path)))
 			return (-1);
 	}
-	if ((path == NULL) && !(path = ft_strdup(find_env_val("HOME", sh->env))))
+	if ((path == NULL) && !(path = find_env_val("HOME", sh->env)))
 		return (-1);
 	err_cd(sh, ret, path);
 	if ((ret = replace_pwd(sh->env, &path)) == -1)

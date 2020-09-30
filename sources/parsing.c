@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 12:00:56 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 12:01:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/30 11:16:18 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	pass_content(t_sh *sh, int *i)
 {
 	char	*sample;
 
+	sample = NULL;
 	while (sh->in[*i] && is_end(sh->in, *i) == 0)
 	{
 		if (is_redir(sh->in, *i) && ++(*i))
@@ -37,7 +38,7 @@ static int	pass_content(t_sh *sh, int *i)
 			{
 				if (sh->in[*i] && !(sample = ft_substr(sh->in, *i, 1)))
 					return (-2);
-				else if (!(sample = ft_strdup("\\n")))
+				else if (!sample && !(sample = ft_strdup("\\n")))
 					return (-2);
 				g_err = 2;
 				ft_dprintf(2, "bash: parse error near `%s\'\n", sample);

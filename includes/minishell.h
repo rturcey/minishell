@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 11:43:28 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/30 13:10:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct		s_sh
 	char			*in;
 	int				lev;
 	int				**running;
+	int				running_nb;
 	int				wait;
 	int				*tmp;
 	int				*temp;
@@ -162,6 +163,7 @@ int					is_ms(char *exec);
 int					start_exec(char *tmp, t_sh *sh, int *i);
 void				pass_option(t_sh *sh, int *i);
 void				handle_parent(pid_t pid, int lever, t_sh *sh);
+int 				free_shrun_arr(t_sh *sh, int ret);
 
 int					print_result(t_sh *sh, int ret, char *to_free);
 void				maj_err(t_sh *sh, char *str, int err);

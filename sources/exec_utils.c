@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/29 13:29:23 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 13:32:43 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int			dup_exec(t_sh *sh)
 	if (sh->obj->pip == IS_PIPE && dup2(sh->obj->tube[1], 1) == -1)
 		return (-1);
 	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE
-	&& dup2(sh->obj->prev->tube[0], 0) == -1)
+	&& sh->obj->prev->tube[0] != -1 && dup2(sh->obj->prev->tube[0], 0) == -1)
 		return (-1);
 	if (sh->obj->redir->cmd_in >= 0)
 	{
@@ -126,7 +126,9 @@ int			parse_exec(t_sh *sh, int *i)
 	if (check_path(sh, &path) == -2)
 	{
 		free(path);
-		return (0);
+		if (sh->obj->type != IS_PIPE && (!(sh->obj->prev) ||
+			sh->obj->prev->type != IS_PIPE))
+			return (0);
 	}
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);
