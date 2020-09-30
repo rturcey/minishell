@@ -44,7 +44,7 @@ static int	first_checks(t_sh *sh, int *i)
 		return (free_obj(&sh->obj));
 	pipe_checks(sh, i);
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
-	&& (g_err = 2) && free_obj(&sh->obj) == -1 && ft_printf("test\n"))
+	&& (g_err = 2) && free_obj(&sh->obj) == -1)
 		return (0);
 	if ((r = redir_loop(sh, i)) == -1 && (g_err = 2))
 		return (-1);
