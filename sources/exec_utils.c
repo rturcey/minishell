@@ -6,29 +6,36 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/30 13:32:43 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/09/30 22:22:20 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
 int			dup_exec(t_sh *sh)
 {
-	if (sh->obj->pip == IS_PIPE && dup2(sh->obj->tube[1], 1) == -1)
-		return (-1);
-	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE
-	&& sh->obj->prev->tube[0] != -1 && dup2(sh->obj->prev->tube[0], 0) == -1)
-		return (-1);
-	if (sh->obj->redir->cmd_in >= 0)
-	{
-		if (dup2(sh->obj->redir->cmd_in, 0) == -1)
+	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
+	{	
+		if (dup2(sh->obj->prev->tube[0], 0) == -1)
 			return (-1);
+		if (sh->obj->prev->tube[1] != -1)
+			close(sh->obj->prev->tube[1]);
 	}
-	if (sh->obj->redir->cmd_output >= 1)
+	if (sh->obj->pip == IS_PIPE)
 	{
-		if (dup2(sh->obj->redir->cmd_output, 1) == -1)
+		if (dup2(sh->obj->tube[1], 1) == -1)
 			return (-1);
+		if (sh->obj->tube[0] != -1)
+			close(sh->obj->tube[0]);
 	}
+
+	if (sh->obj->redir->cmd_in >= 0 &&
+		(dup2(sh->obj->redir->cmd_in, 0) == -1))
+			return (-1);
+	if (sh->obj->redir->cmd_output >= 1 &&
+		(dup2(sh->obj->redir->cmd_output, 1) == -1))
+			return (-1);
 	return (0);
 }
 
@@ -126,9 +133,9 @@ int			parse_exec(t_sh *sh, int *i)
 	if (check_path(sh, &path) == -2)
 	{
 		free(path);
-		if (sh->obj->type != IS_PIPE && (!(sh->obj->prev) ||
-			sh->obj->prev->type != IS_PIPE))
-			return (0);
+		if (sh->obj->pip != IS_PIPE && (!(sh->obj->prev) ||
+			sh->obj->prev->pip != IS_PIPE))
+			return (print_result(sh, 0, NULL));
 	}
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:55:09 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/29 13:13:30 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/09/30 21:43:36 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int		redir_norm(int kind, t_redir *redir, char *path)
 	}
 	if (kind == 3)
 	{
-		if (redir->cmd_in != 0)
+		if (redir->cmd_in != 0 && redir->cmd_in != -1)
 			close(redir->cmd_in);
 		if ((redir->cmd_in = open(path, O_RDONLY, 0644)) == -1)
 			return (-2);
