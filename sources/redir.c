@@ -30,7 +30,8 @@ static int		redir_norm(int kind, t_redir *redir, char *path)
 	{
 		if (redir->cmd_in != 0)
 			close(redir->cmd_in);
-		redir->cmd_in = open(path, O_RDONLY, 0644);
+		if ((redir->cmd_in = open(path, O_RDONLY, 0644)) == -1)
+			return (-2);
 		return (redir->cmd_in);
 	}
 	return (redir->cmd_output);
@@ -71,6 +72,11 @@ static int		parse_redir(t_sh *sh, int *s_fd, int *i)
 	{
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", path, strerror(errno)), 1);
 		return (print_result(sh, -1, path));
+	}
+	else if (ret == -2)
+	{
+		maj_err(sh, ft_sprintf("bash: %s: %s\n", path, strerror(errno)), 1);
+		return (print_result(sh, -2, path));
 	}
 	free(path);
 	*i = pass_spaces(sh->in, *i);

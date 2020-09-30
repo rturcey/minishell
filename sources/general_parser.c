@@ -31,6 +31,7 @@ int			is_separator(char *str, int i)
 static int	first_checks(t_sh *sh, int *i)
 {
 	int		j;
+	int		r;
 
 	*i = pass_spaces(sh->in, *i);
 	if ((j = parse_syntax(sh, *i)) == -1 && free_obj(&sh->obj) == -1)
@@ -43,10 +44,12 @@ static int	first_checks(t_sh *sh, int *i)
 		return (free_obj(&sh->obj));
 	pipe_checks(sh, i);
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
-	&& (g_err = 2) && free_obj(&sh->obj) == -1)
+	&& (g_err = 2) && free_obj(&sh->obj) == -1 && ft_printf("test\n"))
 		return (0);
-	if ((redir_loop(sh, i) == -1) && (g_err = 2))
+	if ((r = redir_loop(sh, i)) == -1 && (g_err = 2))
 		return (-1);
+	else if (r == -2 && (g_err = 2))
+		return (0);
 	if (parse_var(sh, i, 0) == -1)
 		return (free_obj(&sh->obj));
 	return (1);

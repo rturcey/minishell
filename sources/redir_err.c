@@ -16,9 +16,11 @@ int				redir_loop(t_sh *sh, int *i)
 {
 	int		r;
 
-	while ((r = find_redir(sh, i)) == 1 || r == -1)
-		if (r == -1)
-			return (-1);
+	while ((r = find_redir(sh, i)) == 1 || r < 0)
+	{
+		if (r < 0)
+			return (r);
+	}
 	return (0);
 }
 
