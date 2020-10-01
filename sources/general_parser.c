@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/29 12:43:27 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/01 11:30:31 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ static int	first_checks(t_sh *sh, int *i)
 	*i = pass_spaces(sh->in, *i);
 	if ((j = parse_syntax(sh, *i)) == -1 && free_obj(&sh->obj) == -1)
 		return (0);
-	else if (j == -2)
-		return (-1);
-	if (!(sh->obj = obj_new(sh->obj)))
+	if (j == -2 || !(sh->obj = obj_new(sh->obj)))
 		return (-1);
 	if (!(sh->obj->redir = redir_new()))
 		return (free_obj(&sh->obj));
@@ -46,8 +44,11 @@ static int	first_checks(t_sh *sh, int *i)
 	if ((sh->lev-- == 1) && (find_redir_err(sh, i) == -1)
 	&& (g_err = 2) && free_obj(&sh->obj) == -1)
 		return (0);
-	if ((r = redir_loop(sh, i)) == -1 && (g_err = 2))
+	if ((r = redir_loop(sh, i)) == -1)
+	{
+		g_err = 2;
 		return (-1);
+	}
 	else if (r == -2 && (g_err = 2))
 		return (0);
 	if (parse_var(sh, i, 0) == -1)

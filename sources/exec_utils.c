@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/30 22:22:20 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/01 11:22:47 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 int			dup_exec(t_sh *sh)
 {
 	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
-	{	
+	{
 		if (dup2(sh->obj->prev->tube[0], 0) == -1)
 			return (-1);
 		if (sh->obj->prev->tube[1] != -1)
@@ -29,13 +28,12 @@ int			dup_exec(t_sh *sh)
 		if (sh->obj->tube[0] != -1)
 			close(sh->obj->tube[0]);
 	}
-
 	if (sh->obj->redir->cmd_in >= 0 &&
-		(dup2(sh->obj->redir->cmd_in, 0) == -1))
-			return (-1);
+	dup2(sh->obj->redir->cmd_in, 0) == -1)
+		return (-1);
 	if (sh->obj->redir->cmd_output >= 1 &&
-		(dup2(sh->obj->redir->cmd_output, 1) == -1))
-			return (-1);
+	dup2(sh->obj->redir->cmd_output, 1) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -64,7 +62,7 @@ int			try_exec(char *tmp, t_sh *sh, int *i)
 			return (-1);
 	}
 	else
-		handle_parent(pid, lever, sh);
+		handle_parent(pid, sh);
 	return (0);
 }
 
@@ -84,7 +82,7 @@ static char	**conv_av(t_sh *sh, int *i)
 		return (char_free_array(av, 0));
 	while (is_end(sh->in, *i) == 0)
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (char_free_array(av, j));
 		if ((is_end(sh->in, *i) == 1))
 			break ;
@@ -100,7 +98,7 @@ static int	add_redirs(t_sh *sh, int *i)
 {
 	while (is_end(sh->in, *i) == 0)
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (-1);
 		if ((is_end(sh->in, *i) == 1))
 			break ;
@@ -128,7 +126,7 @@ int			parse_exec(t_sh *sh, int *i)
 	if (!(sh->obj->obj = sample_str(sh, i, sh->obj->obj)))
 		return (-1);
 	stock_i = *i;
-	if (add_redirs(sh, i) == -1)
+	if (add_redirs(sh, i) < 0)
 		return (0);
 	if (check_path(sh, &path) == -2)
 	{
@@ -139,11 +137,9 @@ int			parse_exec(t_sh *sh, int *i)
 	}
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);
-	if (!(sh->obj->charenv = env_to_array(sh->env)))
+	if (!(sh->obj->charenv = env_to_array(sh->env)) ||
+	!(sh->obj->args = conv_av(sh, &stock_i)) || try_exec(path, sh, 0) == -1)
 		return (free_str(path));
-	if ((sh->obj->args = conv_av(sh, &stock_i)))
-		if (try_exec(path, sh, 0) == -1)
-			return (free_str(path));
 	free(path);
 	return (0);
 }

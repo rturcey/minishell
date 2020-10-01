@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/30 22:04:56 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/01 11:13:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		start_exec(char *tmp, t_sh *sh, int *i)
 	return (0);
 }
 
-int 	free_shrun_arr(t_sh *sh, int ret)
+int		free_shrun_arr(t_sh *sh, int ret)
 {
 	int i;
 

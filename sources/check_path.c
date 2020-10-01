@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/30 22:24:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/01 11:21:06 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,7 @@ int			check_path(t_sh *sh, char **path)
 	int		i;
 	int		r;
 
-	i = -1;
-	if (ft_strchr(sh->obj->obj, '/'))
+	if ((i = -1) && ft_strchr(sh->obj->obj, '/'))
 		return (sample_path(sh, sh->obj->obj, path));
 	if (!(val = var_path()))
 		return (-1);
@@ -124,8 +123,7 @@ int			check_path(t_sh *sh, char **path)
 				return (free_array(path_arr, -1, -1));
 			break ;
 		}
-	free_array(path_arr, -1, -1);
-	if (r == -2)
+	if (free_array(path_arr, -1, -1) && r == -2)
 	{
 		maj_err(sh, ft_sprintf("%s: command not found\n", sh->obj->obj), 127);
 		return (r);

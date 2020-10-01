@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/30 13:10:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/01 11:35:56 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,8 @@ int					repluseq(char *sample, int i, t_env *env, int in);
 char				**empty_env(void);
 void				*check_empty(int lever, char **env);
 char				*var_path(void);
-void				find_home_user(char *path, char **home, char **user, t_env *env);
+void				find_home_user(char *path, char **home, char **user, \
+						t_env *env);
 
 void				pipe_checks(t_sh *sh, int *i);
 void				set_gfork(t_sh *sh, char *tmp);
@@ -162,8 +163,8 @@ void				remove_home_path(char **path, char *home);
 int					is_ms(char *exec);
 int					start_exec(char *tmp, t_sh *sh, int *i);
 void				pass_option(t_sh *sh, int *i);
-void				handle_parent(pid_t pid, int lever, t_sh *sh);
-int 				free_shrun_arr(t_sh *sh, int ret);
+void				handle_parent(pid_t pid, t_sh *sh);
+int					free_shrun_arr(t_sh *sh, int ret);
 
 int					print_result(t_sh *sh, int ret, char *to_free);
 void				maj_err(t_sh *sh, char *str, int err);
