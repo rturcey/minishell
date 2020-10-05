@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/05 17:23:22 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 19:46:55 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int		parse_export(t_sh *sh, int *i)
 		free_str(sample);
 		*i = pass_spaces(sh->in, *i);
 	}
-	if (ret == 2)
-		export_solo(sh);
+	// if (ret == 2)
+	// 	export_solo(sh);
 	return (print_result(sh, 0, NULL));
 }
 

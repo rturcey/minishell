@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 12:20:15 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 19:53:13 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int					gnl_ms(int fd, char **line);
 int					general_parser(t_sh *sh);
 int					pass_spaces(char *str, int i);
 int					is_quote(char *str, int i, char quote);
+int					in_quotes(char *str, int i);
 int					lonely_quote(char *str);
 int					last_backslash(char *str);
 int					find_string_end(char *src, int i);

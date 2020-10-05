@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 17:24:21 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 19:26:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int				sample_export(char *sample, t_env *env)
 		if (normed_char(sample[i]) != 0)
 			return (-1);
 	if (i == 0)
-		return (2);
+		return (-1);
+		//return (2);
 	else if ((sample[i] == '+' && pluseq(sample, i) == 0))
 		return (-1);
 	if (!sample[i] && (tmp = find_env_entry(sample, env)))

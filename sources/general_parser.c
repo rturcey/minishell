@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/01 11:30:31 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 19:53:18 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 int			is_separator(char *str, int i)
 {
-	if (str[i] == ';' || str[i] == '|')
+	if ((str[i] == ';' || str[i] == '|') && in_quotes(str, i) == 0)
 	{
 		if ((i > 0) && (str[i - 1] == '\\'))
 			return (0);
