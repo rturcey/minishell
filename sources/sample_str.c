@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sample_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/22 10:47:48 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:05:31 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 	int		r;
 	int		heck;
 
-	if ((heck = 0) == 0 && (*s)[*l + 1] != '$' && ((*s)[*l] == '\\'
-	&& ((*s)[*l + 1] == '\"' || (*s)[*l + 1] == '\\') && (*k)--))
+	if ((heck = 0) == 0 && ((*s)[*l] == '\\' && ((*s)[*l + 1] == '$'
+		|| (*s)[*l + 1] == '\"' || (*s)[*l + 1] == '\\') && (*k)--))
 		skim_str(*s, *l - 1, sh->tmp);
-	else if ((*s)[*l] == '$' && *l > 0 && (*s)[*l - 1] == '\\' && (*k)--)
-		skim_str(*s, *l - 2, sh->tmp);
+	else if ((*s)[*l] == '\\' && (*s)[*l + 1] && (*s)[*l + 1] == '$' && (*k)--)
+		skim_str(*s, *l - 1, sh->tmp);
 	else if ((*s)[*l] == '$' && normed_char((*s)[*l + 1]) == 0)
 	{
 		if ((*s)[*l + 1] && (*s)[*l + 1] == '?')
@@ -101,8 +101,8 @@ static char	*sample_loop(t_sh *sh, int *i, char **s, int *j)
 		if (parse_g_err(s, j, i) == -1)
 			return (char_free_str(*s));
 	}
-	else if ((*s)[*j] == '$' && *j > 0 && (*s)[*j - 1] == '\\')
-		skim_str(*s, *j - 2, i);
+	else if ((*s)[*j] == '\\' && (*s)[*j + 1] && (*s)[*j + 1] == '$')
+		skim_str(*s, *j - 1, i);
 	else if ((*s)[*j] == '$' && normed_char((*s)[*j + 1]) == 0)
 	{
 		if ((r = parse_sample_var(s, j, sh->env, i)) == -2)

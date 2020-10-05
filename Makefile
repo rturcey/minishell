@@ -10,11 +10,12 @@ SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
 				./sources/exec_utils3.c ./sources/gnl_ms.c ./sources/env_utils4.c
 
 INC_DIR		= ./includes/
+INCLUDES	= ./includes/minishell.h
 
 OBJS		= ${SRCS:.c=.o}
 
 CC			= clang
-CFLAGS		= -Wall -Wextra -Werror -g
+CFLAGS		= -Wall -Wextra -Werror
 
 NAME		= minishell
 
@@ -26,12 +27,9 @@ LIBFTINC	= ./libft
 
 all:		${NAME}
 
-${NAME}:	${OBJS}
+${NAME}:	${OBJS} ${INCLUDES}
 			make -C ./libft
 			${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT}
-
-leaks :		${NAME}
-			valgrind --tool=memcheck --leak-check=full --leak-resolution=high --show-reachable=yes ./${NAME}
 
 clean :
 			rm -f ${OBJS}
