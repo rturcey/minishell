@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 12:00:56 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/01 11:14:08 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:29:01 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,22 +77,28 @@ static int	sample_err(t_sh *sh, int j, int i, char **sample)
 int			parse_syntax(t_sh *sh, int i)
 {
 	int		j;
+	int		k;
 	char	*sample;
 
 	j = i;
-	if (pass_content(sh, &j) == -1)
-		return (-1);
-	if (sh->in[j] && is_end(sh->in, j) == 1)
+	while (sh->in[j])
 	{
-		j = sample_err(sh, j, i, &sample);
-		if (j == -2)
-			return (-2);
-		if (j >= 0 && (g_err = 2))
+		if (pass_content(sh, &j) == -1)
+			return (-1);
+		if (sh->in[j] && is_end(sh->in, j) == 1)
 		{
-			ft_dprintf(2, "bash: syntax error near unexpected token `%s\'\n"\
-			, sample);
-			return (free_str(sample));
+			if ((k = sample_err(sh, j, i, &sample)) == -2)
+				return (-2);
+			if (k >= 0 && (g_err = 2))
+			{
+				ft_dprintf(2, \
+				"bash: syntax error near unexpected token `%s\'\n"\
+				, sample);
+				return (free_str(sample));
+			}
 		}
+		if (sh->in[j])
+			++j;
 	}
 	return (0);
 }

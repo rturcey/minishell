@@ -15,7 +15,7 @@ INCLUDES	= ./includes/minishell.h
 OBJS		= ${SRCS:.c=.o}
 
 CC			= clang
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 NAME		= minishell
 
@@ -37,5 +37,8 @@ clean :
 fclean :	clean
 			make fclean -C ./libft
 			rm -f ${NAME}
+
+leaks :		${NAME}
+			valgrind --tool=memcheck --leak-check=full --leak-resolution=high --show-reachable=yes ./${NAME}
 
 re :		fclean all
