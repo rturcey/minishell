@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/01 11:34:05 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 11:59:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int			parse_cd(t_sh *sh, int *i)
 
 	path = NULL;
 	ret = 0;
+	if (old_pwd(sh->env))
+		return (-1);
 	while (sh->in[*i])
 	{
 		if (redir_loop(sh, i) == -1)
@@ -108,7 +110,7 @@ int			parse_cd(t_sh *sh, int *i)
 	if ((path == NULL) && !(path = find_env_val("HOME", sh->env)))
 		return (-1);
 	err_cd(sh, ret, path);
-	if ((ret = replace_pwd(sh->env, &path)) == -1)
+	if (replace_pwd(sh->env, &path) == -1)
 		return (free_str(path));
 	return (print_result(sh, 0, path));
 }

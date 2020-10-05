@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 10:42:39 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 12:07:37 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		env_clear(t_env *env)
 		free(env);
 		env = tmp;
 	}
-	return (0);
+	return (-1);
 }
 
 void	print_env(t_env *env, int fd)

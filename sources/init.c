@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:06:54 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/30 10:38:48 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 12:12:02 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,21 @@ void		clear_sh(t_sh *sh)
 
 int			init_main(t_sh **sh, char **env)
 {
+	t_env	*shlvl;
+	int		lvl;
+
 	if (!(g_lstenv = init_env(env, 1)))
+		return (env_clear(g_lstenv));
+	if (!(shlvl = find_env_entry("SHLVL", g_lstenv)))
+		return (env_clear(g_lstenv));
+	else
 	{
-		ft_putstr_fd("couldn't clone the environment\n", 2);
-		return (-1);
+		lvl = ft_atoi(shlvl->val);
+		free(shlvl->val);
+		if (!(shlvl->val = ft_itoa(lvl + 1)))
+			return (env_clear(g_lstenv));
 	}
 	if (!(*sh = init_sh(g_lstenv)))
-	{
-		env_clear(g_lstenv);
-		return (-1);
-	}
+		return (env_clear(g_lstenv));
 	return (0);
 }
