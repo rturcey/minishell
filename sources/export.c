@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/26 14:03:27 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 09:59:43 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,17 @@ int				unset_var(char **elt, t_sh *sh)
 	return (0);
 }
 
-static int		process_export(char *sample, t_env *env)
+static int		process_export(char *sample, t_env *env, int in)
 {
 	t_env	*new;
 
-	if (!(new = env_new(1)))
+	if (!(new = env_new(0)))
 		return (-2);
+	if (ft_strchr(sample, '='))
+		in = 1;
 	if (split_env(sample, new) == -1)
 		return (-1);
-	export_var(new, env);
+	export_var(new, env, in);
 	del_var(new);
 	return (0);
 }
@@ -55,7 +57,7 @@ int				sample_export(char *sample, t_env *env)
 		return (repluseq(sample, i, env, 1));
 	else
 	{
-		if ((ret = process_export(sample, env)) < 0)
+		if ((ret = process_export(sample, env, 2)) < 0)
 			return (ret);
 	}
 	return (0);
@@ -83,7 +85,7 @@ int				add_var(t_env *elt, t_env *env)
 	return (0);
 }
 
-int				export_var(t_env *elt, t_env *env)
+int				export_var(t_env *elt, t_env *env, int in)
 {
 	t_env	*tmp;
 	t_env	*bis;
@@ -97,7 +99,7 @@ int				export_var(t_env *elt, t_env *env)
 			tmp = tmp->next;
 		if (!(tmp->next = env_cpy(elt)))
 			return (-1);
-		tmp->next->in = 1;
+		tmp->next->in = in;
 		return (0);
 	}
 	free(bis->val);

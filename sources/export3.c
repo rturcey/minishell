@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:23:14 by rturcey           #+#    #+#             */
-/*   Updated: 2020/08/31 13:24:53 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 09:16:44 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				repluseq(char *sample, int i, t_env *env, int in)
 			return (-2);
 		elt->key = key;
 		elt->val = val;
-		export_var(elt, env);
+		export_var(elt, env, in);
 		del_var(elt);
 	}
 	else if (free_str(key) == -1

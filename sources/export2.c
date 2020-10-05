@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:20:04 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/24 19:19:51 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:45:21 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,13 @@ void			export_solo(t_sh *sh)
 	begin = begin->next;
 	while (begin)
 	{
-		if (begin->in == 1 && !(ptr->next = env_double(begin)))
+		if (begin->in > 0 && !(ptr->next = env_double(begin)))
 		{
 			free_export(save);
 			return ;
 		}
-		ptr = ptr->next;
+		if (ptr)
+			ptr = ptr->next;
 		begin = begin->next;
 	}
 	env_sort(&save);

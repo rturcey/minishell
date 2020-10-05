@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/01 11:13:28 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 09:54:47 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int		start_exec(char *tmp, t_sh *sh, int *i)
 	else
 	{
 		execve(tmp, sh->obj->args, sh->obj->charenv);
-		if (errno != 2)
-			maj_err(sh, ft_sprintf("bash: %s: %s\n", sh->obj->obj, \
+		maj_err(sh, ft_sprintf("bash: %s: %s\n", sh->obj->obj, \
 			strerror(errno)), 2);
 		exit(print_result(sh, g_err, NULL));
 	}

@@ -6,13 +6,13 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 10:32:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/30 08:50:29 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 10:25:35 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		find_home_user(char *path, char **home, char **user, t_env *env)
+void			find_home_user(char *path, char **home, char **user, t_env *env)
 {
 	int		i;
 	int		j;
@@ -40,14 +40,23 @@ void		find_home_user(char *path, char **home, char **user, t_env *env)
 	free(tmp);
 }
 
-void		*check_empty(int lever, char **env)
+void			*check_empty(int lever, char **env)
 {
 	if (lever == 0)
 		return (NULL);
 	return (char_free_array(env, 6));
 }
 
-char		*var_path(void)
+static int		init_path(t_env *env, char *new)
+{
+	env->in = 0;
+	if ((!(env->key = ft_strdup("PATH")) && env_clear(env) == 0))
+		return (-1);
+	env->val = new;
+	return (0);
+}
+
+int				find_path(t_env *lst)
 {
 	char	*line;
 	int		fd;
@@ -56,7 +65,7 @@ char		*var_path(void)
 
 	new = NULL;
 	if ((fd = open("/etc/environment", O_RDONLY)) == -1)
-		return (NULL);
+		return (-1);
 	while ((ret = get_next_line(fd, &line)) >= 0)
 	{
 		if (ft_strstr(line, "PATH="))
@@ -64,18 +73,18 @@ char		*var_path(void)
 			close(fd);
 			new = ft_substr(line, 6, ft_strlen(line) - 7);
 			free(line);
-			return (new);
+			if (init_path(lst, new))
+				return (free_str(new));
+			return (0);
 		}
 		else
 			free(line);
-		if (ret == 0)
-			break ;
 	}
 	close(fd);
-	return (NULL);
+	return (-1);
 }
 
-char		**empty_env(void)
+char			**empty_env(void)
 {
 	char	**tab;
 

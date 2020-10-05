@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/01 11:35:56 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/05 09:38:51 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ char				*find_env_val(char *key, t_env *env);
 t_env				*find_env_entry(char *key, t_env *env);
 t_env				*env_cpy(t_env *elt);
 char				**env_to_array(t_env *env);
-int					export_var(t_env *elt, t_env *env);
+int					export_var(t_env *elt, t_env *env, int in);
 void				export_solo(t_sh *sh);
 int					sample_export(char *sample, t_env *env);
 void				del_var(t_env *var);
@@ -139,7 +139,7 @@ int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
 char				**empty_env(void);
 void				*check_empty(int lever, char **env);
-char				*var_path(void);
+int					find_path(t_env *lst);
 void				find_home_user(char *path, char **home, char **user, \
 						t_env *env);
 
