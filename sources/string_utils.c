@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/05 10:23:48 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 12:09:24 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,11 @@ int		get_next_quote(char *str, int i)
 			return (-1);
 	}
 	return (i);
+}
+
+void	alt_skim(char **s, int *j, int *i)
+{
+	skim_str(*s, *j - 1, i);
+	(*j)--;
+	(*i)--;
 }

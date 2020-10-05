@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 11:05:31 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 12:09:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,18 @@ static char	*sample_loop(t_sh *sh, int *i, char **s, int *j)
 			return (char_free_str(*s));
 	}
 	else if (((*s)[*j] == '$') && (*s)[*j + 1] && ((*s)[*j + 1] == '?') \
-	&& (*j == 0 || (*s)[*j - 1] != '\\'))
-	{
-		if (parse_g_err(s, j, i) == -1)
-			return (char_free_str(*s));
-	}
+	&& (*j == 0 || (*s)[*j - 1] != '\\') && parse_g_err(s, j, i) == -1)
+		return (char_free_str(*s));
 	else if ((*s)[*j] == '\\' && (*s)[*j + 1] && (*s)[*j + 1] == '$')
 		skim_str(*s, *j - 1, i);
-	else if ((*s)[*j] == '$' && normed_char((*s)[*j + 1]) == 0)
-	{
-		if ((r = parse_sample_var(s, j, sh->env, i)) == -2)
-			(*j)--;
-		else if (r == -1)
-			return (char_free_str(*s));
-	}
+	else if ((*s)[*j] == '$' && (*s)[*j + 1] && ((*s)[*j + 1] == '\''
+		|| (*s)[*j + 1] == '\"'))
+		alt_skim(s, j, i);
+	else if ((*s)[*j] == '$' && normed_char((*s)[*j + 1]) == 0 &&
+		(r = parse_sample_var(s, j, sh->env, i)) == -2)
+		(*j)--;
+	else if ((*s)[*j] == '$' && normed_char((*s)[*j + 1]) == 0 && r == -1)
+		return (char_free_str(*s));
 	return (*s);
 }
 

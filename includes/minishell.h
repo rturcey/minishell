@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 11:09:07 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/05 12:09:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int					get_next_quote(char *str, int i);
 int					count_strings(char *in, int i);
 int					parse_syntax(t_sh *sh, int i);
 int					normed_char(char c);
+void				alt_skim(char **s, int *j, int *i);
 
 t_env				*init_env(char **env, int in);
 int					env_clear(t_env *env);
