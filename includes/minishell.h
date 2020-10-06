@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 09:32:18 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/06 12:46:15 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ int					add_var(t_env *elt, t_env *env);
 int					parse_var(t_sh *sh, int *i, int len);
 int					split_env(char *line, t_env *elt);
 int					check_var(char *sample);
+int					check_var_loop(t_env *tmp, t_env *env, t_env *w);
+int					replace_var_check(t_env *w, char *key, t_env *tru);
 int					parse_sample_var(char **sample, int *j, t_env *env, int *i);
 int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 09:49:32 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/06 13:03:54 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,21 @@ static int		check_vars(t_sh *sh, int i)
 			&& sh->in[j] != '=' && sh->in[j] != '+')
 			j++;
 		if (sh->in[j] != '=' && pluseq(sh->in, j) == 0)
-			return (-1);
+			return (i);
 		if (pluseq(sh->in, j) == 1)
 			j++;
 		i = pass_spaces(sh->in, j + 1);
 		if (is_end(sh->in, i) != 0)
-			return (0);
-		if (i != j + 1 || !(s = sample_str(sh, &i, s)))
+			return (-2);
+		if (!(s = sample_str(sh, &i, s)))
 			return (-1);
 		free(s);
 		i = pass_spaces(sh->in, i);
 	}
-	return (0);
+	return (-2);
 }
 
-static int		replace_var(t_env *w, char *key, t_env *tru)
+int				replace_var_check(t_env *w, char *key, t_env *tru)
 {
 	char	*buf;
 	char	*s;
@@ -72,27 +72,13 @@ static int		replace_var(t_env *w, char *key, t_env *tru)
 static int		check_var_inside(t_env *w, t_env *env)
 {
 	t_env	*tmp;
-	t_env	*k;
-	char	*ret;
 
 	tmp = w;
 	while (tmp)
 	{
 		if (ft_strchr(tmp->val, '$'))
-		{
-			k = w;
-			while (k)
-			{
-				if ((ret = ft_strnstr(tmp->val, k->key, ft_strlen(tmp->val))))
-				{
-					if (ret[ft_strlen(k->key)] == ':'
-					|| is_end(ret, ft_strlen(k->key)))
-						if (replace_var(tmp, k->key, env) == -1)
-							return (-1);
-				}
-				k = k->next;
-			}
-		}
+			if (check_var_loop(tmp, env, w))
+				return (-1);
 		tmp = tmp->next;
 	}
 	return (0);
@@ -124,8 +110,10 @@ int				parse_var(t_sh *sh, int *i, int len)
 	char	**env_new;
 	t_env	*wagon;
 	t_env	*begin;
+	int		ret;
 
-	if (check_vars(sh, *i) == -1)
+	ret = check_vars(sh, *i);
+	if (ret == -1 || (ret >= 0 && (*i = ret) > -1))
 		return (0);
 	while (is_end(sh->in, len) == 0)
 		len++;
@@ -135,12 +123,12 @@ int				parse_var(t_sh *sh, int *i, int len)
 		return (free_str(to_split));
 	if (!(wagon = init_env(env_new, 0)))
 		return (free_array_and_str(env_new, -1, to_split) == 2);
-	begin = wagon;
-	if (check_var_inside(wagon, sh->env) < 0)
+	if ((begin = wagon) && check_var_inside(wagon, sh->env) < 0)
 		return (free_array_and_str(env_new, -1, to_split) == 2);
 	add_multiple_var(wagon, sh->env);
 	free_array_and_str(env_new, -1, to_split);
 	while (is_end(sh->in, *i) == 0)
 		++(*i);
-	return (env_clear(begin));
+	env_clear(begin);
+	return (0);
 }
