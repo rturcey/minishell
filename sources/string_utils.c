@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/05 12:09:24 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 14:36:41 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,30 @@ int		pass_spaces(char *str, int i)
 	return (i);
 }
 
+int		check_single(char *str, int i)
+{
+	int j;
+	int count;
+
+	j = i;
+	count = 0;
+	while (--j > 0)
+		if (str[j] == '\'' && is_quote(str, j, '\''))
+			count++;
+	if (count % 2 != 0)
+		return (1);
+	return (0);
+}
+
 int		is_quote2(char *str, int i, char quote, int count)
 {
 	if (str[i] && str[i] == quote)
 	{
 		if ((i > 0) && (str[i - 1] == '\\'))
 		{
+			if (str[i] == '\'' && str[i - 1])
+				if (check_single(str, i) == 1)
+					return (1);
 			while (str[--i] && str[i] == '\\')
 				count++;
 			if (count % 2 != 0)
@@ -46,6 +64,9 @@ int		is_quote(char *str, int i, char quote)
 		{
 			if ((i > 0) && (str[i - 1] == '\\'))
 			{
+				if (str[i] == '\'' && str[i - 1])
+					if (check_single(str, i) == 1)
+						return (1);
 				while (str[--i] && str[i] == '\\')
 					count++;
 				if (count % 2 != 0)
@@ -81,11 +102,4 @@ int		get_next_quote(char *str, int i)
 			return (-1);
 	}
 	return (i);
-}
-
-void	alt_skim(char **s, int *j, int *i)
-{
-	skim_str(*s, *j - 1, i);
-	(*j)--;
-	(*i)--;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:52:21 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/06 13:00:14 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/06 14:43:48 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int			in_quotes(char *str, int i)
 	j = i;
 	count = 0;
 	tmp = 0;
-	while (--j > 0)
+	while (--j > 0 && str[j])
 	{
 		if (count == 0 && is_quote(str, j, 0) == 1)
 		{
 			tmp = str[j];
 			count++;
 		}
-		else if (str[j] == tmp)
+		else if (is_quote(str, j, tmp) == 1)
 			count++;
 	}
 	if (count % 2 != 0)
@@ -99,4 +99,11 @@ int			check_var_loop(t_env *tmp, t_env *env, t_env *w)
 	if (check_bis(w, tmp, env) == -1)
 		return (-1);
 	return (0);
+}
+
+void	alt_skim(char **s, int *j, int *i)
+{
+	skim_str(*s, *j - 1, i);
+	(*j)--;
+	(*i)--;
 }
