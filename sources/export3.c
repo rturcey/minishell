@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 13:23:14 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 12:13:24 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/06 10:13:50 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,14 @@ int				old_pwd(t_env *env)
 {
 	t_env	*old;
 	char	*workdir;
-	int		ret;
 
-	old = env_new(1);
-	if (!(workdir = ft_calloc(PATH_MAX, 1)))
+	if (!(old = env_new(1)))
 		return (-1);
-	ret = 0;
-	if (getcwd(workdir, PATH_MAX) == NULL)
-		return (free_str(workdir));
-	if (!(old->val = workdir))
-		return (-1);
+	workdir = get_pwd(env);
 	if (!(old->key = ft_strdup("OLDPWD")))
-		return (free_str(workdir));
+		return (env_clear(old));
+	old->val = workdir;
 	add_var(old, env);
 	del_var(old);
-	return (ret);
+	return (0);
 }
