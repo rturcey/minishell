@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:52:21 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/06 14:43:48 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 15:05:57 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int			check_var_loop(t_env *tmp, t_env *env, t_env *w)
 	return (0);
 }
 
-void	alt_skim(char **s, int *j, int *i)
+void		alt_skim(char **s, int *j, int *i)
 {
 	skim_str(*s, *j - 1, i);
 	(*j)--;

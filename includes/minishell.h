@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 12:46:15 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/06 15:07:17 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ int					is_cmd(char *sample);
 int					parse_cmds(t_sh *sh, int *i);
 int					parse_echo(t_sh *sh, int *i);
 int					parse_cd(t_sh *sh, int *i);
+int					only_n(char *str, int i);
 int					parse_pwd(t_sh *sh, int *i);
 int					replace_pwd(t_env *env, char **path);
 int					old_pwd(t_env *env);
