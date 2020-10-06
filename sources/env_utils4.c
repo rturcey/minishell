@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 10:32:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 11:38:45 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/06 09:34:31 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void			find_home_user(char *path, char **home, char **user, t_env *env)
 		exit(EXIT_FAILURE);
 	if (!(tmp = ft_strjoin("HOME=", *home)))
 		exit(EXIT_FAILURE);
-	sample_export(tmp, env);
+	sample_export(tmp, env, 1);
 	find_env_entry("HOME", env)->in = 0;
 	free(tmp);
 	if (!(tmp = ft_strjoin("USER=", *user)))
 		exit(EXIT_FAILURE);
-	sample_export(tmp, env);
+	sample_export(tmp, env, 1);
 	find_env_entry("USER", env)->in = 0;
 	free(tmp);
 }

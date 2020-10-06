@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/05 19:46:55 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 09:38:08 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		parse_pwd(t_sh *sh, int *i)
 		else if (r == -1)
 			return (-1);
 	}
-	workdir = find_env_val("PWD", sh->env);
+	workdir = get_pwd(sh->env);
 	sh->obj->result = ft_strjoin_bth(workdir, ft_strdup("\n"));
 	return (print_result(sh, 0, NULL));
 }
@@ -47,8 +47,11 @@ int		parse_export(t_sh *sh, int *i)
 {
 	char	*sample;
 	int		ret;
+	int		stock_i;
 
+	ret = 0;
 	*i = pass_spaces(sh->in, *i);
+	stock_i = *i;
 	if (is_end(sh->in, *i) == 1)
 		export_solo(sh);
 	while (is_end(sh->in, *i) == 0)
@@ -57,14 +60,14 @@ int		parse_export(t_sh *sh, int *i)
 			return (-1);
 		if (!(sample = sample_str(sh, i, sample)))
 			return (free_str(sample));
-		if ((ret = sample_export(sample, sh->env)) == -1)
+		if ((ret = sample_export(sample, sh->env, ret)) == -1)
 			maj_err(sh, ft_sprintf(\
 			"export: %s : not a valid identifier\n", sample), 1);
 		free_str(sample);
 		*i = pass_spaces(sh->in, *i);
 	}
-	// if (ret == 2)
-	// 	export_solo(sh);
+	if (ret == 2 && sh->in[stock_i] == '$')
+		export_solo(sh);
 	return (print_result(sh, 0, NULL));
 }
 

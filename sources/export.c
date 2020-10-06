@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 19:26:25 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 09:41:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int		process_export(char *sample, t_env *env, int in)
 	return (0);
 }
 
-int				sample_export(char *sample, t_env *env)
+int				sample_export(char *sample, t_env *env, int lev)
 {
 	int		i;
 	int		ret;
@@ -46,23 +46,21 @@ int				sample_export(char *sample, t_env *env)
 	i = -1;
 	if (ft_isdigit(sample[0]) == 1)
 		return (-1);
+	if (!sample[0] && lev == 0)
+		return (2);
 	while (sample[++i] && sample[i] != '=' && sample[i] != '+')
 		if (normed_char(sample[i]) != 0)
 			return (-1);
 	if (i == 0)
 		return (-1);
-		//return (2);
 	else if ((sample[i] == '+' && pluseq(sample, i) == 0))
 		return (-1);
 	if (!sample[i] && (tmp = find_env_entry(sample, env)))
 		tmp->in = 1;
 	else if (pluseq(sample, i) == 1)
 		return (repluseq(sample, i, env, 1));
-	else
-	{
-		if ((ret = process_export(sample, env, 2)) < 0)
-			return (ret);
-	}
+	else if ((ret = process_export(sample, env, 2)) < 0)
+		return (ret);
 	return (0);
 }
 

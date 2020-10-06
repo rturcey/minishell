@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/04 18:56:24 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 09:20:09 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,8 @@ static void	prompt(t_env *env)
 	char	*home;
 	int		fd;
 
-	if (!(path = ft_strdup("")))
+	if (!(path = get_pwd(env)))
 		exit(EXIT_FAILURE);
-	replace_pwd(env, &path);
-	free(path);
-	path = find_env_val("PWD", env);
 	home = find_env_val("HOME", env);
 	user = find_env_val("USER", env);
 	if ((!home[0] || !user[0]) && free_two_str(home, user))

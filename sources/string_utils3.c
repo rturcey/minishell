@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 19:52:21 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/05 19:53:20 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 09:20:32 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,19 @@ int		in_quotes(char *str, int i)
 	if (count % 2 != 0)
 		return (1);
 	return (0);
+}
+
+char	*get_pwd(t_env *env)
+{
+	char	*workdir;
+
+	if (!(workdir = find_env_val("PWD", env))[0])
+	{
+		free(workdir);
+		if (!(workdir = ft_calloc(PATH_MAX, 1)))
+			return (NULL);
+		if (getcwd(workdir, PATH_MAX) == NULL)
+			return (char_free_str(workdir));
+	}
+	return (workdir);
 }

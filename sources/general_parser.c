@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 19:53:18 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 08:58:43 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ static int	general_loop(t_sh *sh, int *i)
 	*i = pass_spaces(sh->in, *i);
 	if (!(sample = sample_str(sh, i, sample)))
 		return (-1);
-	if (!sample[0])
-		free_obj(&sh->obj);
-	else if ((j = parse_sample(sh, i, stock, sample)) != 1
+	if ((j = parse_sample(sh, i, stock, sample)) != 1
 	&& free_str(sample))
 		return (j);
 	free(sample);

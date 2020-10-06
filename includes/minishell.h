@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 19:53:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/06 09:32:18 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ t_env				*env_cpy(t_env *elt);
 char				**env_to_array(t_env *env);
 int					export_var(t_env *elt, t_env *env, int in);
 void				export_solo(t_sh *sh);
-int					sample_export(char *sample, t_env *env);
+int					sample_export(char *sample, t_env *env, int ret);
 void				del_var(t_env *var);
 void				del_from_key(t_env **begin, char *key);
 int					unset_var(char **elt, t_sh *sh);
@@ -156,6 +156,7 @@ int					parse_cd(t_sh *sh, int *i);
 int					parse_pwd(t_sh *sh, int *i);
 int					replace_pwd(t_env *env, char **path);
 int					old_pwd(t_env *env);
+char				*get_pwd(t_env *env);
 int					parse_export(t_sh *sh, int *i);
 int					parse_unset(t_sh *sh, int *i);
 int					parse_env(t_sh *sh, int *i);
