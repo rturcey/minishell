@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 12:18:57 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/07 14:20:26 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void		sighandler(int num)
 		}
 		else if (g_forked != IS_F_MS)
 			ft_dprintf(2, "\n");
-		g_err = 130;
+		if (g_forked != IS_PIPE)
+			g_err = 130;
 	}
 	else if (num == SIGQUIT)
 	{

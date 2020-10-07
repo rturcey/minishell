@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 15:06:04 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/07 13:47:19 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		start_exec(char *tmp, t_sh *sh, int *i)
 	{
 		execve(tmp, sh->obj->args, sh->obj->charenv);
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", sh->obj->obj, \
-			strerror(errno)), 2);
+			strerror(errno)), 127);
 		exit(print_result(sh, g_err, NULL));
 	}
 	return (0);
