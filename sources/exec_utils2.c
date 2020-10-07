@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 14:46:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 11:57:52 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/07 12:18:35 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ void		handle_parent(pid_t pid, t_sh *sh)
 	{
 		waitpid(pid, &status, 0);
 		g_err = (WIFEXITED(status)) ? WEXITSTATUS(status) : g_err;
-		sh->wait = (sh->wait == 1 && sh->obj->pip != IS_PIPE) ? 0 : 1;
+		sh->wait = 0;
 	}
 }
