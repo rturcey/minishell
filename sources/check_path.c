@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 09:44:03 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/07 11:38:32 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	sample_path(t_sh *sh, char *sample, char **path)
 			strerror(errno)), 1);
 	else if ((ret = -2) == -2)
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", sample, \
-		"is a directory"), 1);
+		"is a directory"), 126);
 	if (ret != -2)
 		return (print_result(sh, ret, NULL));
 	else
