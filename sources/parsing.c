@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 12:00:56 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 14:13:31 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/07 10:58:58 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 static void	pass_quotes(t_sh *sh, int *i)
 {
+	if (!sh->in[*i])
+		return ;
 	if (sh->in[*i] == '\"' && ++(*i))
 		while (sh->in[*i] && sh->in[*i] != '\"')
 			(*i)++;
 	else if (sh->in[*i] == '\'' && ++(*i))
 		while (sh->in[*i] && sh->in[*i] != '\'')
 			(*i)++;
+	if (sh->in[*i])
+		(*i)++;
 }
 
 static int	pass_content(t_sh *sh, int *i)
@@ -46,7 +50,6 @@ static int	pass_content(t_sh *sh, int *i)
 			}
 		}
 		pass_quotes(sh, i);
-		(*i)++;
 	}
 	return (0);
 }
