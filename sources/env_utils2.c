@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:02:11 by rturcey           #+#    #+#             */
-/*   Updated: 2020/09/26 14:03:35 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/07 10:46:03 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void			del_from_key(t_env **begin, char *key)
 
 	tmp = *begin;
 	env = *begin;
-	if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0)
+	if (ft_strcmp(key, env->key) == 0)
 	{
 		tmp = (*begin)->next;
 		del_var(*begin);
@@ -98,7 +98,7 @@ void			del_from_key(t_env **begin, char *key)
 	}
 	while (env)
 	{
-		if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0)
+		if (ft_strcmp(key, env->key) == 0)
 		{
 			tmp->next = env->next;
 			del_var(env);

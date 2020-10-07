@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:20:04 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 10:45:21 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/07 10:25:06 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ static void		print_export(int fd, t_env *env)
 	save = env;
 	while (env)
 	{
-		if (env->val[0] && env->key[0] != '_')
+		if (env->val[0])
 			ft_dprintf(fd, "declare -x %s=\"%s\"\n", env->key, env->val);
-		else if (env->key[0] != '_')
+		else
 			ft_dprintf(fd, "declare -x %s\n", env->key);
 		env = env->next;
 	}

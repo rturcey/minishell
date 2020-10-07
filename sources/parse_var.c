@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 13:03:54 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/07 09:27:08 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,5 @@ int				parse_var(t_sh *sh, int *i, int len)
 	while (is_end(sh->in, *i) == 0)
 		++(*i);
 	env_clear(begin);
-	return (0);
+	return (1);
 }

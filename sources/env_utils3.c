@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/09 10:25:57 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 09:05:41 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/07 10:48:25 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int				check_var(char *sample)
 	int		i;
 
 	i = -1;
+	if (ft_isdigit(sample[0]))
+		return (-1);
 	while (sample[++i])
 		if (normed_char(sample[i]) == -1)
 			return (-1);

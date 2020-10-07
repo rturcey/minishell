@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 14:00:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/07 10:53:29 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ int			is_separator(char *str, int i)
 	return (0);
 }
 
-static int	first_checks(t_sh *sh, int *i)
+static int	first_checks(t_sh *sh, int *i, int j)
 {
-	int		j;
 	int		r;
 
 	*i = pass_spaces(sh->in, *i);
@@ -51,8 +50,10 @@ static int	first_checks(t_sh *sh, int *i)
 	}
 	else if (r == -2 && (g_err = 2))
 		return (0);
-	if (parse_var(sh, i, 0) == -1)
+	if ((r = parse_var(sh, i, 0)) == -1)
 		return (free_obj(&sh->obj));
+	else if (r == 1)
+		return (2);
 	return (1);
 }
 
@@ -107,7 +108,9 @@ int			general_parser(t_sh *sh)
 {
 	int			i;
 	int			j;
+	int			tmp;
 
+	tmp = 0;
 	if ((lonely_quote(sh->in) == -1) ||
 		(last_backslash(sh->in) == -1))
 	{
@@ -118,13 +121,12 @@ int			general_parser(t_sh *sh)
 	j = 0;
 	while (sh->in[i])
 	{
-		if ((j = first_checks(sh, &i)) != 1)
+		if ((j = first_checks(sh, &i, tmp)) < 1)
 			return (j);
-		if (!sh->in[i])
-		{
-			free_obj(&sh->obj);
+		else if (j == 2 && (++i))
 			continue ;
-		}
+		if (!sh->in[i] && free_obj(&sh->obj))
+			continue ;
 		if ((j = general_loop(sh, &i)) != 1)
 			return (j);
 	}
