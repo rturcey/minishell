@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:56:26 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/06 10:14:03 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/08 10:35:14 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ int			parse_echo(t_sh *sh, int *i)
 {
 	char	*result;
 
-	if (redir_loop(sh, i) == -1)
+	if (redir_loop(sh, i) < 0)
 		return (-1);
 	pass_option(sh, i);
 	if (!(result = ft_strdup("")))
 		return (-1);
 	while (is_end(sh->in, *i) == 0)
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (free_str(result));
 		if (is_end(sh->in, *i) == 1)
 			break ;
@@ -98,7 +98,7 @@ int			parse_cd(t_sh *sh, int *i)
 		return (-1);
 	while (sh->in[*i])
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (-1);
 		if (is_end(sh->in, *i) == 1)
 			break ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 14:02:59 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/08 10:54:03 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct		s_obj
 	char			**args;
 	char			**charenv;
 	int				tube[2];
+	int				qts;
 	struct s_obj	*next;
 	struct s_obj	*prev;
 }					t_obj;
@@ -159,7 +160,7 @@ int					only_n(char *str, int i);
 int					parse_pwd(t_sh *sh, int *i);
 int					replace_pwd(t_env *env, char **path);
 int					old_pwd(t_env *env);
-char				*get_pwd(t_env *env);
+char				*get_pwd(void *env);
 int					parse_export(t_sh *sh, int *i);
 int					parse_unset(t_sh *sh, int *i);
 int					parse_env(t_sh *sh, int *i);

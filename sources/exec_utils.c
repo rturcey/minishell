@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 14:06:46 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/07 14:01:13 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/08 12:12:43 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,16 +125,15 @@ int			parse_exec(t_sh *sh, int *i)
 		return (-1);
 	if (!(sh->obj->obj = sample_str(sh, i, sh->obj->obj)))
 		return (-1);
+	if (!sh->obj->obj[0] && sh->obj->qts == 0)
+		return (0);
 	stock_i = *i;
 	if (add_redirs(sh, i) < 0)
 		return (0);
-	if (check_path(sh, &path) == -2)
-	{
-		free(path);
+	if (check_path(sh, &path) == -2 && free_str(path))
 		if (sh->obj->pip != IS_PIPE && (!(sh->obj->prev) ||
 			sh->obj->prev->pip != IS_PIPE))
 			return (print_result(sh, 0, NULL));
-	}
 	if (!path)
 		path = ft_strjoin("./", sh->obj->obj);
 	if (!(sh->obj->charenv = env_to_array(sh->env)) ||

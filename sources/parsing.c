@@ -3,14 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 12:00:56 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 10:58:58 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/08 12:16:34 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	parse_parentheses(char *in, int *i)
+{
+	int		j;
+	char	*sym;
+
+	while (!is_redir(in, *i) && !is_end(in, *i) && !is_quote(in, *i, 0))
+	{
+		if (in[*i] == '(' || in[*i] == ')')
+		{
+			if ((g_err = 2) && in[*i] == ')')
+				ft_dprintf(2, "bash: parse error near `%s\'\n", ")");
+			else
+			{
+				j = *i + 1;
+				while (!is_end(in, j) && !is_redir(in, j)
+				&& !is_space(in, j))
+					++j;
+				if (!(sym = ft_substr(in, *i + 1, j)))
+					exit(EXIT_FAILURE);
+				ft_dprintf(2, "bash: parse error near `%s\'\n", sym);
+				return (free_str(sym));
+			}
+			return (-1);
+		}
+		(*i)++;
+	}
+	return (0);
+}
 
 static void	pass_quotes(t_sh *sh, int *i)
 {
@@ -30,9 +59,10 @@ static int	pass_content(t_sh *sh, int *i)
 {
 	char	*sample;
 
-	sample = NULL;
 	while (sh->in[*i] && is_end(sh->in, *i) == 0)
 	{
+		if (!(sample = NULL) && parse_parentheses(sh->in, i))
+			return (-1);
 		if (is_redir(sh->in, *i) && ++(*i))
 		{
 			if (is_redir(sh->in, *i - 1) == 2)

@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/07 10:32:49 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:31:13 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		parse_export(t_sh *sh, int *i)
 		export_solo(sh);
 	while (is_end(sh->in, *i) == 0)
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (-1);
 		if (!(sample = sample_str(sh, i, sample)))
 			return (free_str(sample));
@@ -80,7 +80,7 @@ int		parse_unset(t_sh *sh, int *i)
 	tmp = ft_strdup("");
 	while (is_end(sh->in, *i) == 0)
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (free_str(tmp));
 		if (!(sample = sample_str(sh, i, sample)))
 			return (free_two_str(sample, tmp));
@@ -133,7 +133,7 @@ int		parse_exit(t_sh *sh, int *i)
 	r = 0;
 	while (sh->in[*i])
 	{
-		if (redir_loop(sh, i) == -1)
+		if (redir_loop(sh, i) < 0)
 			return (-1);
 		if (is_end(sh->in, *i) == 1)
 			break ;

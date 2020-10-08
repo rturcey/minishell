@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 10:32:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 09:34:31 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/08 09:52:22 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char			**empty_env(void)
 		return (char_free_array(tab, 6));
 	if (!(tab[1] = ft_strdup("LESSCLOSE=/usr/bin/lesspipe %s %s")))
 		return (char_free_array(tab, 6));
-	if (!(tab[2] = ft_strdup("PWD=")))
+	if (!(tab[2] = ft_strjoin_bth(ft_strdup("PWD="), get_pwd(NULL))))
 		return (char_free_array(tab, 6));
 	if (!(tab[3] = ft_strdup("SHLVL=0")))
 		return (char_free_array(tab, 6));

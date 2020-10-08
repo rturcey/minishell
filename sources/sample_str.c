@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sample_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/05 17:24:42 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/08 10:55:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char	*sample_loop(t_sh *sh, int *i, char **s, int *j)
 
 	if ((*s)[*j] == '\\' && (*s)[*j + 1] != '$')
 		skim_str(*s, *j - 1, i);
-	else if (is_quote(sh->in, *i, 0) == 1)
+	else if (is_quote(sh->in, *i, 0) == 1 && (sh->obj->qts = 1))
 	{
 		if (sample_quote_cond(sh, i, s, j) == -1)
 			return (char_free_str(*s));

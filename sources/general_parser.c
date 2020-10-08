@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 11:01:43 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/08 11:09:46 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	first_checks(t_sh *sh, int *i, int j)
 		g_err = 2;
 		return (-1);
 	}
-	else if (r == -2 && (g_err = 2))
+	else if (r == -2 && (g_err = 1))
 		return (0);
 	if ((r = parse_var(sh, i, 0)) == -1)
 		return (free_obj(&sh->obj));
@@ -72,7 +72,7 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 				return (0);
 		}
 		else if ((j = parse_cmds(sh, i)) == -1)
-			return (0);
+			return (1);
 		if (set_g_err(sh) == 1)
 			return (-1);
 	}
@@ -123,7 +123,7 @@ int			general_parser(t_sh *sh)
 	{
 		if ((j = first_checks(sh, &i, tmp)) < 1)
 			return (j);
-		else if (j == 2 && (++i))
+		else if (j == 2 && sh->in[i] && (++i))
 			continue ;
 		if (!sh->in[i] && free_obj(&sh->obj))
 			continue ;

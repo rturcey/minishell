@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/06 12:15:34 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/08 09:56:30 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_env	*init_env(char **env, int in)
 	if (!(lst = env_new(in)))
 		return (check_empty(lev, env));
 	tmp = lst;
-	if (lev == 1 && find_path(lst) && env_clear(tmp) == 0)
+	if (lev == 1 && --i && find_path(lst) && env_clear(tmp) == 0)
 		return (check_empty(lev, env));
 	else if (lev == 0 && split_env(env[0], lst) == -1 && env_clear(tmp) == 0)
 		return (check_empty(lev, env));
