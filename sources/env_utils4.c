@@ -47,41 +47,15 @@ void			*check_empty(int lever, char **env)
 	return (char_free_array(env, 6));
 }
 
-static int		init_path(t_env *env, char *new)
-{
-	env->in = 0;
-	if ((!(env->key = ft_strdup("PATH")) && env_clear(env) == 0))
-		return (-1);
-	env->val = new;
-	return (0);
-}
-
 int				find_path(t_env *lst)
 {
-	char	*line;
-	int		fd;
-	int		ret;
-	char	*new;
-
-	new = NULL;
-	if ((fd = open("/etc/environment", O_RDONLY)) == -1)
+	if (!(lst->key = ft_strdup("PATH")))
 		return (-1);
-	while ((ret = get_next_line(fd, &line)) >= 0)
-	{
-		if (ft_strstr(line, "PATH="))
-		{
-			close(fd);
-			new = ft_substr(line, 6, ft_strlen(line) - 7);
-			free(line);
-			if (init_path(lst, new))
-				return (free_str(new));
-			return (0);
-		}
-		else
-			free(line);
-	}
-	close(fd);
-	return (-1);
+	if (!(lst->val = \
+	ft_strdup("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin")))
+		return (-1);
+	lst->in = 0;
+	return (0);
 }
 
 char			**empty_env(void)
