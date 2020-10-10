@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/08 10:54:03 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/10 10:27:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void				*free_redir(t_redir *redir);
 
 int					gnl_ms(int fd, char **line);
 int					general_parser(t_sh *sh);
+int					general_loop(t_sh *sh, int *i, int lev);
 int					pass_spaces(char *str, int i);
 int					is_quote(char *str, int i, char quote);
 int					in_quotes(char *str, int i);
@@ -135,6 +136,8 @@ void				del_from_key(t_env **begin, char *key);
 int					unset_var(char **elt, t_sh *sh);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(t_sh *sh, int *i, int len);
+char				**ft_split_var(char *s, char c, t_sh *sh, int *i);
+void				split_pass_quotes(char const *s, int *i);
 int					split_env(char *line, t_env *elt);
 int					check_var(char *sample);
 int					check_var_loop(t_env *tmp, t_env *env, t_env *w);
@@ -152,6 +155,7 @@ void				pipe_checks(t_sh *sh, int *i);
 void				set_gfork(t_sh *sh, char *tmp);
 int					dup_exec(t_sh *sh);
 int					try_exec(char *tmp, t_sh *sh, int *i);
+int					check_empty_var(t_sh *sh, int *i);
 int					is_cmd(char *sample);
 int					parse_cmds(t_sh *sh, int *i);
 int					parse_echo(t_sh *sh, int *i);

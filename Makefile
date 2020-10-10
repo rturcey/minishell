@@ -8,7 +8,7 @@ SRCS		= ./sources/main.c ./sources/general_parser.c ./sources/env_utils.c \
 				./sources/parsing.c ./sources/export2.c ./sources/export3.c ./sources/init.c \
 				./sources/pipes.c ./sources/fork_utils.c ./sources/exec_utils2.c \
 				./sources/exec_utils3.c ./sources/gnl_ms.c ./sources/env_utils4.c \
-				./sources/string_utils3.c
+				./sources/string_utils3.c ./sources/split_var.c
 
 INC_DIR		= ./includes/
 INCLUDES	= ./includes/minishell.h

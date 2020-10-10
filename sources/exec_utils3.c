@@ -3,14 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 13:47:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/10 11:21:00 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		check_empty_var(t_sh *sh, int *i)
+{
+	if (!sh->obj->obj[0] && sh->obj->qts == 0)
+	{
+		free(sh->obj->obj);
+		sh->obj->obj = NULL;
+		*i = pass_spaces(sh->in, *i);
+		g_err = 0;
+		if (sh->in[*i])
+		{
+			if (sh->in[*i] && is_end(sh->in, *i))
+				(*i)++;
+			pipe_checks(sh, i);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+void	split_pass_quotes(char const *s, int *i)
+{
+	if (!s[*i] || is_quote((char *)s, *i, 0) == 0)
+		return ;
+	if (s[*i] == '\"' && ++(*i))
+		while (s[*i] && s[*i] != '\"')
+			(*i)++;
+	else if (s[*i] == '\'' && ++(*i))
+		while (s[*i] && s[*i] != '\'')
+			(*i)++;
+	if (s[*i])
+		(*i)++;
+}
 
 int		start_exec(char *tmp, t_sh *sh, int *i)
 {

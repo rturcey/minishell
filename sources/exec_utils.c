@@ -125,8 +125,8 @@ int			parse_exec(t_sh *sh, int *i)
 		return (-1);
 	if (!(sh->obj->obj = sample_str(sh, i, sh->obj->obj)))
 		return (-1);
-	if (!sh->obj->obj[0] && sh->obj->qts == 0)
-		return (0);
+	if (check_empty_var(sh, i))
+		return (-2);
 	stock_i = *i;
 	if (add_redirs(sh, i) < 0)
 		return (0);

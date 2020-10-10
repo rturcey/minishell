@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/08 11:09:46 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:00:06 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,17 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 		if (set_g_err(sh) == 1)
 			return (-1);
 	}
-	else
+	else if ((*i = stock) == stock)
 	{
-		*i = stock;
 		if ((j = parse_exec(sh, i)) == -1)
 			return (free_obj(&sh->obj));
+		else if (j == -2)
+			general_loop(sh, i, 1);
 	}
 	return (1);
 }
 
-static int	general_loop(t_sh *sh, int *i)
+int			general_loop(t_sh *sh, int *i, int lev)
 {
 	int		j;
 	int		stock;
@@ -100,7 +101,8 @@ static int	general_loop(t_sh *sh, int *i)
 	&& free_str(sample))
 		return (j);
 	free(sample);
-	*i = find_end(sh->in, *i);
+	if (lev == 0)
+		*i = find_end(sh->in, *i);
 	return (1);
 }
 
@@ -127,7 +129,7 @@ int			general_parser(t_sh *sh)
 			continue ;
 		if (!sh->in[i] && free_obj(&sh->obj))
 			continue ;
-		if ((j = general_loop(sh, &i)) != 1)
+		if ((j = general_loop(sh, &i, 0)) != 1)
 			return (j);
 	}
 	return (0);

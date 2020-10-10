@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:35:05 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/17 17:39:02 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/10 11:21:34 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int		free_obj(t_obj **obj)
 		prev = NULL;
 	else
 		prev = (*obj)->prev;
-	free((*obj)->obj);
+	if ((*obj)->obj)
+		free((*obj)->obj);
 	free_redir((*obj)->redir);
 	free((*obj)->error);
 	free((*obj)->result);
