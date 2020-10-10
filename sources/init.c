@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:06:54 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/08 11:01:43 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/10 10:12:25 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ int			init_main(t_sh **sh, char **env)
 	}
 	if (!(*sh = init_sh(g_lstenv)))
 		return (env_clear(g_lstenv));
+	g_pid = -1;
 	return (0);
 }

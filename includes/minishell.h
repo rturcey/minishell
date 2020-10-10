@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 10:27:56 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/10 12:08:32 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,14 @@ typedef struct		s_sh
 t_env				*g_lstenv;
 int					g_forked;
 int					g_err;
+pid_t 				g_pid;
+int					g_last;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 
 int					init_main(t_sh **sh, char **env);
 void				sighandler(int num);
+void				kill_pipe(int sig);
 void				clear_sh(t_sh *sh);
 
 t_obj				*obj_new(t_obj *prev);

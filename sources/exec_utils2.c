@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 14:46:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 15:04:06 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/10 12:05:15 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ void		wait_pipeline(pid_t pid, t_sh *sh)
 				g_err = WEXITSTATUS(status);
 		}
 	}
+	g_pid = -1;
 }
 
 void		handle_parent(pid_t pid, t_sh *sh)
 {
 	int		status;
 
+	g_pid = pid;
 	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
 	{
 		if (sh->obj->prev->tube[0] != -1)

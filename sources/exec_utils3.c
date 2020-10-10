@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 11:21:00 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/10 12:08:44 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int		start_exec(char *tmp, t_sh *sh, int *i)
 {
 	if (dup_exec(sh) == -1)
 		return (-1);
+	if (sh->obj->pip != IS_PIPE)
+		g_last = 1;
 	if (!tmp)
 	{
 		if (parse_cmds(sh, i) == -1)
