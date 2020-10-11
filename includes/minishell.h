@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 12:08:32 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/11 12:38:36 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ typedef struct		s_sh
 t_env				*g_lstenv;
 int					g_forked;
 int					g_err;
-pid_t 				g_pid;
-int					g_last;
+pid_t				g_pid;
 
 typedef int			(*t_parse_cmd)(t_sh *, int *);
 

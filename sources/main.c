@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 12:04:45 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/11 12:37:20 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,20 @@ void		sighandler(int num)
 		}
 		else if (g_forked != IS_F_MS)
 			ft_dprintf(2, "\n");
-		if (g_pid != -1)
-			kill_pipe(SIGINT);
-		g_err = 130;
+		if (g_forked != IS_PIPE)
+			g_err = 130;
+		kill_pipe(SIGINT);
 	}
 	else if (num == SIGQUIT)
 	{
-		if (g_forked != IS_MS && g_forked != IS_F_MS)
+		if (g_forked == IS_EXEC)
 		{
 			ft_dprintf(2, "Quit: Core dumped\n");
 			g_err = 131;
 		}
 		else if (g_forked == IS_MS)
 			ft_dprintf(2, "\b\b \b  \b\b");
-		if (g_pid != -1)
-			kill_pipe(SIGQUIT);
+		kill_pipe(SIGQUIT);
 	}
 }
 
@@ -112,7 +111,6 @@ int			main(int argc, char **argv, char **env)
 		return (-1);
 	while (1)
 	{
-		g_last = 0;
 		if (routine(sh, &line) < 0)
 			break ;
 		if (line)

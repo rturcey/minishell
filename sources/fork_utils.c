@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/03 16:36:41 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/10 12:00:46 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/11 12:41:12 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	set_gfork(t_sh *sh, char *tmp)
 		g_forked = IS_F_MS;
 	else
 		g_forked = IS_MS;
-	if (sh->obj->pip != IS_PIPE)
-		g_last = 1;
 }
 
 int		is_ms(char *exec)
@@ -45,8 +43,21 @@ int		is_ms(char *exec)
 void	kill_pipe(int sig)
 {
 	int status;
+	int ret;
 
-	while (wait(&status) != -1)
-		kill(g_pid, sig);
+	if (g_forked == IS_PIPE && g_pid != -1)
+	{
+		while ((ret = wait(&status)) != -1)
+		{
+			kill(g_pid, sig);
+			if (ret == g_pid && sig == SIGINT)
+				g_err = 130;
+			else if (ret == g_pid && sig == SIGQUIT)
+			{
+				ft_dprintf(2, "Quit: Core dumped\n");
+				g_err = 131;
+			}
+		}
+	}
 	g_pid = -1;
 }
