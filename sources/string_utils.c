@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/06 14:36:41 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/12 11:59:47 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		is_quote2(char *str, int i, char quote, int count)
 			if (str[i] == '\'' && str[i - 1])
 				if (check_single(str, i) == 1)
 					return (1);
-			while (str[--i] && str[i] == '\\')
+			while (--i > 0 && str[i] == '\\')
 				count++;
 			if (count % 2 != 0)
 				return (0);
@@ -67,7 +67,7 @@ int		is_quote(char *str, int i, char quote)
 				if (str[i] == '\'' && str[i - 1])
 					if (check_single(str, i) == 1)
 						return (1);
-				while (str[--i] && str[i] == '\\')
+				while (--i > 0 && str[i] && str[i] == '\\')
 					count++;
 				if (count % 2 != 0)
 					return (0);
