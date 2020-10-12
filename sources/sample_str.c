@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sample_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/12 12:49:11 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:30:43 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 		{
 			if (parse_g_err(s, l, sh->tmp) == -1)
 				return (-1);
-			*k = get_next_quote(*s, *sh->temp) - 1;
 		}
 		else if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) != -3)
 		{
@@ -50,10 +49,8 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 				return (-1);
 			if ((heck = 1) && r == -2)
 				(*sh->temp)--;
-			(*k)--;
-			if ((r = get_next_quote(*s, *sh->temp) - 1) != -2)
-				*k = r;
 		}
+		*k = get_next_quote(*s, *sh->temp, sh) - 1;
 	}
 	return (heck);
 }
@@ -64,7 +61,7 @@ static int	sample_quote_cond(t_sh *sh, int *i, char **s, int *j)
 	int l;
 	int heck[2];
 
-	k = get_next_quote(*s, *j) - 1;
+	k = get_next_quote(*s, *j, NULL) - 1;
 	l = (*j) - 1;
 	heck[0] = 0;
 	if (is_quote(sh->in, *i, '\"') == 1)

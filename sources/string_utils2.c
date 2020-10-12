@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/30 08:36:06 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/12 16:06:39 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		lonely_quote(char *str)
 	{
 		if (is_quote(str, i, 0) == 1)
 		{
-			if ((i = get_next_quote(str, i)) == -1)
+			if ((i = get_next_quote(str, i, NULL)) == -1)
 				return (-1);
 		}
 	}
@@ -68,7 +68,7 @@ int		find_string_end(char *in, int i)
 	{
 		if (is_quote(in, i, 0))
 		{
-			if ((i = get_next_quote(in, i)) == -1)
+			if ((i = get_next_quote(in, i, NULL)) == -1)
 				return (-1);
 		}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/12 11:59:47 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:36:45 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int		is_quote(char *str, int i, char quote)
 	return (0);
 }
 
-int		get_next_quote(char *str, int i)
+int		get_next_quote(char *str, int i, t_sh *sh)
 {
 	char tmp;
 
@@ -91,6 +91,8 @@ int		get_next_quote(char *str, int i)
 	{
 		while (str[i] && is_quote(str, i, tmp) == 0)
 			i++;
+		if (sh && !str[i])
+			return (--i);
 		if (is_quote(str, i, tmp) == 0)
 			return (-1);
 	}

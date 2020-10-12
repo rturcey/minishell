@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/11 12:38:36 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:31:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char				*sample_str(t_sh *sh, int *i, char *sample);
 int					skim_str(char *sample, int k, int *i);
 int					is_separator(char *str, int i);
 int					is_end(char *str, int i);
-int					get_next_quote(char *str, int i);
+int					get_next_quote(char *str, int i, t_sh *sh);
 int					count_strings(char *in, int i);
 int					parse_syntax(t_sh *sh, int i);
 int					normed_char(char c);
