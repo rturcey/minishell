@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/12 16:06:39 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/13 09:00:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		lonely_quote(char *str)
 	{
 		if (is_quote(str, i, 0) == 1)
 		{
-			if ((i = get_next_quote(str, i, NULL)) == -1)
+			if ((i = get_next_quote(str, i, NULL, 0)) == -1)
 				return (-1);
 		}
 	}
@@ -68,7 +68,7 @@ int		find_string_end(char *in, int i)
 	{
 		if (is_quote(in, i, 0))
 		{
-			if ((i = get_next_quote(in, i, NULL)) == -1)
+			if ((i = get_next_quote(in, i, NULL, 0)) == -1)
 				return (-1);
 		}
 		i++;

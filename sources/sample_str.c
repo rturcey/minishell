@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/12 16:30:43 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/13 09:00:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 			if ((heck = 1) && r == -2)
 				(*sh->temp)--;
 		}
-		*k = get_next_quote(*s, *sh->temp, sh) - 1;
+		*k = get_next_quote(*s, *sh->temp, sh, *l) - 1;
 	}
 	return (heck);
 }
@@ -61,7 +61,7 @@ static int	sample_quote_cond(t_sh *sh, int *i, char **s, int *j)
 	int l;
 	int heck[2];
 
-	k = get_next_quote(*s, *j, NULL) - 1;
+	k = get_next_quote(*s, *j, NULL, 0) - 1;
 	l = (*j) - 1;
 	heck[0] = 0;
 	if (is_quote(sh->in, *i, '\"') == 1)

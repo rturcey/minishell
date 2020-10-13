@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/12 16:36:45 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/13 09:07:50 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int		is_quote(char *str, int i, char quote)
 	return (0);
 }
 
-int		get_next_quote(char *str, int i, t_sh *sh)
+int		get_next_quote(char *str, int i, t_sh *sh, int l)
 {
 	char tmp;
 
@@ -89,10 +89,12 @@ int		get_next_quote(char *str, int i, t_sh *sh)
 	tmp = str[i++];
 	if (tmp == '\"')
 	{
+		if (sh)
+			return (i += l);
 		while (str[i] && is_quote(str, i, tmp) == 0)
 			i++;
-		if (sh && !str[i])
-			return (--i);
+		if (!str[i] && sh)
+			return (i);
 		if (is_quote(str, i, tmp) == 0)
 			return (-1);
 	}
