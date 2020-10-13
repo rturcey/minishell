@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 11:24:10 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 11:25:12 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/13 11:08:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,25 @@ char			**ft_split_var(char *s, char c, t_sh *sh, int *i)
 				return (char_free_array(result, -1));
 	}
 	return (finish_him(result, j, (count_words(s, c) - 1)));
+}
+
+int				is_quote_mod(char *str, int i, char quote)
+{
+	int count;
+
+	count = 0;
+	if (quote == 0)
+	{
+		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
+		{
+			if ((i > 0) && (str[i - 1] == '\\'))
+			{
+				if (str[i] == '\'' && str[i - 1])
+					if (check_single(str, i) == 1)
+						return (1);
+			}
+			return (1);
+		}
+	}
+	return (0);
 }

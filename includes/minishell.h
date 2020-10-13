@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/13 08:59:44 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/13 10:43:30 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ int					gnl_ms(int fd, char **line);
 int					general_parser(t_sh *sh);
 int					general_loop(t_sh *sh, int *i, int lev);
 int					pass_spaces(char *str, int i);
+int					check_single(char *str, int i);
 int					is_quote(char *str, int i, char quote);
+int					is_quote_mod(char *str, int i, char quote);
 int					in_quotes(char *str, int i);
 int					lonely_quote(char *str);
 int					last_backslash(char *str);
