@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 08:23:50 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 16:36:37 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/14 19:24:02 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	sample_path(t_sh *sh, char *sample, char **path)
 	}
 	else if (((stat(sample, &st)) != 0) && (ret = -2) == -2)
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", sample,
-			strerror(errno)), 1);
+			strerror(errno)), 127);
 	else if ((ret = -2) == -2)
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", sample, \
 		"is a directory"), 126);
