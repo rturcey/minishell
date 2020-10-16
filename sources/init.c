@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 10:06:54 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/12 16:30:48 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/16 12:18:43 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int			init_main(t_sh **sh, char **env)
 	t_env	*shlvl;
 	int		lvl;
 
+	g_sigint = 0;
 	if (!(g_lstenv = init_env(env, 1)))
 		return (env_clear(g_lstenv));
 	if (!(shlvl = find_env_entry("SHLVL", g_lstenv)))

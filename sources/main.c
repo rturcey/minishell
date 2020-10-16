@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/28 11:28:46 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/11 12:37:20 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/16 12:46:32 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		sighandler(int num)
 {
 	if (num == SIGINT)
 	{
+		g_sigint = 1;
 		if (g_forked == IS_MS)
 		{
 			ft_dprintf(2, "\n");
