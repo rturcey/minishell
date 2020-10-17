@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 11:20:04 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/07 10:25:06 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/17 11:10:21 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,15 @@ static void		print_export(int fd, t_env *env)
 	save = env;
 	while (env)
 	{
-		if (env->val[0])
+		if (env->val && env->val[0])
 			ft_dprintf(fd, "declare -x %s=\"%s\"\n", env->key, env->val);
-		else
+		else if (env->val)
 			ft_dprintf(fd, "declare -x %s\n", env->key);
+		else
+		{
+			free_export(save);
+			return ;
+		}
 		env = env->next;
 	}
 	free_export(save);
@@ -91,22 +96,22 @@ void			export_solo(t_sh *sh)
 	t_env	*save;
 
 	begin = sh->env;
-	while (begin && begin->in != 1)
+	if (!sh->env || !sh->env->key)
+		return ;
+	while (begin && begin->in == 0)
 		begin = begin->next;
-	if (!(ptr = env_double(begin)))
+	if (!begin || !(ptr = env_double(begin)))
 		return ;
 	save = ptr;
-	begin = begin->next;
-	while (begin)
+	while ((begin = begin->next))
 	{
 		if (begin->in > 0 && !(ptr->next = env_double(begin)))
 		{
 			free_export(save);
 			return ;
 		}
-		if (ptr)
+		if (begin->in > 0)
 			ptr = ptr->next;
-		begin = begin->next;
 	}
 	env_sort(&save);
 	print_export(sh->obj->redir->cmd_output, save);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/16 12:18:05 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/17 11:08:24 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
 char				**empty_env(void);
 void				*check_empty(int lever, char **env);
+t_env				*old_empty(t_env *env);
 int					find_path(t_env *lst);
 void				find_home_user(char *path, char **home, char **user, \
 						t_env *env);

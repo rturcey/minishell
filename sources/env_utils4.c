@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 10:32:39 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/08 09:52:22 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/17 11:13:28 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,25 @@ char			**empty_env(void)
 		return (char_free_array(tab, 6));
 	tab[6] = 0;
 	return (tab);
+}
+
+t_env			*old_empty(t_env *env)
+{
+	t_env	*new;
+	t_env	*tmp;
+
+	if (!(find_env_entry("OLDPWD", env)))
+	{
+		if (!(new = env_new(2)))
+			exit(EXIT_FAILURE);
+		if (!(new->key = ft_strdup("OLDPWD")))
+			exit(EXIT_FAILURE);
+		if (!(new->val = ft_strdup("")))
+			exit(EXIT_FAILURE);
+		tmp = env;
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	return (env);
 }

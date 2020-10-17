@@ -6,7 +6,7 @@
 /*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/08 09:56:30 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/17 11:07:54 by rturcey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,5 @@ t_env	*init_env(char **env, int in)
 		if (split_env(env[i], lst) == -1 && env_clear(tmp) == 0)
 			return (check_empty(lev, env));
 	}
-	return (tmp);
+	return (old_empty(tmp));
 }
