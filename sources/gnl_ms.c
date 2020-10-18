@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 12:42:15 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/16 13:05:22 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:28:57 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			gnl_ms(int fd, char **line)
 			s[fd][0] = '\0';
 		if (!(s[fd] = ft_gnl_strjoin(s[fd], buffer)))
 			return (-1);
-		if (g_sigint == 1 || (ft_strchr(s[fd], '\n') && ++i))
+		if ((ft_strchr(s[fd], '\n') && ++i))
 			break ;
 	}
 	if (((g_sigint = 0) == 0) && i >= 0)

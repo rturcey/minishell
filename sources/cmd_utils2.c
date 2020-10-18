@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 02:29:07 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/08 12:31:13 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/18 13:38:16 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,13 @@ int		parse_exit(t_sh *sh, int *i)
 		else if (s == NULL && !(s = sample_str(sh, i, s)))
 			return (-1);
 	}
-	maj_err(sh, ft_sprintf("exit\n"), g_err);
+	if (g_forked != IS_PIPE)
+		maj_err(sh, ft_sprintf("exit\n"), g_err);
 	if ((r == 1) && (g_err = 1))
 		maj_err(sh, ft_sprintf("exit: too many arguments\n"), 1);
-	else if (s != NULL && ft_numstr(s) == 1 && chk_ll(s) == 0 &&
-		(r = ft_atoi(s)))
+	else if (s && ft_numstr(s) == 1 && chl(s) == 0 && ((r = ft_atoi(s)) || !r))
 		g_err = (r < 0 || r > 255) ? r % 256 : r;
-	else if (s && (ft_numstr(s) != 1 || chk_ll(s) != 0) && (g_err = 2))
+	else if (s && (ft_numstr(s) != 1 || chl(s) != 0) && (g_err = 2))
 		maj_err(sh, ft_sprintf("exit: %s: numeric argument required\n", s), 2);
 	return (print_result(sh, g_err, s));
 }

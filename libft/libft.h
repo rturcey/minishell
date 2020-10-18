@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/24 19:17:41 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/18 13:38:27 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 	size_t len);
 char				*ft_strstr(const char *haystack, const char *needle);
 long long			ft_atoi(const char *str);
-int					chk_ll(char *str);
+int					chl(char *str);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
 char				*ft_substr(char const *s, unsigned int start, size_t len);

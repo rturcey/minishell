@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_llong.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/20 20:30:34 by esoulard          #+#    #+#             */
-/*   Updated: 2020/07/25 14:50:05 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/18 13:38:32 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		chk_ll(char *str)
+int		chl(char *str)
 {
 	char	*max;
 	char	sign;
