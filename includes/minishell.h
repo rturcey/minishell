@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/17 11:08:24 by rturcey          ###   ########.fr       */
+/*   Updated: 2020/10/20 13:04:00 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ typedef struct		s_env
 {
 	char			*key;
 	char			*val;
+	char			*val_sp;
 	int				in;
+	int				sp;
 	struct s_env	*next;
 	int				pluseq;
 }					t_env;
@@ -104,9 +106,10 @@ int					general_parser(t_sh *sh);
 int					general_loop(t_sh *sh, int *i, int lev);
 int					pass_spaces(char *str, int i);
 int					check_single(char *str, int i);
-int					is_quote(char *str, int i, char quote);
+int					is_quote	(char *str, int i, char quote);
 int					is_quote_mod(char *str, int i, char quote, int l);
 int					in_quotes(char *str, int i);
+int					one_quote(char *s, char *s1);
 int					lonely_quote(char *str);
 int					last_backslash(char *str);
 int					find_string_end(char *src, int i);
@@ -141,7 +144,10 @@ void				del_from_key(t_env **begin, char *key);
 int					unset_var(char **elt, t_sh *sh);
 int					add_var(t_env *elt, t_env *env);
 int					parse_var(t_sh *sh, int *i, int len);
+void				parse_all_var(t_sh *sh, char **s, int i);
+void				pass_quotes(t_sh *sh, int *i);
 char				**ft_split_var(char *s, char c, t_sh *sh, int *i);
+int					split_val(char *s, int i);
 void				split_pass_quotes(char const *s, int *i);
 int					split_env(char *line, t_env *elt);
 int					check_var(char *sample);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/23 10:03:58 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/17 19:20:34 by esoulard         ###   ########.fr       */
+/*   Created: 2020/10/20 12:18:27 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:18:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int		only_n(char *str, int i)
 		i += 2;
 	else if (str[i++] != '-')
 		return (0);
-	while (is_space(str, i) == 0 &&
+	while (is_sp(str, i) == 0 &&
 		is_end(str, i) == 0)
 	{
 		if (str[i] == '\\')

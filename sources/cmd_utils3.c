@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/19 10:10:47 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/17 19:19:17 by esoulard         ###   ########.fr       */
+/*   Created: 2020/10/20 12:17:16 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:17:17 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void		pass_option(t_sh *sh, int *i)
 			ft_strncmp("\\-n", &sh->in[*i], 3) == 0 ||
 			ft_strncmp("-\\n", &sh->in[*i], 3) == 0)
 			&& (is_end(sh->in, *i + 2) == 1
-			|| is_space(sh->in, *i + 2) == 1 ||
+			|| is_sp(sh->in, *i + 2) == 1 ||
 			only_n(sh->in, *i) == 1)
 			&& ((*i) += 2))
 			sh->obj->option = 1;

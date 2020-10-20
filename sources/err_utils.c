@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/11 21:28:11 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/18 13:29:15 by esoulard         ###   ########.fr       */
+/*   Created: 2020/10/20 12:17:50 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:17:51 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ int		set_g_err(t_sh *sh)
 		return (0);
 	if (sh->obj && sh->obj->obj && (strncmp(sh->obj->obj, "exit",
 		ft_strlen(sh->obj->obj)) == 0) && !ft_strstr(sh->obj->error,
-		"too many") && g_forked != IS_PIPE)
+		"too many"))
 		return (1);
-	if (!(sh->obj->error) && strncmp(sh->obj->obj, "exit",
-		ft_strlen(sh->obj->obj)) != 0)
+	if (!(sh->obj->error))
 		g_err = 0;
 	return (0);
 }

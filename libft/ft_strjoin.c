@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 20:45:47 by esoulard          #+#    #+#             */
-/*   Updated: 2020/09/22 10:11:50 by rturcey          ###   ########.fr       */
+/*   Created: 2020/10/20 12:12:32 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:12:33 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char		*ft_strjoin_sp(char *s1, char *s2)
 	while (s2[j])
 		new[i++] = s2[j++];
 	new[i] = '\0';
-	free_two_strjoin(s1, s2);
+	free_two_str(s1, s2);
 	return (new);
 }
 

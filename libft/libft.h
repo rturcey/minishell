@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 17:06:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/18 13:38:27 by esoulard         ###   ########.fr       */
+/*   Created: 2020/10/20 12:15:43 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:15:43 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int					ft_isprint(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_numstr(char *str);
-int					is_space(char *str, int i);
+int					is_sp(char *str, int i);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strspchr(const char *s);
@@ -63,7 +63,7 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 	size_t len);
 char				*ft_strstr(const char *haystack, const char *needle);
 long long			ft_atoi(const char *str);
-int					chl(char *str);
+int					chk_ll(char *str);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
 char				*ft_substr(char const *s, unsigned int start, size_t len);

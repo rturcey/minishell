@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/30 23:54:13 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/14 09:22:40 by user42           ###   ########.fr       */
+/*   Created: 2020/10/20 12:19:42 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 13:40:17 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		pass_spaces(char *str, int i)
 {
-	while (str[i] && is_space(str, i) == 1)
+	while (str[i] && is_sp(str, i) == 1)
 		i++;
 	return (i);
 }
@@ -88,13 +88,13 @@ int		get_next_quote(char *str, int i, t_sh *sh, int l)
 		return (-1);
 	if ((tmp = str[i++]) && tmp == '\"')
 	{
-		if (sh && (i += l + 1))
-			while (str[i] && is_quote_mod(str, i, 0, l) == 0)
+		if (sh && (i = l + 1))
+			while (str[i] && is_quote_mod(str, i, '\"', l) == 0)
 				i++;
 		else
 			while (str[i] && is_quote(str, i, tmp) == 0)
 				i++;
-		if (!str[i] && sh)
+		if (sh && !str[i])
 			return (l + 1);
 		if (is_quote(str, i, tmp) == 0)
 			return (-1);

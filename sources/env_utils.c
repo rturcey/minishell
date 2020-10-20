@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/29 10:03:43 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/17 11:07:54 by rturcey          ###   ########.fr       */
+/*   Created: 2020/10/20 12:17:21 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:51:50 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ t_env	*env_new(int in)
 		return (NULL);
 	new->key = NULL;
 	new->val = NULL;
+	new->val_sp = NULL;
 	new->in = in;
+	new->sp = 0;
 	new->next = NULL;
 	new->pluseq = 0;
 	return (new);
@@ -43,19 +45,23 @@ int		split_env(char *line, t_env *elt)
 	j = -1;
 	while (line[i] && line[i] != '=' && line[i] != '+')
 		i++;
-	if (line[i] && line[i] == '+' && pluseq(line, i) == 0)
-		return (-1);
-	if (!(elt->key = malloc(i + 1)))
+	if ((line[i] && line[i] == '+' && pluseq(line, i) == 0)
+	|| !(elt->key = malloc(i + 1)))
 		return (-1);
 	while (++j < i)
 		elt->key[j] = line[j];
 	elt->key[j] = '\0';
 	if (pluseq(line, i) == 1 && (elt->pluseq = 1))
 		i++;
-	if (!line[i])
-		i--;
-	if (!(elt->val = ft_strdup(&line[i + 1])))
+	if (!line[i] && !(elt->val = ft_strdup(&line[i])))
 		return (-1);
+	else if (line[i])
+	{
+		if (!(elt->val_sp = ft_strdup(&line[i + 1])) ||
+		!(elt->val = ft_strdup(&line[i + 1])))
+			return (-1);
+		elt->sp = split_val(elt->val, -1);
+	}
 	return (0);
 }
 
@@ -68,6 +74,7 @@ int		env_clear(t_env *env)
 		tmp = env->next;
 		free(env->key);
 		free(env->val);
+		free(env->val_sp);
 		free(env);
 		env = tmp;
 	}

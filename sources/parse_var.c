@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/06 11:12:13 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 10:28:12 by user42           ###   ########.fr       */
+/*   Created: 2020/10/20 12:20:35 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:20:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int		check_vars(t_sh *sh, int i)
 	{
 		i = pass_spaces(sh->in, i);
 		j = i;
-		while (is_end(sh->in, j) == 0 && is_space(sh->in, j) == 0
+		while (is_end(sh->in, j) == 0 && is_sp(sh->in, j) == 0
 			&& sh->in[j] != '=' && sh->in[j] != '+')
 			j++;
 		if (sh->in[j] != '=' && pluseq(sh->in, j) == 0)

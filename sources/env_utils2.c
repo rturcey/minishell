@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/29 11:02:11 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/17 11:14:57 by rturcey          ###   ########.fr       */
+/*   Created: 2020/10/20 12:17:27 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:17:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_env			*env_cpy(t_env *elt)
 		return (NULL);
 	cpy->key = ft_strdup(elt->key);
 	cpy->val = ft_strdup(elt->val);
+	cpy->val_sp = ft_strdup(elt->val_sp);
+	cpy->sp = elt->sp;
 	return (cpy);
 }
 
@@ -73,6 +75,7 @@ void			del_var(t_env *var)
 {
 	free(var->key);
 	free(var->val);
+	free(var->val_sp);
 	free(var);
 	var = NULL;
 }

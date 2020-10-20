@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/05 17:19:50 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/13 09:00:04 by user42           ###   ########.fr       */
+/*   Created: 2020/10/20 12:19:37 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:19:37 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ int		lonely_quote(char *str)
 {
 	int i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
 	{
 		if (is_quote(str, i, 0) == 1)
 		{
 			if ((i = get_next_quote(str, i, NULL, 0)) == -1)
 				return (-1);
 		}
+		i++;
+		if (i >= (int)ft_strlen(str))
+			break;
 	}
 	i = -1;
 	while (str[++i])
@@ -63,7 +66,7 @@ int		last_backslash(char *str)
 
 int		find_string_end(char *in, int i)
 {
-	while ((is_end(in, i) == 0) && is_space(in, i) == 0 &&
+	while ((is_end(in, i) == 0) && is_sp(in, i) == 0 &&
 		is_redir(in, i) == 0)
 	{
 		if (is_quote(in, i, 0))

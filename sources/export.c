@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/30 09:28:45 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/17 10:53:05 by rturcey          ###   ########.fr       */
+/*   Created: 2020/10/20 12:19:08 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:19:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,9 @@ int				add_var(t_env *elt, t_env *env)
 		return (0);
 	}
 	free(bis->val);
-	bis->val = NULL;
+	free(bis->val_sp);
 	bis->val = ft_strdup(elt->val);
+	bis->val_sp = ft_strdup(elt->val_sp);
 	return (0);
 }
 
@@ -104,8 +105,9 @@ int				export_var(t_env *elt, t_env *env, int in)
 		return (0);
 	}
 	free(bis->val);
-	bis->val = NULL;
+	free(bis->val_sp);
 	bis->val = ft_strdup(elt->val);
+	bis->val_sp = ft_strdup(elt->val_sp);
 	bis->in = 1;
 	return (0);
 }

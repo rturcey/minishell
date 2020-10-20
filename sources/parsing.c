@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rturcey <rturcey@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/29 12:00:56 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/08 12:16:34 by rturcey          ###   ########.fr       */
+/*   Created: 2020/10/20 12:20:26 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:20:26 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	parse_parentheses(char *in, int *i)
 			{
 				j = *i + 1;
 				while (!is_end(in, j) && !is_redir(in, j)
-				&& !is_space(in, j))
+				&& !is_sp(in, j))
 					++j;
 				if (!(sym = ft_substr(in, *i + 1, j)))
 					exit(EXIT_FAILURE);
@@ -41,7 +41,7 @@ static int	parse_parentheses(char *in, int *i)
 	return (0);
 }
 
-static void	pass_quotes(t_sh *sh, int *i)
+void		pass_quotes(t_sh *sh, int *i)
 {
 	if (!sh->in[*i])
 		return ;

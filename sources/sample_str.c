@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/03 10:08:03 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/13 11:08:30 by user42           ###   ########.fr       */
+/*   Created: 2020/10/20 12:19:58 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:19:58 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ static char	*sample_loop(t_sh *sh, int *i, char **s, int *j)
 			(*j)--;
 		else if (r == -1)
 			return (char_free_str(*s));
+		ft_printf("s = |%s| j = %d\n", *s, *j);
 	}
 	return (*s);
 }
@@ -123,13 +124,19 @@ char		*sample_str(t_sh *sh, int *i, char *s)
 	end = find_string_end(sh->in, *i);
 	if (!(s = ft_substr(sh->in, *i, (end - *i))))
 		return (NULL);
-	j = -1;
-	while (s[++j])
+	j = 0;
+	while (s[j])
 	{
 		if (!sample_loop(sh, i, &s, &j))
 			return (NULL);
-		if (sh->in[*i])
+		if (*i < (int)ft_strlen(sh->in))
 			(*i)++;
+		if (j < (int)ft_strlen(s) && j >= 0 &&  s[j])
+			j++;
+		else if (j >= (int)ft_strlen(s))
+			j = (int)ft_strlen(s);
+		else
+			j = 0;
 	}
 	*i = end;
 	return (s);

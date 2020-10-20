@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_ms.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/11 12:42:15 by esoulard          #+#    #+#             */
-/*   Updated: 2020/10/18 14:18:52 by esoulard         ###   ########.fr       */
+/*   Created: 2020/10/20 12:18:39 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 12:18:39 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int			gnl_ms(int fd, char **line)
 	i = 0;
 	while (ft_strchr(s[fd], '\n') || (i = read(fd, buffer, 30)) >= 0)
 	{
-		if (g_sigint == 1 && (g_sigint = 0) == 0)
-			s[fd][0] = '\0';
 		if ((buffer[i] = '\0') == 0 && i == 0 && ft_strlen(s[fd]) == 0)
 			return (free_sfd(s[fd]));
+		if (g_sigint == 1)
+			s[fd][0] = '\0';
 		if (!(s[fd] = ft_gnl_strjoin(s[fd], buffer)))
 			return (-1);
-		if ((ft_strchr(s[fd], '\n') && ++i))
+		if (g_sigint == 1 || (ft_strchr(s[fd], '\n') && ++i))
 			break ;
 	}
 	if (((g_sigint = 0) == 0) && i >= 0)

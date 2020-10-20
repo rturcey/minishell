@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/03 16:59:30 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/10 12:08:58 by esoulard         ###   ########.fr       */
+/*   Created: 2020/10/20 12:18:44 by user42            #+#    #+#             */
+/*   Updated: 2020/10/20 13:03:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int			general_loop(t_sh *sh, int *i, int lev)
 	sample = NULL;
 	stock = *i;
 	*i = pass_spaces(sh->in, *i);
+	parse_all_var(sh, &sh->in, *i);
 	if (!(sample = sample_str(sh, i, sample)))
 		return (-1);
 	if ((j = parse_sample(sh, i, stock, sample)) != 1
