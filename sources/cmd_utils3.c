@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:16 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:17:17 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:35:19 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int			parse_cmds(t_sh *sh, int *i)
 	{
 		while (is_end(sh->in, *i) == 0)
 			(*i)++;
+		if (sh->obj->pip == IS_PIPE || g_forked == IS_PIPE)
+			exit(g_err);
 		return (-1);
 	}
 	return (ret);

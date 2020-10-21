@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:20:46 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:20:46 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 19:25:35 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_obj		*obj_new(t_obj *prev)
 	new->next = NULL;
 	new->prev = prev;
 	new->qts = 0;
+	new->fk = 0;
 	return (new);
 }
 

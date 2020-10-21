@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:20:03 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:20:04 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:31:22 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int		parse_redir(t_sh *sh, int *s_fd, int *i)
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", path, strerror(errno)), 1);
 		return (print_result(sh, -1, path));
 	}
-	else if (ret == -2)
+	else if (ret == -2 && (sh->obj->fk = 1) == 1)
 	{
 		maj_err(sh, ft_sprintf("bash: %s: %s\n", path, strerror(errno)), 1);
 		return (print_result(sh, -2, path));

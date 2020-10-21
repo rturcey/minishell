@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:27 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:18:27 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:02:54 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,20 @@ int		start_exec(char *tmp, t_sh *sh, int *i)
 		return (-1);
 	if (!tmp)
 	{
-		if (parse_cmds(sh, i) == -1)
+		if (sh->obj->fk != 1 && parse_cmds(sh, i) == -1)
 			return (-1);
 		exit(g_err);
 	}
 	else
 	{
-		execve(tmp, sh->obj->args, sh->obj->charenv);
-		maj_err(sh, ft_sprintf("bash: %s: %s\n", sh->obj->obj, \
-			strerror(errno)), 127);
-		exit(print_result(sh, g_err, NULL));
+		if (sh->obj->fk != 1)
+		{
+			execve(tmp, sh->obj->args, sh->obj->charenv);
+			maj_err(sh, ft_sprintf("bash: %s: %s\n", sh->obj->obj, \
+				strerror(errno)), 127);
+			exit(print_result(sh, g_err, NULL));
+		}
+		exit(g_err);
 	}
 	return (0);
 }

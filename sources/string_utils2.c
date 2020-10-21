@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:37 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:19:37 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:26:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		lonely_quote(char *str)
 		}
 		i++;
 		if (i >= (int)ft_strlen(str))
-			break;
+			break ;
 	}
 	i = -1;
 	while (str[++i])

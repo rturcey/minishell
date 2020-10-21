@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sample_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:58 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 15:17:58 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:28:44 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 				return (-1);
 		}
 		else
-			while((*s)[*l] == '$' && normed_char((*s)[*l + 1]) == 0
+			while ((*s)[*l] == '$' && normed_char((*s)[*l + 1]) == 0
 			&& (*s)[*l + 1] != '?')
 			{
 				if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) == -1)
@@ -132,7 +132,7 @@ char		*sample_str(t_sh *sh, int *i, char *s)
 			return (NULL);
 		if (*i < (int)ft_strlen(sh->in))
 			(*i)++;
-		if (j < (int)ft_strlen(s) && j >= 0 &&  s[j])
+		if (j < (int)ft_strlen(s) && j >= 0 && s[j])
 			j++;
 		else if (j >= (int)ft_strlen(s))
 			j = (int)ft_strlen(s);

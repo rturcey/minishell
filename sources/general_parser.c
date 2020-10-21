@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:44 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 16:05:10 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:34:11 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	first_checks(t_sh *sh, int *i, int j)
 		g_err = 2;
 		return (-1);
 	}
-	else if (r == -2 && (g_err = 1))
+	else if (r == -2 && sh->obj->pip != IS_PIPE && g_forked != IS_PIPE)
 		return (0);
 	if ((r = parse_var(sh, i, 0)) == -1)
 		return (free_obj(&sh->obj));

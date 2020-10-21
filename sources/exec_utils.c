@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:45 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:17:45 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 20:28:06 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,14 @@ int			parse_exec(t_sh *sh, int *i)
 	if (check_empty_var(sh, i))
 		return (-2);
 	stock_i = *i;
-	if (add_redirs(sh, i) < 0)
+	if (add_redirs(sh, i) < 0 && sh->obj->pip != IS_PIPE && g_forked != IS_PIPE)
 		return (0);
+	if (sh->obj->fk == 1)
+	{
+		if (try_exec(path, sh, 0) == -1)
+			return (-1);
+		return (0);
+	}
 	if (check_path(sh, &path) == -2 && free_str(path))
 		if (sh->obj->pip != IS_PIPE && (!(sh->obj->prev) ||
 			sh->obj->prev->pip != IS_PIPE))
