@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:47 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:19:47 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 17:08:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,15 @@ static char		*newline(char **result, t_sh *sh, int *j, int *i)
 	return (result[(*j)++]);
 }
 
+#include <stdio.h>
+
 char			**ft_split_var(char *s, char c, t_sh *sh, int *i)
 {
 	char	**result;
 	int		j;
 
 	j = 0;
-	if (!s || !(result = malloc(sizeof(char *) * (count_words(s, c) + 2))))
+	if (!s ||!(result = malloc(sizeof(char *) * (count_words(s, c) + 2))))
 		return (NULL);
 	while (is_end(s, *i) == 0)
 	{
@@ -70,27 +72,24 @@ char			**ft_split_var(char *s, char c, t_sh *sh, int *i)
 	return (finish_him(result, j, (count_words(s, c) - 1)));
 }
 
-int				is_quote_mod(char *str, int i, char quote, int l)
+int				is_quote_mod(char *str, int i, int l)
 {
 	int count;
 
 	count = 0;
-	if (quote == 0)
+	if (str[i] && (str[i] == '\'' || str[i] == '\"'))
 	{
-		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
+		if ((i > l) && (str[i - 1] == '\\'))
 		{
-			if ((i > l) && (str[i - 1] == '\\'))
-			{
-				if (str[i] == '\'' && str[i - 1])
-					if (check_single(str, i) == 1)
-						return (1);
-				while (--i > l && str[i] && str[i] == '\\')
-					count++;
-				if (count % 2 != 0)
-					return (0);
-			}
-			return (1);
+			if (str[i] == '\'' && str[i - 1])
+				if (check_single(str, i) == 1)
+					return (1);
+			while (--i > l && str[i] && str[i] == '\\')
+				count++;
+			if (count % 2 != 0)
+				return (0);
 		}
+		return (1);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:58 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:19:58 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 15:17:58 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,15 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 			if (parse_g_err(s, l, sh->tmp) == -1)
 				return (-1);
 		}
-		else if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) != -3)
-		{
-			if (r == -1)
-				return (-1);
-			if ((heck = 1) && r == -2)
-				(*sh->temp)--;
-		}
+		else
+			while((*s)[*l] == '$' && normed_char((*s)[*l + 1]) == 0
+			&& (*s)[*l + 1] != '?')
+			{
+				if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) == -1)
+					return (-1);
+				if ((heck = 1) && r == -2)
+					continue ;
+			}
 		*k = get_next_quote(*s, *sh->temp, sh, *l) - 1;
 	}
 	return (heck);
@@ -109,7 +111,6 @@ static char	*sample_loop(t_sh *sh, int *i, char **s, int *j)
 			(*j)--;
 		else if (r == -1)
 			return (char_free_str(*s));
-		ft_printf("s = |%s| j = %d\n", *s, *j);
 	}
 	return (*s);
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:59 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:18:59 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 15:47:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ int				repluseq(char *sample, int i, t_env *env, int in)
 		export_var(elt, env, in);
 		del_var(elt);
 	}
-	else if (free_str(key) == -1
-	&& !(elt->val = ft_strjoin_bth(elt->val, val)))
+	else if (free_str(key) == -1 &&
+	(!(elt->val_sp = ft_strjoin_bth(elt->val_sp, val)) 
+	|| !(elt->val = ft_strdup(elt->val_sp))))
 		return (-2);
 	return (0);
 }

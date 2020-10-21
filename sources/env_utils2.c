@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:27 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:17:27 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/20 18:55:44 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ t_env			*env_cpy(t_env *elt)
 		return (NULL);
 	cpy->key = ft_strdup(elt->key);
 	cpy->val = ft_strdup(elt->val);
-	cpy->val_sp = ft_strdup(elt->val_sp);
+	if (elt->val_sp)
+		cpy->val_sp = ft_strdup(elt->val_sp);
+	else
+		cpy->val_sp = ft_strdup(elt->val);
 	cpy->sp = elt->sp;
 	return (cpy);
 }

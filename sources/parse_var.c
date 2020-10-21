@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:20:35 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:20:35 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 17:07:49 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int		check_vars(t_sh *sh, int i)
 		i = pass_spaces(sh->in, i);
 		j = i;
 		while (is_end(sh->in, j) == 0 && is_sp(sh->in, j) == 0
-			&& sh->in[j] != '=' && sh->in[j] != '+')
+		&& sh->in[j] != '=' && sh->in[j] != '+')
 			j++;
 		if (sh->in[j] != '=' && pluseq(sh->in, j) == 0)
 			return (i);
@@ -95,7 +95,9 @@ static void		add_multiple_var(t_env *w, t_env *env)
 			w->in = 1;
 			if (w->pluseq == 1)
 			{
-				if (!(w->val = ft_strjoin_bth(ft_strdup(tmp->val), w->val)))
+				free(w->val);
+				if (!(w->val_sp = ft_strjoin_bth(ft_strdup(tmp->val_sp), \
+				w->val_sp)) || !(w->val = ft_strdup(w->val_sp)))
 					return ;
 			}
 		}

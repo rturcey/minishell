@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:21 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:51:50 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 17:01:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	print_env(t_env *env, int fd)
 	while (tmp)
 	{
 		if (tmp->in == 1)
-			ft_dprintf(fd, "%s=%s\n", tmp->key, tmp->val);
+			ft_dprintf(fd, "%s=%s\n", tmp->key, tmp->val_sp);
 		tmp = tmp->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:06 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:17:06 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/20 16:15:43 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ static int	echo_loop(char **result, int *i, t_sh *sh)
 		l = 1;
 	if (!(sample = sample_str(sh, i, sample)))
 		return (free_str(*result));
-	if (l == 0 && sample[0] == '\0')
-		free_str(sample);
-	else if (!(*result = ft_strjoin_sp(*result, sample)))
+	if (l == 0 && sample[0] == '\0' && free_str(sample))
+		return (0);
+	else if (l == 1 && sample[0])
+		if (!(sample= ft_strjoin_bth(ft_strdup(" "), sample)))
+			return (free_str(*result));
+	if (!(*result = ft_strjoin_sp(*result, sample)))
 		return (-1);
 	return (0);
 }

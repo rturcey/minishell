@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:01 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 13:07:23 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/20 16:32:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ int				split_val(char *s, int i)
 	if (!(sp = 0) && is_sp(s, 0))
 		sp = 1;
 	lev = 0;
-	while (s[++i])
+	while (i < (int)ft_strlen(s) && s[++i])
 	{
 		while (s[i] && is_sp(s, i) && lev == 0 && (i == 0 || is_sp(s, i - 1)))
 			skim_str(s, i - 1, &tmp);
 		lev = 0;
 		if (is_quote(s, i, 0) && (lev = 1))
-			while (s[++i])
+			while (i < (int)ft_strlen(s) && s[++i])
 			{
 				while (s[i] && !is_sp(s, i))
 					++i;

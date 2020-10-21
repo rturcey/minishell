@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:08 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:19:08 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/20 17:14:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int				unset_var(char **elt, t_sh *sh)
 static int		process_export(char *sample, t_env *env, int in)
 {
 	t_env	*new;
+	char	*trimmed;
 
 	if (!(new = env_new(0)))
 		return (-2);
@@ -32,6 +33,16 @@ static int		process_export(char *sample, t_env *env, int in)
 		in = 1;
 	if (split_env(sample, new) == -1)
 		return (-1);
+	if (is_quote(new->val, 0, '\"') &&
+	is_quote(new->val, ft_strlen(new->val) - 1, '\"'))
+	{
+		free(new->val);
+		if (!(trimmed = ft_strtrim(new->val, "\"")))
+			exit(EXIT_FAILURE);
+		if (!(new->val = ft_strjoin_bth(ft_strdup("\\\""), trimmed)) ||
+		!(new->val = ft_strjoin_bth(new->val, ft_strdup("\\\""))))
+			exit(EXIT_FAILURE);
+	}
 	export_var(new, env, in);
 	del_var(new);
 	return (0);
@@ -83,7 +94,10 @@ int				add_var(t_env *elt, t_env *env)
 	free(bis->val);
 	free(bis->val_sp);
 	bis->val = ft_strdup(elt->val);
-	bis->val_sp = ft_strdup(elt->val_sp);
+	if (elt->val_sp)
+		bis->val_sp = ft_strdup(elt->val_sp);
+	else
+		bis->val_sp = ft_strdup(elt->val);
 	return (0);
 }
 

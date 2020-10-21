@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:15 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 13:39:15 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 15:23:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,13 @@ static void		fix_j(t_env *elt, int *j, char *begin, char *key)
 {
 	if (elt)
 	{
-		ft_printf("len valsp %d, valsp |%s|, j = %d\n", (int)ft_strlen(elt->val_sp), elt->val_sp, *j + (int)ft_strlen(elt->val_sp) - 2);
 		if (one_quote(begin, key))
-			*j = *j + (int)ft_strlen(elt->val_sp) - 3;
+			*j = *j + (int)ft_strlen(elt->val_sp) - 2;
 		else
 			*j = *j + (int)ft_strlen(elt->val) - 2;
-		if (elt->sp == 1 || elt->sp == 2)
-			(*j)++;
-		if (elt->sp == 3)
-			*j = *j + 2;
 	}
 	else
-		(*j) -= 2;
+		(*j) -= 1;
 }
 
 int				check_var(char *sample)
@@ -48,7 +43,6 @@ static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
 	char	*val;
 	int		lev;
 
-	ft_printf("begin = |%s|, end = |%s|\n", begin, end);
 	lev = 0;
 	if (elt)
 	{
@@ -56,7 +50,7 @@ static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
 			val = elt->val_sp;
 		else
 			val = elt->val;
-		if (begin[0] && (elt->sp == 1 || elt->sp == 3))
+		if (!begin[0] && (elt->sp == 1 || elt->sp == 3))
 		{
 			if (!(*sample = ft_strjoin_sp(begin, ft_strdup(val))))
 				return (free_two_str(begin, end));
@@ -75,7 +69,7 @@ static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
 	{
 		if (!(*sample = ft_strjoin_bth(begin, end)))
 			return (free_two_str(begin, end));
-		return (0);
+		return (-2);
 	}
 	return (0);
 }

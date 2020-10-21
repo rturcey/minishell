@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/20 13:04:00 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/21 15:08:51 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int					general_loop(t_sh *sh, int *i, int lev);
 int					pass_spaces(char *str, int i);
 int					check_single(char *str, int i);
 int					is_quote	(char *str, int i, char quote);
-int					is_quote_mod(char *str, int i, char quote, int l);
+int					is_quote_mod(char *str, int i, int l);
 int					in_quotes(char *str, int i);
 int					one_quote(char *s, char *s1);
 int					lonely_quote(char *str);

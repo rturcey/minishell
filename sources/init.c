@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:34 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:18:34 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/20 16:00:54 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static t_sh	*init_sh(t_env *env)
 
 	if (!(sh = malloc(sizeof(t_sh))))
 		return (NULL);
+	sh->in = NULL;
 	sh->env = env;
 	sh->lev = 1;
 	sh->obj = NULL;
@@ -31,6 +32,8 @@ void		clear_sh(t_sh *sh)
 {
 	if (sh->env)
 		env_clear(sh->env);
+	if (sh->in)
+		free(sh->in);
 	while (sh->obj)
 		free_obj(&sh->obj);
 	free(sh);

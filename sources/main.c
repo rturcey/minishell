@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:20:51 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:48:02 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/20 15:46:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ static int	routine(t_sh *sh, char **line)
 	}
 	else if (ret < 0)
 		return (read_err(errno));
+	if (sh->in)
+		free(sh->in);
 	sh->in = ft_strdup(*line);
 	return (0);
 }
@@ -115,10 +117,7 @@ int			main(int argc, char **argv, char **env)
 		if (routine(sh, &line) < 0)
 			break ;
 		if (sh->in)
-		{
 			ret = general_parser(sh);
-			free(sh->in);
-		}
 		if (line)
 			free(line);
 		if (ret != 0)
