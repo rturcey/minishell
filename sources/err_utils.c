@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:50 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 20:18:09 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/21 21:07:36 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ int		set_g_err(t_sh *sh)
 		return (0);
 	if (sh->obj && sh->obj->obj && (strncmp(sh->obj->obj, "exit",
 		ft_strlen(sh->obj->obj)) == 0) && !ft_strstr(sh->obj->error,
-		"too many"))
+		"too many") && sh->obj->pip != IS_PIPE && g_forked != IS_PIPE)
 		return (1);
-	if (!(sh->obj->error))
+	if (!(sh->obj->error) && strncmp(sh->obj->obj, "exit",
+		ft_strlen(sh->obj->obj)) != 0 && g_forked != IS_PIPE)
 		g_err = 0;
 	return (0);
 }
