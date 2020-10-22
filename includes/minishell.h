@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 16:59:02 by rturcey           #+#    #+#             */
-/*   Updated: 2020/10/21 19:24:22 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/22 12:09:30 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int					general_loop(t_sh *sh, int *i, int lev);
 int					pass_spaces(char *str, int i);
 int					check_single(char *str, int i);
 int					is_quote	(char *str, int i, char quote);
-int					is_quote_mod(char *str, int i, int l);
+int					is_quote_mod(char *str, int i);
 int					in_quotes(char *str, int i);
 int					one_quote(char *s, char *s1);
 int					lonely_quote(char *str);
@@ -129,7 +129,7 @@ int					parse_syntax(t_sh *sh, int i);
 int					normed_char(char c);
 void				alt_skim(char **s, int *j, int *i);
 
-t_env				*init_env(char **env, int in);
+t_env				*init_env(char **env, int in, int lev);
 int					env_clear(t_env *env);
 void				print_env(t_env *env, int fd);
 t_env				*env_new(int in);
@@ -159,7 +159,7 @@ int					pluseq(char *sample, int i);
 int					repluseq(char *sample, int i, t_env *env, int in);
 char				**empty_env(void);
 void				*check_empty(int lever, char **env);
-t_env				*old_empty(t_env *env);
+t_env				*old_empty(t_env **env, int lev);
 int					find_path(t_env *lst);
 void				find_home_user(char *path, char **home, char **user, \
 						t_env *env);

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:34 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 16:00:54 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/22 12:08:59 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			init_main(t_sh **sh, char **env)
 	int		lvl;
 
 	g_sigint = 0;
-	if (!(g_lstenv = init_env(env, 1)))
+	if (!(g_lstenv = init_env(env, 1, 0)))
 		return (env_clear(g_lstenv));
 	if (!(shlvl = find_env_entry("SHLVL", g_lstenv)))
 		return (env_clear(g_lstenv));

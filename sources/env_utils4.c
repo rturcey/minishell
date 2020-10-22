@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:05 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:18:06 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/22 12:11:00 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int				find_path(t_env *lst)
 	if (!(lst->val = \
 	ft_strdup("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin")))
 		return (-1);
+	if (!(lst->val_sp = ft_strdup(lst->val)))
+		return (-1);
 	lst->in = 0;
 	return (0);
 }
@@ -80,12 +82,14 @@ char			**empty_env(void)
 	return (tab);
 }
 
-t_env			*old_empty(t_env *env)
+t_env			*old_empty(t_env **env, int lev)
 {
 	t_env	*new;
 	t_env	*tmp;
 
-	if (!(find_env_entry("OLDPWD", env)))
+	if (lev)
+		return (*env);
+	if (!(find_env_entry("OLDPWD", *env)))
 	{
 		if (!(new = env_new(2)))
 			exit(EXIT_FAILURE);
@@ -93,10 +97,12 @@ t_env			*old_empty(t_env *env)
 			exit(EXIT_FAILURE);
 		if (!(new->val = ft_strdup("")))
 			exit(EXIT_FAILURE);
-		tmp = env;
+		if (!(new->val_sp = ft_strdup("")))
+			exit(EXIT_FAILURE);
+		tmp = *env;
 		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
-	return (env);
+	return (*env);
 }

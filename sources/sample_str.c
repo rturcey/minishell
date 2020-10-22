@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sample_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:58 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 20:28:44 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/22 12:11:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 */
 
 int			skim_str(char *s, int k, int *i)
-{
+{export TEST="'test1'" ;  TEST+="'test2'" ; echo $TEST ; echo "$TEST"
 	while (s[++k] && s[k + 1])
 		s[k] = s[k + 1];
 	while (s[k])

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:20:35 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 17:07:49 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/22 12:08:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,14 @@ int				parse_var(t_sh *sh, int *i, int len)
 	ret = check_vars(sh, *i);
 	if (ret == -1 || (ret >= 0 && (*i = ret) > -1))
 		return (0);
+	len = *i;
 	while (is_end(sh->in, len) == 0)
 		len++;
-	if (!(to_split = ft_substr(sh->in, *i, *i + len)))
+	if (!(to_split = ft_substr(sh->in, *i, len - *i)))
 		return (-1);
 	if (!(env_new = ft_split_var(to_split, ' ', sh, i)))
 		return (free_str(to_split));
-	if (!(wagon = init_env(env_new, 0)))
+	if (!(wagon = init_env(env_new, 0, 1)))
 		return (free_array_and_str(env_new, -1, to_split) == 2);
 	if ((begin = wagon) && check_var_inside(wagon, sh->env) < 0)
 		return (free_array_and_str(env_new, -1, to_split) == 2);

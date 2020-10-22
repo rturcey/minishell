@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:16 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 20:35:19 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/22 11:29:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int			replace_pwd(t_env *env, char **path)
 	}
 	else if (getcwd(workdir, PATH_MAX) == NULL)
 		return (free_str(workdir));
-	if (!(pwd->val = workdir))
+	if (!(pwd->val = workdir) || !(pwd->val = ft_strdup(workdir)))
 		return (-1);
 	if (!(pwd->key = ft_strdup("PWD")))
 		return (free_str(workdir));

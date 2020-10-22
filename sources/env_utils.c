@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:21 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 17:01:28 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/22 12:10:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	print_env(t_env *env, int fd)
 ** & check if in isn't corrupted
 */
 
-t_env	*init_env(char **env, int in)
+t_env	*init_env(char **env, int in, int l)
 {
 	t_env	*lst;
 	t_env	*tmp;
@@ -125,5 +125,5 @@ t_env	*init_env(char **env, int in)
 		if (split_env(env[i], lst) == -1 && env_clear(tmp) == 0)
 			return (check_empty(lev, env));
 	}
-	return (old_empty(tmp));
+	return (old_empty(&tmp, l));
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:59 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 15:47:08 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/22 11:45:24 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int				old_pwd(t_env *env)
 	if (!(old->key = ft_strdup("OLDPWD")))
 		return (env_clear(old));
 	old->val = workdir;
+	old->val_sp = ft_strdup(old->val);
 	add_var(old, env);
 	del_var(old);
 	return (0);
