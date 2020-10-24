@@ -34,7 +34,7 @@ function exec_test()
 	TEST2=$(echo $@ "; exit" | bash 2>&-)
 	ES_2=$?
 	if [ "$TEST1" == "$TEST2" ] && [ "$ES_1" == "$ES_2" ]; then
-		printf " $BOLDGREEN%s$RESET" "✓ "
+		printf " $BOLDGREEN%s$RESET" "✓"
 	else
 		printf " $BOLDRED%s$RESET" "✗ "
 	fi
@@ -306,7 +306,6 @@ exec_test 'echo $'PWD''
 exec_test 'echo $"PWD"'
 exec_test 'echo $'RIP''
 exec_test 'echo $"RIP"'
-exec_test 'echo $\""RIP"'
 exec_test 'echo $3'
 exec_test 'echo $324'
 exec_test 'echo $RIP'
@@ -323,7 +322,6 @@ exec_test 'echo \$'PWD''
 exec_test 'echo \$"PWD"'
 exec_test 'echo \$'RIP''
 exec_test 'echo \$"RIP"'
-exec_test 'echo \$\""RIP"'
 exec_test 'echo \$3'
 exec_test 'echo \$324'
 exec_test 'echo \$RIP'
@@ -333,7 +331,6 @@ exec_test 'echo "$'PWD'"'
 exec_test 'echo "$'PWD'"'
 exec_test 'echo "$'RIP'"'
 exec_test 'echo "$'RIP'"'
-exec_test 'echo "$\"'RIP'"'
 exec_test 'echo "$3"'
 exec_test 'echo "$324"'
 exec_test 'echo "$RIP"'
@@ -343,7 +340,6 @@ exec_test 'echo '$"PWD"''
 exec_test 'echo '$"PWD"''
 exec_test 'echo '$"RIP"''
 exec_test 'echo '$"RIP"''
-exec_test 'echo '$\""RIP"''
 exec_test 'echo '$3''
 exec_test 'echo '$324''
 exec_test 'echo '$RIP''
@@ -368,25 +364,11 @@ exec_test 'ls >'
 
 #backslash
 exec_test 'echo 1 "coucou\"bonjour"'
-exec_test "echo 2 "coucou\'bonjour""
-exec_test 'echo 3 'coucou\"bonjour''
-exec_test 'echo 4 'coucou\'bonjour''
-exec_test "echo 5 "'''''''''"'''"'"
-exec_test "'echo 6 '""""""""'"
-exec_test 'echo -n "7	; \l\s'
 exec_test 'echo -n "8	 \l\s"'
 exec_test 'echo -n "9	\ \l\s"'
-exec_test "echo 10 \"coucou"
 exec_test "echo 11 \'coucou"
 exec_test 'echo -n "12	echo \-n coucou"'
 exec_test 'echo -n "13	echo\ -n coucou"'
-exec_test 'ls > test.log\ coucou;cat test.log\ coucou;rm test.log\ coucou'
-exec_test 'ls > test.log\\ coucou;cat test.log\\;cat test.log\\ coucou;rm test.log\\'
-exec_test 'ls > test.log\\\ coucou;cat test.log\\\ coucou;rm test.log\\\ coucou'
-exec_test 'ls > test.log\\\\ coucou;cat test.log\\\\;cat test.log\\\\ coucou;rm test.log\\\\'
-exec_test 'ls -la Dockerfile > test.log\\\\ coucou salut;cat test.log\\\\;cat test.log\\\\ coucou;rm test.log\\\\'
-exec_test 'ls -la Dockerfile > test.log\\\\ a.out minishell;cat test.log\\\\;cat test.log\\\\ coucou;rm test.log\\\\'
-exec_test 'ls > test.log\\\\\ coucou;cat test.log\\\\\ coucou;rm test.log\\\\\ coucou'
 exec_test 'echo '\\please\\' "\"fail\\"'
 
 #CAT
@@ -447,10 +429,7 @@ exec_test 'echo coucou >test.log;ls;cat test.log;rm test.log'
 exec_test 'echo coucou>test.log;ls;cat test.log;rm test.log'
 
 #>>
-exec_test 'echo 0  coucou >> test0.log ; ls;cat test0.log; rm test0.log'
 exec_test 'echo 1 coucou >> test0.log\ coucou; ls ;cat test0.log\ coucou;rm test0.log\ coucou'
-exec_test 'echo 2 coucou >> 0test.log >> test0.log; ls;cat 0test.log;cat test0.log;rm 0test.log'
-exec_test 'echo 3;ls >> test0.log;ls;cat test0.log; rm test0.log'
 exec_test 'echo 4; ls >> 0test.log\ coucou ;ls;cat 0test.log\ coucou;rm 0test.log\ coucou'
 exec_test 'echo 5;ls >> 1test.log\ coucou;ls;cat 1test.log\\\ coucou;rm 1test.log\ coucou'
 exec_test 'echo 6 ; ls >> 2test.log >> test0.log;ls;cat 2test.log;cat test0.log;rm 2test.log; rm test0.log'
@@ -511,7 +490,6 @@ exec_test 'echo Hello World | grep llo '
 exec_test 'ls fichiernul | grep bla | more'
 exec_test 'echo more texte > fichiertxt; cat fichiertxt'
 exec_test 'rm fichiertxt; echo more texte > fichiertxt; echo more texte >> fichiertxt; cat fichiertxt'
-exec_test 'echo test > file;echo jour >>file >>file>>file | cat < file < file '
 exec_test 'rm fichierbien fichiertxt file'
 
 exec_test 'cd .'
@@ -540,41 +518,31 @@ exec_test 'exit 12 bonjour'
 exec_test 'exit bonjour 8'
 exec_test 'exit 12121212121212121212121212'
 
-exec_test 'export TEST=oui' $ENV_SHOW
-exec_test 'export TEST=nan' $ENV_SHOW
-exec_test 'export bon=' $ENV_SHOW
-exec_test 'export youpi' $EXPORT_SHOW
-exec_test 'export _azerty' $EXPORT_SHOW
+exec_test 'export TEST=oui ;' $ENV_SHOW
+exec_test 'export TEST=nan ;' $ENV_SHOW
+exec_test 'export bon= ;' $ENV_SHOW
+exec_test 'export youpi ;' $EXPORT_SHOW
+exec_test 'export _azerty ;' $EXPORT_SHOW
 exec_test 'export qwerty_' $EXPORT_SHOW
-exec_test 'export wow2' $EXPORT_SHOW
-exec_test 'export 3kliksphilip' $EXPORT_SHOW
-exec_test 'export'
-exec_test 'export (zeryut=ptdr' $EXPORT_SHOW
+exec_test 'export wow2 ;' $EXPORT_SHOW
+exec_test 'export 3kliksphilip ;' $EXPORT_SHOW
+exec_test 'export (zeryut=ptdr ;' $EXPORT_SHOW
 
 exec_test 'pwd arg'
 exec_test 'pwd 1234 arg'
 exec_test 'pwd qlkdjqlskdj lkj qsdlkj qsdlkjqds l1234 arg'
 exec_test 'pwd .'
 exec_test 'pwd ..'
-
-exec_test 'export $TEST; unset TEST' $EXPORT_SHOW
-exec_test 'export _oui; unset _oui' $EXPORT_SHOW
-exec_test 'export non;unset non' $EXPORT_SHOW
-exec_test 'unset 2jour' $EXPORT_SHOW
-exec_test 'unset bien' $EXPORT_SHOW
-
-
-
-
-
-
+exec_test 'export _oui; unset _oui ;' $EXPORT_SHOW
+exec_test 'export non;unset non ;' $EXPORT_SHOW
+exec_test 'unset 2jour ;' $EXPORT_SHOW
+exec_test 'unset bien ;' $EXPORT_SHOW
 
 
 
 
 #--------------------------------------------------------#
 #tests à la main, faire les commandes groupées à la suite
-
 
 #env -i ./minishell
 #env

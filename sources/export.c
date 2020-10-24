@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:08 by user42            #+#    #+#             */
-/*   Updated: 2020/10/22 11:58:38 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/24 19:12:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int				unset_var(char **elt, t_sh *sh)
 
 	i = -1;
 	while (elt[++i])
-		del_from_key(&(sh->env), elt[i]);
+	{
+		if (ft_strcmp("_", elt[i]))
+			del_from_key(&(sh->env), elt[i]);
+	}
 	return (0);
 }
 

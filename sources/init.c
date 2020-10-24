@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:34 by user42            #+#    #+#             */
-/*   Updated: 2020/10/22 12:08:59 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/24 19:13:15 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int			init_main(t_sh **sh, char **env)
 	else
 	{
 		lvl = ft_atoi(shlvl->val);
-		free(shlvl->val);
-		if (!(shlvl->val = ft_itoa(lvl + 1)))
+		free_two_str(shlvl->val, shlvl->val_sp);
+		if (!(shlvl->val = ft_itoa(lvl + 1)) ||
+		 !(shlvl->val_sp = ft_strdup(shlvl->val)))
 			return (env_clear(g_lstenv));
 	}
 	if (!(*sh = init_sh(g_lstenv)))
