@@ -4,15 +4,7 @@ ISSUES BELOW ARE TO BE FIXED :
 
 -------------------------------------------------
 
-"bullshit | cd ." 
 
-Your exit status : 127
-Expected exit status : 0
-
-"bullshit | cd .." 
-
-Your exit status : 127
-Expected exit status : 0
 
 -------------------------------------------------
 
@@ -220,4 +212,16 @@ Expected exit status : 2
 we send in [cd pouet ; exit ;"; exit" | bash 2>&-)]
 bash parses it, removes quotes, and returns a syntax error at the ;;" | bash 2>&-)
 >> added a condition to incrementation so as not to skip first ;
+-------------------------------------------------
+"bullshit | cd ." 
+
+Your exit status : 127
+Expected exit status : 0
+
+"bullshit | cd .." 
+
+Your exit status : 127
+Expected exit status : 0
+
+i made a dumb mistake in the g_err updating condition in case of pipe (g_forked instead of sh->obj->pip)
 -------------------------------------------------
