@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:20:26 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:20:26 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/24 14:40:52 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		pass_quotes(t_sh *sh, int *i)
 	else if (sh->in[*i] == '\'' && ++(*i))
 		while (sh->in[*i] && sh->in[*i] != '\'')
 			(*i)++;
-	if (sh->in[*i])
+	if (sh->in[*i] && is_end(sh->in, *i) == 0)
 		(*i)++;
 }
 

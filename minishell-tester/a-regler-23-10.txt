@@ -1,8 +1,6 @@
 ISSUES BELOW ARE TO BE FIXED :
 
-cd pouet ; exit ;
-Your exit status : 1
-Expected exit status : 2
+
 
 -------------------------------------------------
 
@@ -201,3 +199,25 @@ PWD=/home/stella/QUARANTINE_WORK/MINISHELL-SHARED/minishell-tester
 diff d'export a checker?
 export
 export $TEST; unset TEST
+
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+-------------------------------------------------
+
+
+
+
+ISSUES BELOW ARE FIXED
+
+-------------------------------------------------
+cd pouet ; exit ;
+Your exit status : 1
+Expected exit status : 2
+
+we send in [cd pouet ; exit ;"; exit" | bash 2>&-)]
+bash parses it, removes quotes, and returns a syntax error at the ;;" | bash 2>&-)
+>> added a condition to incrementation so as not to skip first ;
+-------------------------------------------------
