@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:25 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 10:36:43 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:48:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		skim_str(char *s, int k, int *i)
 	return (1);
 }
 
-int				check_var(char *sample)
+int		check_var(char *sample)
 {
 	int		i;
 
