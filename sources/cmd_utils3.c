@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:16 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 10:14:41 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:42:01 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,10 @@ int			replace_pwd(t_env *env, char **path)
 {
 	t_env	*pwd;
 	char	*workdir;
-	int		ret;
 
 	pwd = env_new(1);
 	if (!(workdir = ft_calloc(PATH_MAX, 1)))
 		return (-1);
-	ret = 0;
 	if ((getcwd(workdir, PATH_MAX) == NULL) && (ft_strncmp(*path, ".",
 		ft_strlen(*path)) == 0 || ft_strncmp(*path, "..",
 		ft_strlen(*path)) == 0))
@@ -135,5 +133,5 @@ int			replace_pwd(t_env *env, char **path)
 	free(workdir);
 	add_var(pwd, env);
 	del_var(pwd);
-	return (ret);
+	return (0);
 }

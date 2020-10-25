@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:44 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 10:17:47 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/25 10:30:44 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@
 **Haven't used it yet, but will be useful during
 **further cmd parsing
 */
-
-int			is_separator(char *str, int i)
-{
-	if ((str[i] == ';' || str[i] == '|') && in_quotes(str, i) == 0)
-	{
-		if ((i > 0) && str[i - 1] && (str[i - 1] == '\\'))
-			return (0);
-		return (1);
-	}
-	return (0);
-}
 
 static int	first_checks(t_sh *sh, int *i, int j)
 {
@@ -57,6 +46,17 @@ static int	first_checks(t_sh *sh, int *i, int j)
 	return (1);
 }
 
+int			parse_ex_cond(t_sh *sh, int *i)
+{
+	int j;
+
+	if ((j = parse_exec(sh, i)) == -1)
+		return (free_obj(&sh->obj));
+	else if (j == -2)
+		general_loop(sh, i, 1);
+	return (0);
+}
+
 static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 {
 	int		j;
@@ -79,12 +79,8 @@ static int	parse_sample(t_sh *sh, int *i, int stock, char *sample)
 			general_loop(sh, i, 2);
 	}
 	else if ((*i = stock) == stock)
-	{
-		if ((j = parse_exec(sh, i)) == -1)
-			return (free_obj(&sh->obj));
-		else if (j == -2)
-			general_loop(sh, i, 1);
-	}
+		if (parse_ex_cond(sh, i) == -1)
+			return (-1);
 	return (1);
 }
 

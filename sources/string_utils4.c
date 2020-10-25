@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:25 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 10:48:52 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 11:01:18 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,16 @@ int		check_var(char *sample)
 	while (sample[++i])
 		if (normed_char(sample[i]) == -1)
 			return (-1);
+	return (0);
+}
+
+int		is_separator(char *str, int i)
+{
+	if ((str[i] == ';' || str[i] == '|') && in_quotes(str, i) == 0)
+	{
+		if ((i > 0) && str[i - 1] && (str[i - 1] == '\\'))
+			return (0);
+		return (1);
+	}
 	return (0);
 }

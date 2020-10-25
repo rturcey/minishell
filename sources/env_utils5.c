@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:01 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 16:32:35 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:51:42 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,15 +137,15 @@ void			parse_all_var(t_sh *sh, char **s, int i)
 	{
 		if (!is_end(*s, i) && (*s)[i] == '\\' && (*s)[i + 1] != '$')
 			++i;
-		if (!is_end(*s, i) && (*s)[i] == '$' && (*s)[i + 1] &&
-		(*s)[i + 1] == '?' && (i == 0 || (*s)[i - 1] != '\\'))
-			i += 2;
-		if (!is_end(*s, i) && (*s)[i] == '\\' && (*s)[i + 1] && (*s)[i + 1] == '$')
+		if (!is_end(*s, i) && (*s)[i + 1] && (((*s)[i] == '$' &&
+		(*s)[i + 1] == '?' && (i == 0 || (*s)[i - 1] != '\\')) ||
+			((*s)[i] == '\\' && (*s)[i + 1] == '$')))
 			i += 2;
 		if (!is_end(*s, i) && (*s)[i] == '$' && (*s)[i + 1]
 		&& (is_quote(*s, i + 1, 0)) && (++i))
 			pass_quotes(sh, &i);
-		while (!is_end(*s, i) && (*s)[i] == '$' && normed_char((*s)[i + 1]) == 0)
+		while (!is_end(*s, i) && (*s)[i] == '$' &&
+			normed_char((*s)[i + 1]) == 0)
 			if (parse_sample_var_mod(&*s, &i, sh->env, &tmp) == -2)
 				while (!is_end(*s, i) && !is_sp(*s, i)
 				&& !is_quote(*s, i, 0))
