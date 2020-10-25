@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:15 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 15:23:46 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:45:12 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,35 @@ static void		fix_j(t_env *elt, int *j, char *begin, char *key)
 		(*j) -= 1;
 }
 
-int				check_var(char *sample)
-{
-	int		i;
-
-	i = -1;
-	if (ft_isdigit(sample[0]))
-		return (-1);
-	while (sample[++i])
-		if (normed_char(sample[i]) == -1)
-			return (-1);
-	return (0);
-}
-
-static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
+static int		replace_var_2(char **sample, char *begin, t_env *elt, char *end)
 {
 	char	*val;
 	int		lev;
 
 	lev = 0;
+	if (one_quote(begin, end) && (lev = 1))
+		val = elt->val_sp;
+	else
+		val = elt->val;
+	if (!begin[0] && (elt->sp == 1 || elt->sp == 3))
+	{
+		if (!(*sample = ft_strjoin_sp(begin, ft_strdup(val))))
+			return (free_two_str(begin, end));
+	}
+	else if (!(*sample = ft_strjoin_bth(begin, ft_strdup(val))))
+		return (free_two_str(begin, end));
+	return (lev);
+}
+
+static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
+{
+	int		lev;
+
+	lev = 0;
 	if (elt)
 	{
-		if (one_quote(begin, end) && (lev = 1))
-			val = elt->val_sp;
-		else
-			val = elt->val;
-		if (!begin[0] && (elt->sp == 1 || elt->sp == 3))
-		{
-			if (!(*sample = ft_strjoin_sp(begin, ft_strdup(val))))
-				return (free_two_str(begin, end));
-		}
-		else if (!(*sample = ft_strjoin_bth(begin, ft_strdup(val))))
-			return (free_two_str(begin, end));
+		if ((lev = replace_var_2(sample, begin, elt, end)) == -1)
+			return (-1);
 		if (end[0] && !lev && elt->sp > 1)
 		{
 			if (!(*sample = ft_strjoin_sp(*sample, end)))
@@ -64,14 +61,11 @@ static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
 		}
 		else if (!(*sample = ft_strjoin_bth(*sample, end)))
 			return (free_two_str(*sample, end));
+		return (0);
 	}
-	else
-	{
-		if (!(*sample = ft_strjoin_bth(begin, end)))
-			return (free_two_str(begin, end));
-		return (-2);
-	}
-	return (0);
+	else if (!(*sample = ft_strjoin_bth(begin, end)))
+		return (free_two_str(begin, end));
+	return (-2);
 }
 
 int				parse_sample_var(char **sample, int *j, t_env *env, int *r)
