@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:16 by user42            #+#    #+#             */
-/*   Updated: 2020/10/22 11:29:25 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:14:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,12 @@ int			replace_pwd(t_env *env, char **path)
 	}
 	else if (getcwd(workdir, PATH_MAX) == NULL)
 		return (free_str(workdir));
-	if (!(pwd->val = workdir) || !(pwd->val = ft_strdup(workdir)))
-		return (-1);
+	if (!(pwd->val = ft_strdup(workdir))
+	|| !(pwd->val_sp = ft_strdup(pwd->val)))
+		return (free_str(workdir));
 	if (!(pwd->key = ft_strdup("PWD")))
 		return (free_str(workdir));
+	free(workdir);
 	add_var(pwd, env);
 	del_var(pwd);
 	return (ret);

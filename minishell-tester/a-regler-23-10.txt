@@ -11,62 +11,6 @@ Expected exit status : 1
 
 -------------------------------------------------
 
-ls > test.log\ coucou;cat test.log\ coucou;rm test.log\ coucou" 
- ✗  "ls > test.log\ coucou;cat test.log\;cat test.log\ coucou;rm test.log\" 
-
-Your output : 
---------------------
-ls: cannot access 'coucou': No such file or directory
-cat: 'test.log\;cat': No such file or directory
---------------------
-Expected output : 
---------------------
-
---------------------
-
-ls > test.log\\ coucou;cat test.log\\;cat test.log\\ coucou;rm test.log\\" 
-
-Your output : 
---------------------
-ls: cannot access 'coucou': No such file or directory
-cat: 'test.log\;cat': No such file or directory
---------------------
-Expected output : 
---------------------
-
---------------------
-
-ls -la Dockerfile > test.log\\ coucou salut;cat test.log\\;cat test.log\\ coucou;rm test.log\\" 
-
-Your output : 
---------------------
-ls: cannot access 'Dockerfile': No such file or directory
-ls: cannot access 'coucou': No such file or directory
-ls: cannot access 'salut': No such file or directory
-cat: 'test.log\;cat': No such file or directory
---------------------
-Expected output : 
---------------------
-
---------------------
-
-ls -la Dockerfile > test.log\\ a.out minishell;cat test.log\\;cat test.log\\ coucou;rm test.log\\" 
-
-Your output : 
---------------------
-ls: cannot access 'Dockerfile': No such file or directory
-ls: cannot access 'a.out': No such file or directory
--rwxr-xr-x 1 stella stella 194536 oct.  23 11:10 minishell
-cat: 'test.log\;cat': No such file or directory
---------------------
-Expected output : 
---------------------
--rwxr-xr-x 1 stella stella 194536 oct.  23 11:10 minishell
--rwxr-xr-x 1 stella stella 194536 oct.  23 11:10 minishell
---------------------
-
--------------------------------------------------
-
 "exit 1 2 ;echo $?" 
 
 Your output : 
@@ -79,10 +23,6 @@ Expected output :
 --------------------
 Your exit status : 0
 Expected exit status : 1
-
--------------------------------------------------
-
-"echo 3;ls >> test0.log;ls;cat test0.log; rm test0.log" 
 
 -------------------------------------------------
 -------------------------------------------------
