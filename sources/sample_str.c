@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:58 by user42            #+#    #+#             */
-/*   Updated: 2020/10/23 11:08:52 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/25 10:04:47 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,23 @@
 **Making a clean string, unnecessary quotes removed
 */
 
-int			skim_str(char *s, int k, int *i)
+int			quote_loop_dollar(t_sh *sh, char **s, int *l, int heck)
 {
-	while (s[++k] && s[k + 1])
-		s[k] = s[k + 1];
-	while (s[k])
-		s[k++] = '\0';
-	(*i)++;
-	return (1);
+	int r;
+
+	while ((*s)[*l] == '$' && normed_char((*s)[*l + 1]) == 0
+	&& (*s)[*l + 1] != '?')
+	{
+		if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) == -1)
+			return (-1);
+		if ((heck = 1) && r == -2)
+			continue ;
+	}
+	return (0);
 }
 
 static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 {
-	int		r;
 	int		heck;
 
 	if ((heck = 0) == 0 && ((*s)[*l] == '\\' && ((*s)[*l + 1] == '$'
@@ -43,15 +47,8 @@ static int	quote_loop(t_sh *sh, char **s, int *l, int *k)
 			if (parse_g_err(s, l, sh->tmp) == -1)
 				return (-1);
 		}
-		else
-			while ((*s)[*l] == '$' && normed_char((*s)[*l + 1]) == 0
-			&& (*s)[*l + 1] != '?')
-			{
-				if ((r = parse_sample_var(s, l, sh->env, sh->tmp)) == -1)
-					return (-1);
-				if ((heck = 1) && r == -2)
-					continue ;
-			}
+		else if (quote_loop_dollar(sh, s, l, heck) == -1)
+			return (-1);
 		*k = get_next_quote(*s, *sh->temp, sh, *l) - 1;
 	}
 	return (heck);

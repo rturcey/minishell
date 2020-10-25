@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:25 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 12:26:23 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:21:51 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,14 @@ int		normed_char(char c)
 		if (c != '-' && c != '_' && c != '?')
 			return (-1);
 	return (0);
+}
+
+int		skim_str(char *s, int k, int *i)
+{
+	while (s[++k] && s[k + 1])
+		s[k] = s[k + 1];
+	while (s[k])
+		s[k++] = '\0';
+	(*i)++;
+	return (1);
 }

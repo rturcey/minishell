@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_var.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:47 by user42            #+#    #+#             */
-/*   Updated: 2020/10/22 11:42:29 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 09:44:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,12 @@ static char		**finish_him(char **result, int j, int word_count)
 	return (result);
 }
 
-#include <stdio.h>
-
 static char		*newline(char **result, t_sh *sh, int *j, int *i)
 {
 	if (!(result[*j] = sample_str(sh, i, result[*j])))
 		return (NULL);
 	return (result[(*j)++]);
 }
-
-#include <stdio.h>
 
 char			**ft_split_var(char *s, char c, t_sh *sh, int *i)
 {
@@ -64,7 +60,7 @@ char			**ft_split_var(char *s, char c, t_sh *sh, int *i)
 
 	j = 0;
 	k = 0;
-	if (!s ||!(result = malloc(sizeof(char *) * (count_words(s, c) + 2))))
+	if (!s || !(result = malloc(sizeof(char *) * (count_words(s, c) + 2))))
 		return (NULL);
 	while (is_end(s, k) == 0)
 	{
@@ -87,7 +83,7 @@ int				is_quote_mod(char *str, int i)
 	count = 0;
 	if (str[i] && (str[i] == '\'' || str[i] == '\"'))
 	{
-		if (str[i - 1 ] && str[i - 1] == '\\')
+		if (str[i - 1] && str[i - 1] == '\\')
 		{
 			if (str[i] == '\'' && str[i - 1])
 				if (check_single(str, i) == 1)

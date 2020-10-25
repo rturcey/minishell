@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:34 by user42            #+#    #+#             */
-/*   Updated: 2020/10/24 19:13:15 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:11:50 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int			init_main(t_sh **sh, char **env)
 		lvl = ft_atoi(shlvl->val);
 		free_two_str(shlvl->val, shlvl->val_sp);
 		if (!(shlvl->val = ft_itoa(lvl + 1)) ||
-		 !(shlvl->val_sp = ft_strdup(shlvl->val)))
+		!(shlvl->val_sp = ft_strdup(shlvl->val)))
 			return (env_clear(g_lstenv));
 	}
 	if (!(*sh = init_sh(g_lstenv)))

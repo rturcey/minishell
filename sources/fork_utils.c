@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:53 by user42            #+#    #+#             */
-/*   Updated: 2020/10/24 16:55:57 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/25 10:21:10 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,29 @@ void	kill_pipe(int sig)
 		}
 	}
 	g_pid = -1;
+}
+
+int		dup_exec(t_sh *sh)
+{
+	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
+	{
+		if (dup2(sh->obj->prev->tube[0], 0) == -1)
+			return (-1);
+		if (sh->obj->prev->tube[1] != -1)
+			close(sh->obj->prev->tube[1]);
+	}
+	if (sh->obj->pip == IS_PIPE)
+	{
+		if (dup2(sh->obj->tube[1], 1) == -1)
+			return (-1);
+		if (sh->obj->tube[0] != -1)
+			close(sh->obj->tube[0]);
+	}
+	if (sh->obj->redir->cmd_in >= 0 &&
+	dup2(sh->obj->redir->cmd_in, 0) == -1)
+		return (-1);
+	if (sh->obj->redir->cmd_output >= 1 &&
+	dup2(sh->obj->redir->cmd_output, 1) == -1)
+		return (-1);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:59 by user42            #+#    #+#             */
-/*   Updated: 2020/10/22 11:45:24 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 10:19:58 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int				repluseq(char *sample, int i, t_env *env, int in)
 		del_var(elt);
 	}
 	else if (free_str(key) == -1 &&
-	(!(elt->val_sp = ft_strjoin_bth(elt->val_sp, val)) 
+	(!(elt->val_sp = ft_strjoin_bth(elt->val_sp, val))
 	|| !(elt->val = ft_strdup(elt->val_sp))))
 		return (-2);
 	return (0);

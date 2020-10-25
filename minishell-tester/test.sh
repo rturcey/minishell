@@ -438,6 +438,10 @@ exec_test 'echo 6 ; ls >> 2test.log >> test0.log;ls;cat 2test.log;cat test0.log;
 exec_test 'echo $?;echo coucou;echo $?'
 exec_test 'ls lishdzfgl ;echo $?'
 exec_test 'exit 1 2 ;echo $?'
+exec_test 'exit 1 2 |echo $?'
+exec_test 'exit 1 2 ;echo bla; echo $?'
+exec_test 'exit qljdlkqsdjlqksdj ; echo $?'
+exec_test 'exit qljdlkqsdjlqksdj | echo $?'
 exec_test 'sdffs;echo $?'
 
 # ;
@@ -590,6 +594,9 @@ exec_test 'unset bien ;' $EXPORT_SHOW
 #$?
 
 #Test d'ajout de dossier à PATH que j'ai tjs pas compris
+
+#Check fermeture des fds avec ls -la /proc/$$/fd
+
 
 #----------- SIGNALS -----------
 #on an empty line

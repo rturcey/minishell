@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:06 by user42            #+#    #+#             */
-/*   Updated: 2020/10/20 16:15:43 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/25 09:43:40 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	echo_loop(char **result, int *i, t_sh *sh)
 	if (l == 0 && sample[0] == '\0' && free_str(sample))
 		return (0);
 	else if (l == 1 && sample[0])
-		if (!(sample= ft_strjoin_bth(ft_strdup(" "), sample)))
+		if (!(sample = ft_strjoin_bth(ft_strdup(" "), sample)))
 			return (free_str(*result));
 	if (!(*result = ft_strjoin_sp(*result, sample)))
 		return (-1);

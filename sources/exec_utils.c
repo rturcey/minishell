@@ -6,36 +6,11 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:17:45 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 20:28:06 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/25 09:50:49 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int			dup_exec(t_sh *sh)
-{
-	if (sh->obj->prev && sh->obj->prev->pip == IS_PIPE)
-	{
-		if (dup2(sh->obj->prev->tube[0], 0) == -1)
-			return (-1);
-		if (sh->obj->prev->tube[1] != -1)
-			close(sh->obj->prev->tube[1]);
-	}
-	if (sh->obj->pip == IS_PIPE)
-	{
-		if (dup2(sh->obj->tube[1], 1) == -1)
-			return (-1);
-		if (sh->obj->tube[0] != -1)
-			close(sh->obj->tube[0]);
-	}
-	if (sh->obj->redir->cmd_in >= 0 &&
-	dup2(sh->obj->redir->cmd_in, 0) == -1)
-		return (-1);
-	if (sh->obj->redir->cmd_output >= 1 &&
-	dup2(sh->obj->redir->cmd_output, 1) == -1)
-		return (-1);
-	return (0);
-}
 
 int			try_exec(char *tmp, t_sh *sh, int *i)
 {
@@ -115,13 +90,19 @@ static int	add_redirs(t_sh *sh, int *i)
 ** We return -2 if no program was found, -1 in case of a fatal error.
 */
 
+int			parse_exec_fk(char *path, t_sh *sh)
+{
+	if (try_exec(path, sh, 0) == -1)
+		return (-1);
+	return (0);
+}
+
 int			parse_exec(t_sh *sh, int *i)
 {
 	char	*path;
 	int		stock_i;
 
-	path = NULL;
-	if (redir_loop(sh, i) == -1)
+	if ((path = NULL) == NULL && redir_loop(sh, i) == -1)
 		return (-1);
 	if (!(sh->obj->obj = sample_str(sh, i, sh->obj->obj)))
 		return (-1);
@@ -131,11 +112,7 @@ int			parse_exec(t_sh *sh, int *i)
 	if (add_redirs(sh, i) < 0 && sh->obj->pip != IS_PIPE && g_forked != IS_PIPE)
 		return (0);
 	if (sh->obj->fk == 1)
-	{
-		if (try_exec(path, sh, 0) == -1)
-			return (-1);
-		return (0);
-	}
+		return (parse_exec_fk(path, sh));
 	if (check_path(sh, &path) == -2 && free_str(path))
 		if (sh->obj->pip != IS_PIPE && (!(sh->obj->prev) ||
 			sh->obj->prev->pip != IS_PIPE))
