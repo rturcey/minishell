@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:44 by user42            #+#    #+#             */
-/*   Updated: 2020/10/26 10:09:20 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/26 11:04:09 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int			general_loop(t_sh *sh, int *i, int lev)
 		while (sh->in[*i])
 			(*i)++;
 	parse_all_var(sh, &sh->in, *i);
+	if (!sh->in[*i] || is_end(sh->in, *i))
+		return (1);
 	if (!(sample = sample_str(sh, i, sample)))
 		return (-1);
 	if ((j = parse_sample(sh, i, stock, sample)) != 1

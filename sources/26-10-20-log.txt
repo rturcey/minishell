@@ -1,0 +1,2 @@
+FIXED in gen parser l42
+leak pour [export TEST="   '   test1    '    " ; TEST+="   '   test2    '    " ; echo $TEST ; echo "$TEST" ; ]
