@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:47 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 09:44:49 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/26 10:19:05 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int		count_words(char *s, char c)
 
 	count = 0;
 	i = -1;
+	if (!s)
+		return (count);
 	while (s[0] != '\0' && is_end(s, ++i) == 0)
 	{
 		split_pass_quotes(s, &i);
@@ -38,7 +40,8 @@ static char		**finish_him(char **result, int j, int word_count)
 		result[j] = NULL;
 	else
 	{
-		free(result[j]);
+		if (result && result[j])
+			free(result[j]);
 		result[j] = NULL;
 	}
 	return (result);

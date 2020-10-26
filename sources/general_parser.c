@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:44 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 10:30:44 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/26 10:09:20 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	first_checks(t_sh *sh, int *i, int j)
 	}
 	else if (r == -2 && sh->obj->pip != IS_PIPE && g_forked != IS_PIPE)
 		return (0);
-	if ((r = parse_var(sh, i, 0)) == -1)
+	if (sh->in[*i] && (r = parse_var(sh, i, 0)) == -1)
 		return (free_obj(&sh->obj));
 	else if (r == 1)
 		return (2);
