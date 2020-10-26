@@ -6,7 +6,7 @@
 /*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:18:01 by user42            #+#    #+#             */
-/*   Updated: 2020/10/25 10:51:42 by esoulard         ###   ########.fr       */
+/*   Updated: 2020/10/26 11:27:14 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char		*put_quotes(char **s)
 static int		replace_var(char **sample, char *begin, t_env *elt, char *end)
 {
 	free(*sample);
-	if (!elt)
+	if ((g_err = 0) == 0 && !elt)
 	{
 		if (!(*sample = ft_strjoin_bth(begin, end)))
 			return (free_two_str(begin, end));
