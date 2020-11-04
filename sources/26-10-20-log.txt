@@ -1,0 +1,7 @@
+FIXED in gen parser l42
+leak pour [export TEST="   '   test1    '    " ; TEST+="   '   test2    '    " ; echo $TEST ; echo "$TEST" ; ]
+
+FIXED gen parser l100
+exited in certain cases after parse var if parse was empty. Added condition to return 0 before that if needed.
+
+FIXED ADDED g_err reinit in parse var 

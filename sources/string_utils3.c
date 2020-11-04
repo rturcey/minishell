@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: esoulard <esoulard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:19:31 by user42            #+#    #+#             */
-/*   Updated: 2020/10/21 16:10:17 by user42           ###   ########.fr       */
+/*   Updated: 2020/11/04 10:18:07 by esoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			in_quotes(char *str, int i)
 	j = i;
 	count = 0;
 	tmp = 0;
-	while (--j > 0 && str[j])
+	while (--j >= 0 && str[j])
 	{
 		if (count == 0 && is_quote(str, j, 0) == 1)
 		{

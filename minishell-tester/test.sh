@@ -64,6 +64,34 @@ printf "| |  | |_| |_| |\  |_| |_ ____) | |  | | |____| |____| |____ \n"
 printf "|_|  |_|_____|_| \_|_____|_____/|_|  |_|______|______|______|\n$RESET"
 echo
 
+# TESTS 4-11-20
+exec_test '"ls"'
+exec_test '"ls" bla ;'
+exec_test '        "ls"        '
+exec_test '"cd"'
+exec_test '"cd" bla ;'
+exec_test '        "cd"        '
+exec_test '";ls    ;"'
+exec_test '"ls bla" ;'
+exec_test '        "ls    bla"        '
+exec_test '";cd       ;"'
+exec_test '"cd bla" ";"'
+exec_test '"cd bla ;"'
+exec_test '        "cd    bla"        '
+exec_test "'ls'"
+exec_test "'ls' bla ;"
+exec_test "        'ls'        "
+exec_test "'cd'"
+exec_test "'cd' bla ;"
+exec_test "        'cd'        "
+exec_test "'ls    ;'"
+exec_test "'ls bla '';'"
+exec_test "        'ls bla'        "
+exec_test "'cd      ;'"
+exec_test "'cd bla '';'"
+exec_test "'cd bla ;'"
+exec_test "        'cd bla'        "
+
 # ECHO TESTS
 exec_test 'echo test tout'
 exec_test 'echo test      tout'
